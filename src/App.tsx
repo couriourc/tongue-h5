@@ -1,13 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useRef } from 'react'
 import './App.css'
+import { Camera } from "react-camera-pro";
 
 function App() {
-  const [count, setCount] = useState(0)
 
+  const camera = useRef<any>(null);
+  const [image, setImage] = useState<string>("");
   return (
     <>
+      <div className='flex flex-col'>
+        <Camera ref={camera}
+          errorMessages={{
+          }}
+        />
+        <button onClick={() => setImage(camera.current!.takePhoto())}>Take photo</button>
+        {image && <img src={image!} alt='Taken photo' />}
+      </div>
     </>
   )
 }
