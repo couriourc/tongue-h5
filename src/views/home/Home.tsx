@@ -10,9 +10,9 @@ import {css, cx} from "@emotion/css";
 import {Checkbox} from "react-vant";
 
 export function Home() {
-    return <section className={cx('flex flex-col items-center px-32px relative')}>
+    return <section className={cx('flex flex-col items-center  relative')}>
         <BrandWithName className={'absolute top-12px left-12px'}/>
-        <main className={'absolute top-186px flex gap-100px justify-center flex-col'}>
+        <main className={'relative top-186px flex gap-100px justify-center flex-col'}>
             <div className={"w-686px m-auto p-12px  bg-white"}>
                 <Swiper images={[SwiperItem]}></Swiper>
             </div>
@@ -55,11 +55,13 @@ export function Home() {
                     </div>
                 </div>
             </div>
+
+            <div className={cx(' bottom-39px left-36px gap-12px flex w-fit')}>
+                <Checkbox shape="square"></Checkbox>
+                <tspan>已阅读并同意<span text-primary>《隐私政策》</span></tspan>
+            </div>
         </main>
 
-        <div className={cx('fixed bottom-39px left-36px gap-12px flex w-full')}>
-            <Checkbox shape='square'></Checkbox><tspan>已阅读并同意<span text-primary>《隐私政策》</span></tspan>
-        </div>
     </section>;
 }
 
