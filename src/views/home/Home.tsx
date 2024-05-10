@@ -9,8 +9,8 @@ import Arrow from "@/assets/arrow.png";
 
 import Face from "@/assets/face.png";
 import {cx} from "@emotion/css";
-import {Checkbox} from "react-vant";
 import {ReadPrivacy} from "@/components/Privacy";
+import {useNavigate} from "react-router";
 
 export function Home() {
     const stepper = [
@@ -19,13 +19,23 @@ export function Home() {
         {label: '专业分析', icon: Diagnosis},
     ] as const;
 
+    const to = useNavigate();
+
+    function toCapturePhoto() {
+        to({
+            pathname: '/capture'
+        });
+    }
+
     return <section className={cx('flex flex-col items-center  relative')}>
         <BrandWithName className={'absolute top-12px left-12px'}/>
         <main className={'relative top-186px flex gap-100px justify-center flex-col'}>
             <div className={"w-686px m-auto p-12px  bg-white rounded-6px"}>
                 <Swiper images={[SwiperItem]}></Swiper>
             </div>
-            <button className={cx("bg-white h-330px w-330px border-none rounded-full m-auto flex-center flex-col ")}>
+            <button className={cx("bg-white h-330px w-330px border-none rounded-full m-auto flex-center flex-col ")}
+                    onClick={toCapturePhoto}
+            >
                 <img src={Camera} className={"w-120px"} alt={"camera"}/>
                 <span className={cx('font-500 text-36px')}>上传图像</span>
             </button>

@@ -1,36 +1,60 @@
-import {useRef, useState} from "react";
+import {useRef} from "react";
 import {Camera} from "react-camera-pro";
-import {CiCamera} from "react-icons/ci";
+import {NavBar} from "@/components/Navbar";
+import {css, cx} from "@emotion/css";
+import SwitchCamera from "@/assets/switch-camera.png";
+import {useNavigate} from "react-router";
 
-export function Capture(){
+export function Capture() {
 
     const camera = useRef<any>(null);
-    const [image, setImage] = useState<string>("");
+    const to = useNavigate();
+
+    function toCheckResult() {
+        to({
+            pathname: '/result'
+        })
+    }
 
     return (
         <>
-            <div className="flex flex-col h-screen w-screen overflow-hidden touch-none">
-                <Camera ref={camera}
-                        errorMessages={{
-                            noCameraAccessible: 'No camera device accessible. Please connect your camera or try a different browser.',
-                            permissionDenied: 'Permission denied. Please refresh and give camera permission.',
-                            switchCamera:
-                                'It is not possible to switch camera to different one because there is only one video device accessible.',
-                            canvas: 'Canvas is not supported.'
-                        }}
-
-                />
-                <div className={'fixed bg-[#0000008e] h-screen w-screen pointer-events-none z-0'}>
-                </div>
-                <button
+            <NavBar title={"舌象拍摄"}></NavBar>
+            <div className={"px-32px flex gap-12px flex-col pt-242px gap-78px"}>
+                <div
                     className={`
-                    absolute rounded-full bg-transparent  border-1px
-                    w-5em h-5em outline-none border-none bottom-4em left-50% -translate-x-50% 
-                    hover:border-solid cursor-pointer z-100`}
-                    onClick={() => setImage(camera.current!.takePhoto())}>
-                    <CiCamera size={40} color={'#FFF'}/>
-                </button>
-                {image && <img src={image!} alt="Taken photo"/>}
+                    flex-center
+                     w-full py-23px rounded-16px
+                    text-center text-primary  text-32px bg-#E2AF6E1A 
+                     `}>
+                    请将舌体放置拍摄框内
+                </div>
+                <div card-shadow w-600px h-600px bg-white m-auto rounded={'36px'}>
+                    <Camera ref={camera}
+                            errorMessages={{
+                                noCameraAccessible: 'No camera device accessible. Please connect your camera or try a different browser.',
+                                permissionDenied: 'Permission denied. Please refresh and give camera permission.',
+                                switchCamera:
+                                    'It is not possible to switch camera to different one because there is only one video device accessible.',
+                                canvas: 'Canvas is not supported.'
+                            }}
+                    />
+                </div>
+            </div>
+            <div fixed bottom-0 h-187px w-full bg-white
+                 items-center
+                 className={cx(css`
+                     box-shadow: 0px 0px 13px 0px #EDEDEDB2;
+                 `)}
+            >
+                <button size-140px bg-primary
+                        className={"border-solid border-2px border-#BF6B00 rounded-full -translate-x-50% ml-50% mt-34px"}
+                        onClick={toCheckResult}
+                />
+                <img src={SwitchCamera} alt={'switch'}
+                     size-100px
+                     className={'absolute right-115px top-54px cursor-pointer'}
+                     role={"button"}
+                />
             </div>
         </>
     );

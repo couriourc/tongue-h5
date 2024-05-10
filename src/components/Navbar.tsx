@@ -1,13 +1,21 @@
-import React from 'react';
-import {Toast, NavBar as VantNavBar} from 'react-vant';
+import React, {PropsWithChildren} from 'react';
+import {NavBar as VantNavBar} from 'react-vant';
+import {useNavigate} from "react-router";
 
-export const NavBar = () => {
+export const NavBar = (
+    {
+        title
+    }: PropsWithChildren<{
+        title: string;
+    }>
+) => {
+    const to = useNavigate();
     return (
         <VantNavBar
-            title="标题"
-            onClickLeft={() => Toast('返回')}
-            onClickRight={() => Toast('按钮')}
+            onClickLeft={()=>to(-1)}
+            leftText={title}
             safeAreaInsetTop
+            border={false}
         />
     );
 };
