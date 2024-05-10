@@ -1,25 +1,39 @@
-import {cx} from "@emotion/css";
-import {Checkbox, Dialog, Typography} from "react-vant";
-import {atom, useAtom} from "jotai";
-import {useCallback} from "react";
+import { cx } from "@emotion/css";
+import { Checkbox, Dialog, Typography } from "react-vant";
+import { atom, useAtom } from "jotai";
+import { useCallback, useState } from "react";
 
-const isShowPrivacy = atom<boolean>(false);
+const isShowPrivacy = atom<{
+    read: boolean
+}>({
+    read: false,
+});
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const usePrivacy = () => useAtom(isShowPrivacy);
 
 export function ReadPrivacy() {
-    const [isShow, setIsShow] = usePrivacy();
-    const open = useCallback(() => setIsShow(true), []);
-    const close = useCallback(() => setIsShow(false), []);
+    const [privacyStore, setPrivacyStore] = usePrivacy();
+    const [isShowPrivacy, setIsShowPrivacy] = useState<boolean>(false);
+    const open = useCallback(() => setIsShowPrivacy(true), []);
+    const close = useCallback(() => setIsShowPrivacy(false), []);
+
     return <>
         <Dialog
             title={'隐私政策'}
-            visible={isShow}
+            visible={isShowPrivacy}
             closeOnClickOverlay={true}
             showCancelButton
             onCancel={() => close()}
-            onConfirm={() => close()}
+            onConfirm={() => {
+                setPrivacyStore((state) => {
+                    return {
+                        ...state,
+                        read: true,
+                    }
+                })
+                close()
+            }}
         >
             <div flex justify-center p-32px>
                 <Typography.Text>
@@ -33,11 +47,17 @@ export function ReadPrivacy() {
                 </Typography.Text>
             </div>
         </Dialog>
-        <div className={cx('gap-12px flex w-fit ')}>
-            <Checkbox shape="square"></Checkbox>
+        <div className={cx('gap-12px flex w-fit ')}
+            onClick={() => {
+                !privacyStore.read && open()
+            }}
+        >
+            <Checkbox
+                checked={privacyStore.read}
+                shape="square" />
             <Typography.Text>
                 已阅读并同意<Typography.Text type="warning"
-                                             onClick={() => open()}>《隐私政策》</Typography.Text></Typography.Text>
+                    onClick={() => open()}>《隐私政策》</Typography.Text></Typography.Text>
         </div>
     </>;
 }

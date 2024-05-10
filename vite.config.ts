@@ -1,12 +1,12 @@
-import {ConfigEnv, defineConfig} from 'vite';
+import { ConfigEnv, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import Unocss from "unocss/vite";
 
-import {viteVConsole} from 'vite-plugin-vconsole';
+import { viteVConsole } from 'vite-plugin-vconsole';
 import * as path from 'path';
-import {VitePWA} from 'vite-plugin-pwa';
+import { VitePWA } from 'vite-plugin-pwa';
 // https://vitejs.dev/config/
-export default defineConfig(({command, mode}: ConfigEnv) => ({
+export default defineConfig(({ command, mode }: ConfigEnv) => ({
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "src"),

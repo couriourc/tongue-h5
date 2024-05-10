@@ -1,4 +1,4 @@
-import {defineConfig, presetAttributify, presetTagify, presetUno, transformerAttributifyJsx} from "unocss";
+import { defineConfig, presetAttributify, presetTagify, presetUno, transformerAttributifyJsx } from "unocss";
 
 export default defineConfig({
     presets: [presetUno(), presetTagify(), presetAttributify()],
@@ -16,7 +16,8 @@ export default defineConfig({
     ],
     theme: {
         colors: {
-            'primary': "#E2AF6E"
+            'primary': "#E2AF6E",
+            "danger": "#e62939"
         }
     },
     transformers: [
