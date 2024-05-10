@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css';
 import 'uno.css';
+import "@/styles/variables.less";
+import '@/styles/index.css';
 import {ConfigProvider} from 'react-vant';
+import {themeVars} from "@/theme";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <ConfigProvider>
+        <ConfigProvider themeVars={themeVars}>
             <App/>
         </ConfigProvider>
     </React.StrictMode>,
