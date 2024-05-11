@@ -31,6 +31,10 @@
 
 <body>
   <style>
+    :root {
+      --theme-primary: #E2AF6E;
+    }
+
     .flex-center {
       display: flex;
       justify-content: center;
@@ -38,7 +42,10 @@
     }
 
     body {
-      background: url(/bg.png);
+      background: url(/bg.png) no-repeat;
+      background-position: 100% 100%;
+      padding: 0;
+      margin: 0;
     }
 
     #preload .minimalism-load-line {
@@ -48,7 +55,7 @@
       top: 0;
       left: 0;
       animation: minimalism-rotate 5s linear infinite;
-      border: 2px solid #E2AF6E;
+      border: 2px solid var(--theme-primary);
     }
 
     #preload .minimalism-load-line:nth-of-type(1) {
@@ -80,6 +87,7 @@
       height: 100vh;
       width: 100vw;
       touch-action: none;
+      background-color: #FFFFFFCC;
     }
 
     #preload .minimalism-load-card {
@@ -94,6 +102,18 @@
       font-weight: bold;
       color: #333333;
     }
+
+    #nprogress .bar {
+      background-color: var(--theme-primary);
+
+    }
+
+    #nprogress .spinner-icon {
+      border-top-color: var(--theme-primary);
+      border-left-color: var(--theme-primary);
+    }
+
+    /* #nprogress  */
   </style>
 
   <div id="root">
