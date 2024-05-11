@@ -12,9 +12,13 @@ export function Capture() {
     const to = useNavigate();
 
     function toCheckResult() {
-        to({
-            pathname: '/result'
-        })
+        console.log(camera.current.capture())
+        // to({
+        //     pathname: '/result'
+        // })
+    }
+    function toSwitch() {
+        camera.current.switch();
     }
     return (
         <>
@@ -24,7 +28,7 @@ export function Capture() {
                     请将舌体放置拍摄框内
                 </AlertTip>
                 <div card-shadow w-600px h-600px bg-white m-auto rounded={'36px'}>
-                    <CameraPro />
+                    <CameraPro ref={camera} />
                 </div>
             </div>
             <div fixed bottom-0 h-187px w-full bg-white
@@ -38,6 +42,7 @@ export function Capture() {
                     onClick={toCheckResult}
                 />
                 <img src={SwitchCamera} alt={'switch'}
+                    onClick={() => toSwitch()}
                     size-100px
                     className={'absolute right-115px top-54px cursor-pointer'}
                     role={"button"}
