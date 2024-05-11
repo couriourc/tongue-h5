@@ -6,13 +6,13 @@ import Scan from "@/assets/scan.png";
 import Diagnosis from "@/assets/diagnosis.png";
 import Camera from "@/assets/camera.png";
 import Arrow from "@/assets/arrow.png";
-
 import Face from "@/assets/face.png";
+
 import { cx } from "@emotion/css";
 import { ReadPrivacy } from "@/components/Privacy";
 import { useNavigate } from "react-router";
 import { Image } from "@/components/Image";
-import { Loader, useLoaderContext } from './../../components/Loading';
+import { Loader } from './../../components/Loading';
 import { useToggle } from "@reactuses/core";
 export function Home() {
 

@@ -1,24 +1,22 @@
-import { useEffect, useRef } from "react";
-import { Camera } from "react-camera-pro";
+import { useRef } from "react";
 import { NavBar } from "@/components/Navbar";
 import { css, cx } from "@emotion/css";
 import SwitchCamera from "@/assets/switch-camera.png";
 import { useNavigate } from "react-router";
-import { CameraPro } from "@/components/CameraPro";
+import { CameraPro, CameraProExposed } from "@/components/CameraPro";
 import { AlertTip } from "@/components/AlertTip";
 export function Capture() {
-
-    const camera = useRef<any>(null);
+    const camera = useRef<CameraProExposed>(null);
     const to = useNavigate();
 
     function toCheckResult() {
-        console.log(camera.current.capture())
+        console.log(camera.current!.capture())
         // to({
         //     pathname: '/result'
         // })
     }
     function toSwitch() {
-        camera.current.switch();
+        camera.current!.switch();
     }
     return (
         <>

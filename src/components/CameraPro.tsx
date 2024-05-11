@@ -1,5 +1,4 @@
-import { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import PreviewVideo from "@/assets/video.mp4?url"
+import { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import { useSupported } from "@reactuses/core";
 
 const getListOfVideoInputs = async () => {
@@ -10,43 +9,40 @@ const getListOfVideoInputs = async () => {
     return enumerateDevices.filter((device) => device.kind === "videoinput");
 };
 
-export const CameraPro = forwardRef((props, ref: Ref<{
+export interface CameraProExposed {
     capture(): void;
-}>) => {
+    switch(): void;
+    resume(): void;
+}
+export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
     const video = useRef<HTMLVideoElement>();
     let cameraNumber = 1;
     const isSupported = useSupported(() => {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-        return !!navigator.getUserMedia
+        /* @ts-ignore */
+        navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia
+            /* @ts-ignore */
+            || navigator.mediaDevices.webkitGetUserMedia
+            /* @ts-ignore */
+            || navigator.mediaDevices.mozGetUserMedia
+            /* @ts-ignore */
+            || navigator.mediaDevices.msGetUserMedia
+            /* @ts-ignore */
+            || navigator.webkitGetUserMedia
+            /* @ts-ignore */
+            || navigator.mozGetUserMedia
+            /* @ts-ignore */
+            || navigator.msGetUserMedia;
+        return !!navigator.mediaDevices.getUserMedia
     });
 
     const initializeMedia = async () => {
         if (!isSupported) return;
-        console.log(isSupported)
-
         if (!("mediaDevices" in navigator)) {
             /* @ts-ignore */
             navigator.mediaDevices = {} as {
                 getUserMedia(): Promise<any>
             };
         }
-
-        if (!("getUserMedia" in navigator.mediaDevices)) {
-            /* @ts-ignore */
-            navigator.mediaDevices.getUserMedia = function (constraints) {
-                var getUserMedia =
-                    navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-                if (!getUserMedia) {
-                    return Promise.reject(new Error("getUserMedia Not Implemented"));
-                }
-
-                return new Promise((resolve, reject) => {
-                    getUserMedia.call(navigator, constraints, resolve, reject);
-                });
-            };
-        }
-
     }
 
 
@@ -59,7 +55,7 @@ export const CameraPro = forwardRef((props, ref: Ref<{
         //The device has a camera
         if (videoInputs.length) {
             navigator.mediaDevices
-                .getUserMedia({
+                ?.getUserMedia({
                     video: {
                         deviceId: {
                             exact: videoInputs[cameraNumber].deviceId,
@@ -71,8 +67,6 @@ export const CameraPro = forwardRef((props, ref: Ref<{
                 .then((stream) => {
                     $video.srcObject = stream;
                     $video.play()
-
-
                 })
                 .catch((error) => {
                     console.error(error);
@@ -83,11 +77,15 @@ export const CameraPro = forwardRef((props, ref: Ref<{
     }
 
     const stop = async () => {
-        let $video = video.current!;
-        $video.pause()
+        let $video = video.current;
+        $video?.pause()
     }
     const canvas = useMemo(() => document.createElement("canvas"), [])
 
+    const resumeCamera = () => {
+        let $video = video.current;
+        $video?.play();
+    }
 
     useImperativeHandle(ref, () => {
         return {
@@ -98,6 +96,9 @@ export const CameraPro = forwardRef((props, ref: Ref<{
             },
             switch() {
                 return switchCamera();
+            },
+            resume() {
+                return resumeCamera();
             }
         }
     });
