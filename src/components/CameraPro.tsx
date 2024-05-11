@@ -116,9 +116,7 @@ export const CameraPro = forwardRef((props, ref: Ref<{
             // switch to first camera
             cameraNumber = (cameraNumber + 1) % listOfVideoInputs.length;
             // Restart based on camera input
-            console.log(cameraNumber)
-
-            initializeMedia();
+            tryCapture();
         } else if (listOfVideoInputs.length === 1) {
             alert("The device has only one camera");
         } else {
