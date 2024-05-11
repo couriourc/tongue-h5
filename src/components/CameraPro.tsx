@@ -1,4 +1,4 @@
-import { Ref, forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { Ref, forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import PreviewVideo from "@/assets/video.mp4?url"
 import { useSupported } from "@reactuses/core";
 
@@ -14,24 +14,53 @@ export const CameraPro = forwardRef((props, ref: Ref<{
         return !!navigator.getUserMedia
     });
 
+    const canvas = useMemo(() => document.createElement("canvas"), [])
     useImperativeHandle(ref, () => {
         return {
             capture() {
+                draw();
+                return canvas.toDataURL("image/png");
             }
         }
     });
 
+    function draw() {
+        let $video = video.current!;
+        if (!$video) return;
+        const context = canvas.getContext("2d")!;
+
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        context.drawImage($video, 0, 0, $video.clientWidth, $video.clientHeight);
+
+    }
+
     useEffect(() => {
+        let $video = video.current!;
+        if (!$video) return;
         navigator.mediaDevices?.getUserMedia({
             video: true,
             audio: false
         }).then((stream) => {
-            video.current!.srcObject = stream;
-            video.current?.play()
+            $video.srcObject = stream;
+            $video?.play()
         }).catch(err => {
             alert(err)
         })
-    }, [])
+
+        const onPlay = () => {
+            canvas.width = $video.clientWidth, $video.clientWidth;
+            canvas.height = $video.clientWidth, $video.clientHeight;
+
+            draw();
+        }
+        video.current?.addEventListener("play", onPlay)
+
+        return $video.removeEventListener("play", onPlay)
+    }, [video.current])
 
     return <>
         {
