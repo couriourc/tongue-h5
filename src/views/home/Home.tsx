@@ -12,7 +12,10 @@ import { cx } from "@emotion/css";
 import { ReadPrivacy } from "@/components/Privacy";
 import { useNavigate } from "react-router";
 import { Image } from "@/components/Image";
+import { Loader, useLoaderContext } from './../../components/Loading';
+import { useToggle } from "@reactuses/core";
 export function Home() {
+
     const stepper = [
         { label: '上传舌象', icon: Face },
         { label: '免费检测', icon: Scan },
@@ -26,6 +29,9 @@ export function Home() {
             pathname: '/capture'
         });
     }
+    const [loading, set] = useToggle(false);
+
+
 
     return <section className={cx('flex flex-col items-center  relative')}>
         <BrandWithName className={'absolute top-12px left-12px'} />
@@ -61,6 +67,7 @@ export function Home() {
             </div>
 
             <ReadPrivacy></ReadPrivacy>
+            {loading && <Loader></Loader>}
         </main>
 
     </section>;
