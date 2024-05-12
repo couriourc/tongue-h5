@@ -7,6 +7,7 @@ import * as path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 import viteImagemin from 'vite-plugin-imagemin'
 import pkg from "./package.json";
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }: ConfigEnv) => ({
     resolve: {
