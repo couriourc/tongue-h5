@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "./views/home/Home";
-import { Capture } from "./views/capture/Capture";
-import { Result } from "@/views/result/Result";
+import Home from "./views/home/Home";
+import Capture from "./views/capture/Capture";
+import Result from "@/views/result/Result";
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css';
@@ -19,9 +19,7 @@ const WithNprogress = ({ children }: PropsWithChildren) => {
             NProgress.start();
         }
     });
-    return <>
-        {children}
-    </>
+    return children;
 }
 
 function App() {

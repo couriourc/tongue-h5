@@ -5,7 +5,7 @@ import SwitchCamera from "@/assets/switch-camera.png";
 import { useNavigate } from "react-router";
 import { CameraPro, CameraProExposed } from "@/components/CameraPro";
 import { AlertTip } from "@/components/AlertTip";
-export function Capture() {
+export default function Capture() {
     const camera = useRef<CameraProExposed>(null);
     const to = useNavigate();
 

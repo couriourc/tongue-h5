@@ -27,24 +27,14 @@
 
   <meta name="apple-mobile-web-app-title" content="汉方舌诊">
   <title>汉方舌诊</title>
-
+  <link href="/override.css" rel="stylesheet" fetchpriority="high" />
   <style>
-    :root {
-      --theme-primary: #E2AF6E;
-    }
-
     .flex-center {
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    body {
-      background: url(/bg.png) no-repeat;
-      background-size: 100% 100%;
-      padding: 0;
-      margin: 0;
-    }
 
     #preload .minimalism-load-line {
       position: absolute;
@@ -99,16 +89,6 @@
       font-size: 28px;
       font-weight: bold;
       color: #333333;
-    }
-
-    #nprogress .bar {
-      background-color: var(--theme-primary);
-
-    }
-
-    #nprogress .spinner-icon {
-      border-top-color: var(--theme-primary);
-      border-left-color: var(--theme-primary);
     }
 
     /* #nprogress  */

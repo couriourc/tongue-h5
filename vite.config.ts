@@ -5,6 +5,8 @@ import Unocss from "unocss/vite";
 import { viteVConsole } from 'vite-plugin-vconsole';
 import * as path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
+import viteImagemin from 'vite-plugin-imagemin'
+import pkg from "./package.json";
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }: ConfigEnv) => ({
     resolve: {
@@ -26,9 +28,9 @@ export default defineConfig(({ command, mode }: ConfigEnv) => ({
         VitePWA({
             // 插件配置项
             manifest: {
-                "name": 'PWA Demo',
-                "description": "A PWA demo built with Vite and vite pwa",
-                "theme_color": "#242424",
+                "name": pkg.app.name,
+                "description": pkg.app.description,
+                "theme_color": pkg.app.theme_color,
                 // 为了方便，使用svg图标
                 icons: [
                     {
@@ -44,5 +46,36 @@ export default defineConfig(({ command, mode }: ConfigEnv) => ({
                 ]
             },
         }),
+        viteImagemin({
+            gifsicle: {
+                optimizationLevel: 7,
+                interlaced: false
+            },
+            optipng: {
+                optimizationLevel: 7
+            },
+            mozjpeg: {
+                quality: 20
+            },
+            pngquant: {
+                quality: [0.8, 0.9],
+                speed: 4
+            },
+            svgo: {
+                plugins: [
+                    {
+                        name: 'removeViewBox'
+                    },
+                    {
+                        name: 'removeEmptyAttrs',
+                        active: false
+                    }
+                ]
+            }
+        })
     ],
+    esbuild: {
+        drop: ['console', 'debugger'] as any,
+
+    },
 }));

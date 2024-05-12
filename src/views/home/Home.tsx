@@ -14,7 +14,7 @@ import { useNavigate } from "react-router";
 import { Image } from "@/components/Image";
 import { Loader } from './../../components/Loading';
 import { useToggle } from "@reactuses/core";
-export function Home() {
+export default function Home() {
 
     const stepper = [
         { label: '上传舌象', icon: Face },
