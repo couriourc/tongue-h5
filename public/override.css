@@ -1,12 +1,13 @@
 :root {
-    --theme-primary: #E2AF6E;
+    --theme-primary: #0E98A4;
 
 
     --rv-primary-color: var(--theme-primary);
 }
 
 body {
-    background: url(/bg.png) no-repeat;
+    background: #f2f8ff;
+    /*background: url(/bg.png) no-repeat;*/
     background-size: 100% 100%;
     padding: 0;
     margin: 0;
