@@ -1,49 +1,22 @@
-import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./views/home/Home";
-import Capture from "./views/capture/Capture";
-import Result from "@/views/result/Result";
-
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css';
-
-NProgress.configure({
-
-})
-
-const WithNprogress = ({ children }: PropsWithChildren) => {
-    useState(NProgress.start());
-    useEffect(() => {
-        NProgress.done();
-        return () => {
-            NProgress.start();
-        }
-    });
-    return children;
+// Import the generated route tree
+import {routeTree} from './routeTree.gen';
+import {createRouter, RouterProvider} from "@tanstack/react-router";
+import React from "react";
+import {ConfigProvider} from "react-vant";
+// Create a new router instance
+const router = createRouter({
+    routeTree,
+    defaultPreload: 'intent',
+});
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+    interface Register {
+        router: typeof router;
+    }
 }
 
-function App() {
-    const routes = [
-        { path: "/", Element: Home }, /* 👈 Renders at /result */
-        { path: "/capture", Element: Capture },
-        { path: "/result", Element: Result },
-    ] as const;
-    return <>
-        <BrowserRouter basename={"/"}>
-            <Routes>
-                {
-                    routes.map(({ Element, path }) => {
-                        return <Route path={path} key={path} element={
-                            <WithNprogress>
-                                <Element></Element>
-                            </WithNprogress>
-                        }>
-                        </Route>
-                    })
-                }
-            </Routes>
-        </BrowserRouter >
-    </>;
+export function App() {
+    return <ConfigProvider>
+        <RouterProvider router={router}/>
+    </ConfigProvider>;
 }
-
-export default App;

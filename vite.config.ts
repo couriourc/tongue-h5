@@ -1,14 +1,16 @@
-import { ConfigEnv, defineConfig } from 'vite';
+import {ConfigEnv, defineConfig} from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import Unocss from "unocss/vite";
 
-import { viteVConsole } from 'vite-plugin-vconsole';
+import {viteVConsole} from 'vite-plugin-vconsole';
 import * as path from 'path';
-import { VitePWA } from 'vite-plugin-pwa';
+import {VitePWA} from 'vite-plugin-pwa';
 import pkg from "./package.json";
+// vite.config.ts
+import {TanStackRouterVite} from '@tanstack/router-vite-plugin';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }: ConfigEnv) => ({
+export default defineConfig(({command, mode}: ConfigEnv) => ({
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "src"),
@@ -16,6 +18,8 @@ export default defineConfig(({ command, mode }: ConfigEnv) => ({
     },
     plugins: [
         react(),
+
+        TanStackRouterVite(),
         Unocss({}),
         viteVConsole({
             entry: path.resolve('src/main.tsx'), // or you can use entry: [path.resolve('src/main.ts')]

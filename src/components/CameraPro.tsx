@@ -39,7 +39,7 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
         if (!isSupported) return;
         if (!("mediaDevices" in navigator)) {
             /* @ts-ignore */
-            navigator.mediaDevices = {} as {
+            navigator.mediaDevices! = {} as {
                 getUserMedia(): Promise<any>
             };
         }
