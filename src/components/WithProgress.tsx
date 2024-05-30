@@ -1,5 +1,6 @@
 import {PropsWithChildren, useEffect, useState} from "react";
 import NProgress from "nprogress";
+import 'nprogress/nprogress.css';
 
 export const WithNprogress = ({children}: PropsWithChildren) => {
     useState(NProgress.start());
@@ -7,6 +8,7 @@ export const WithNprogress = ({children}: PropsWithChildren) => {
         NProgress.done();
         return () => {
             NProgress.start();
+            console.log('this');
         };
     });
     return children;

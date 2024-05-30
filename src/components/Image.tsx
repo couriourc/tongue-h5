@@ -1,14 +1,24 @@
 import {cx} from "@emotion/css";
 import {PropsWithChildren} from "react";
 import {Image as VantImage, type ImageProps} from "react-vant";
+import arrowUrl from "@/assets/arrow.png?url";
+import gallaryAddUrl from "@/assets/gallary_add.png?url";
+import switchCameraUrl from "@/assets/switch-camera.png?url";
+import faceUrl from "@/assets/face.png?url";
+import scanUrl from "@/assets/scan.png?url";
+import hosUrl from "@/assets/hos.png?url";
+import tongueUrl from "@/assets/tongue.png?url";
 
 export declare type ImageFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 
 const Images = {
-    "arrow": await import("@/assets/arrow.png?url"),
-    "gallary_add": await import("@/assets/gallary_add.png?url"),
-    "switch-camera": await import("@/assets/switch-camera.png?url"),
-    "face": await import("@/assets/face.png?url")
+    "arrow": arrowUrl,
+    "gallary_add": gallaryAddUrl,
+    "switch-camera": switchCameraUrl,
+    "face": faceUrl,
+    "scan": scanUrl,
+    "hos": hosUrl,
+    "tongue": tongueUrl,
 } as const;
 type PresetImageName = keyof typeof Images;
 
@@ -17,7 +27,7 @@ export interface WithPresetImageProps {
 }
 
 export const Image = (props: PropsWithChildren<ImageProps & WithPresetImageProps>) => {
-    let src = Images[props.src as PresetImageName]?.default || props.src;
+    let src = Images[props.src as PresetImageName] || props.src;
     return <div className={cx(props.className)}>
         <VantImage {...{...props, src}} alt={props.alt ?? "alt"}></VantImage>
     </div>;

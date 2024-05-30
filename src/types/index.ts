@@ -1,7 +1,4 @@
-import _ from "underscore";
-import {FunctionOrValue} from "@couriourc/utils/dist";
-
-
+export type FunctionOrValue<T> = (() => T) | T;
 
 
 export type TableDataResultWithTotal<T> = {

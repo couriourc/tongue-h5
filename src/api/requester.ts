@@ -1,8 +1,7 @@
-import axios, {AxiosRequestConfig} from 'axios';
 import type {AxiosInstance, AxiosResponse} from 'axios';
-import type {DynamicProps, WithMessageProps} from "@/types";
-/*@ts-ignore*/
-import {extraFunction, FunctionOrValue} from "@couriourc/utils";
+import axios, {AxiosRequestConfig} from 'axios';
+import type {DynamicProps, FunctionOrValue, WithMessageProps} from "@/types";
+import {extraFunction} from "@/utils";
 
 
 interface AxiosRequestType {

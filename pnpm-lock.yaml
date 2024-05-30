@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@couriourc/utils':
-    specifier: ^1.0.1
-    version: 1.0.1
   '@emotion/css':
     specifier: ^11.11.2
     version: 11.11.2
@@ -1575,10 +1572,6 @@ packages:
       '@babel/helper-string-parser': 7.24.6
       '@babel/helper-validator-identifier': 7.24.6
       to-fast-properties: 2.0.0
-    dev: false
-
-  /@couriourc/utils@1.0.1:
-    resolution: {integrity: sha512-xOOr59C/P+HO7fQYmwDqyVB+D7rDXbYqiyTdYaliHCN4KkRcyG4HzUqg7ZsTGFLZl0RZLKucAgzd6OzQ+40Imw==}
     dev: false
 
   /@emotion/babel-plugin@11.11.0:
