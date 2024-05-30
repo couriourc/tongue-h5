@@ -1,15 +1,9 @@
 import _ from "underscore";
-import {FunctionOrValue} from "@couriourc/utils/dist";
 
+export type ExtraFunctionParameters<T> = T extends ((...args: any) => any)
+    ? Parameters<T> : T;
 
-
-
-export type TableDataResultWithTotal<T> = {
-    total: number;
-} & T;
-export type TableDataResult<T> = TableDataResultWithTotal<{
-    items: T[]
-}>
+export type FunctionOrValue<T, U = ExtraFunctionParameters<T>> = T | ((...args: U[]) => T)
 
 export type DynamicProps<T> = T & Record<string, any>;
 

@@ -1,8 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios';
 import type {AxiosInstance, AxiosResponse} from 'axios';
-import type {DynamicProps, WithMessageProps} from "@/types";
-/*@ts-ignore*/
-import {extraFunction, FunctionOrValue} from "@couriourc/utils";
+import type {DynamicProps, FunctionOrValue, WithMessageProps} from "@/types";
+import {extraFunction} from "@/utils";
 
 
 interface AxiosRequestType {
@@ -55,6 +54,7 @@ request.interceptors.response.use(
         }
         let data = response.data;
         if (config.success_message as FunctionOrValue<string>) {
+            /*@ts-ignore*/
             extraFunction(config.success_message)(response.data);
         }
         return Promise.resolve(data);
