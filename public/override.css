@@ -1,8 +1,9 @@
 :root {
     --theme-primary: #0E98A4;
-
+    --theme-white: #FFFFFF;
 
     --rv-primary-color: var(--theme-primary);
+
 }
 
 body {
@@ -15,12 +16,12 @@ body {
 
 /* #nprogress  */
 #nprogress .bar {
-    background-color: var(--theme-primary) !important;
+    background-color: var(--theme-white) !important;
 }
 
 #nprogress .spinner-icon {
-    border-top-color: var(--theme-primary) !important;
-    border-left-color: var(--theme-primary) !important;
+    border-top-color: var(--theme-white) !important;
+    border-left-color: var(--theme-white) !important;
 }
 
 

@@ -26,6 +26,9 @@ dependencies:
   axios:
     specifier: ^1.7.2
     version: 1.7.2
+  dayjs:
+    specifier: ^1.11.11
+    version: 1.11.11
   immer:
     specifier: ^10.1.1
     version: 10.1.1
@@ -3456,6 +3459,10 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.5
     dev: true
+
+  /dayjs@1.11.11:
+    resolution: {integrity: sha512-okzr3f11N6WuqYtZSvm+F776mB41wRZMhKP+hc34YdW+KmtYYK9iqvHSwo2k9FEH3fhGXvOPV6yz2IcSrfRUDg==}
+    dev: false
 
   /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}

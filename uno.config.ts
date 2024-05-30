@@ -19,7 +19,9 @@ export default defineConfig({
     theme: {
         colors: {
             'primary': "#0E98A4",
-            "danger": "#e62939"
+            "danger": "#e62939",
+            "white":"#FFFFFF",
+            "black":"#333333",
         }
     },
     transformers: [

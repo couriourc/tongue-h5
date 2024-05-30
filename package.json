@@ -17,6 +17,7 @@
     "@types/node": "^20.12.10",
     "@unocss/transformer-attributify-jsx": "^0.60.0",
     "axios": "^1.7.2",
+    "dayjs": "^1.11.11",
     "immer": "^10.1.1",
     "jotai": "^2.8.0",
     "jotai-immer": "^0.3.0",

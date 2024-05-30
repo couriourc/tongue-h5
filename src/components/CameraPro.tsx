@@ -10,7 +10,7 @@ const getListOfVideoInputs = async () => {
 };
 
 export interface CameraProExposed {
-    capture(): void;
+    capture(): string;
     switch(): void;
     resume(): void;
 }

@@ -1,5 +1,5 @@
-import axios, {AxiosRequestConfig} from 'axios';
 import type {AxiosInstance, AxiosResponse} from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import type {DynamicProps, FunctionOrValue, WithMessageProps} from "@/types";
 import {extraFunction} from "@/utils";
 
@@ -54,7 +54,6 @@ request.interceptors.response.use(
         }
         let data = response.data;
         if (config.success_message as FunctionOrValue<string>) {
-            /*@ts-ignore*/
             extraFunction(config.success_message)(response.data);
         }
         return Promise.resolve(data);
