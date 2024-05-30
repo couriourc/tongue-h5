@@ -59,6 +59,8 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         //Get the details of video inputs of the device
         const videoInputs = await getListOfVideoInputs();
         //The device has a camera
+        console.log(cameraNumber, videoInputs[cameraNumber % videoInputs.length].deviceId, videoInputs);
+
         if (videoInputs.length) {
             console.log(cameraNumber, videoInputs[cameraNumber % videoInputs.length].deviceId);
             navigator.mediaDevices
