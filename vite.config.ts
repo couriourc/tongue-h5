@@ -10,49 +10,52 @@ import pkg from "./package.json";
 import {TanStackRouterVite} from '@tanstack/router-vite-plugin';
 
 // https://vitejs.dev/config/
-export default defineConfig(({command, mode}: ConfigEnv) => ({
-    resolve: {
-        alias: {
-            "@": path.resolve(__dirname, "src"),
-        }
-    },
-    plugins: [
-        react(),
-
-        TanStackRouterVite(),
-        Unocss({}),
-        viteVConsole({
-            entry: path.resolve('src/main.tsx'), // or you can use entry: [path.resolve('src/main.ts')]
-            enabled: command !== 'serve' || mode === 'test',
-            config: {
-                maxLogNumber: 1000,
-                theme: 'dark'
+export default defineConfig(({command, mode}: ConfigEnv) => {
+    const need_debug = command !== 'serve' || mode === 'test';
+    return ({
+        resolve: {
+            alias: {
+                "@": path.resolve(__dirname, "src"),
             }
-        }),
-        VitePWA({
-            // 插件配置项
-            manifest: {
-                "name": pkg.app.name,
-                "description": pkg.app.description,
-                "theme_color": pkg.app.theme_color,
-                // 为了方便，使用svg图标
-                icons: [
-                    {
-                        "src": "/vite.svg",
-                        "sizes": "192x192",
-                        "type": "image/svg+xml"
-                    },
-                    {
-                        "src": "/vite.svg",
-                        "sizes": "512x512",
-                        "type": "image/svg+xml"
-                    }
-                ]
-            },
-        }),
-    ],
-    esbuild: {
-        drop: ['console', 'debugger'] as any,
+        },
+        plugins: [
+            react(),
 
-    },
-}));
+            TanStackRouterVite(),
+            Unocss({}),
+            viteVConsole({
+                entry: path.resolve('src/main.tsx'), // or you can use entry: [path.resolve('src/main.ts')]
+                enabled: need_debug,
+                config: {
+                    maxLogNumber: 1000,
+                    theme: 'dark'
+                }
+            }),
+            VitePWA({
+                // 插件配置项
+                manifest: {
+                    "name": pkg.app.name,
+                    "description": pkg.app.description,
+                    "theme_color": pkg.app.theme_color,
+                    // 为了方便，使用svg图标
+                    icons: [
+                        {
+                            "src": "/vite.svg",
+                            "sizes": "192x192",
+                            "type": "image/svg+xml"
+                        },
+                        {
+                            "src": "/vite.svg",
+                            "sizes": "512x512",
+                            "type": "image/svg+xml"
+                        }
+                    ]
+                },
+            }),
+        ],
+        esbuild: {
+            drop: need_debug ? [] : ['console', 'debugger'] as any,
+
+        },
+    });
+});
