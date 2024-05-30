@@ -2,8 +2,11 @@ import React, {PropsWithChildren} from 'react';
 import {NavBar as VantNavBar} from 'react-vant';
 import {ArrowLeft} from "@react-vant/icons";
 import {cx} from "@emotion/css";
-import {useNavigateTo} from "@/hooks/to";
+import {useTo} from "@/hooks/to";
 import {FileRoutesByPath} from "@tanstack/react-router";
+/*@ts-ignore*/
+import {iif} from "@couriourc/utils";
+import {noop} from "underscore";
 
 export const NavBar = (
     {
@@ -11,16 +14,16 @@ export const NavBar = (
         back,
     }: PropsWithChildren<{
         title?: string;
-        back: keyof FileRoutesByPath;
+        back?: keyof FileRoutesByPath;
     }>
 ) => {
-    const to = useNavigateTo();
+    const to = useTo();
     return (
         <VantNavBar
-            title={<div w-100vw px-24px flex>
+            title={<div className={cx(`w-100vw px-24px flex`)}>
                 <div
                     className={cx("size-62px rounded-16px  flex-center bg-#F9F9FB absolute left-24px  top-50%  -translate-y-50%")}
-                    onClick={() => to(back)}
+                    onClick={() => iif(!!back, to, noop)(back)}
                 >
                     <ArrowLeft/>
                 </div>

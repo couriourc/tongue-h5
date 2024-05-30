@@ -1,6 +1,6 @@
 import {FileRoutesByPath, useNavigate} from "@tanstack/react-router";
 
-export function useNavigateTo() {
+export function useTo() {
     const navigate = useNavigate();
     return (to: keyof FileRoutesByPath) => navigate({to});
 }

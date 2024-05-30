@@ -1,7 +1,9 @@
-import { defineConfig, presetAttributify, presetTagify, presetUno, transformerAttributifyJsx } from "unocss";
+import {defineConfig, presetAttributify, presetTagify, presetUno, transformerAttributifyJsx} from "unocss";
+
+import {presetScrollbar} from 'unocss-preset-scrollbar';
 
 export default defineConfig({
-    presets: [presetUno(), presetTagify(), presetAttributify()],
+    presets: [presetUno(), presetTagify(), presetAttributify(), presetScrollbar()],
     shortcuts: {
         'flex-center': "flex items-center justify-center",
         'card-base': "bg-#FFFFFFCC card-shadow rounded-16px p-32px ",

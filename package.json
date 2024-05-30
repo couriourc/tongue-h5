@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@couriourc/utils": "^1.0.1",
     "@emotion/css": "^11.11.2",
     "@formkit/auto-animate": "^0.8.2",
     "@react-vant/icons": "^0.0.6",
     "@reactuses/core": "^5.0.13",
     "@types/node": "^20.12.10",
     "@unocss/transformer-attributify-jsx": "^0.60.0",
+    "axios": "^1.7.2",
     "immer": "^10.1.1",
     "jotai": "^2.8.0",
     "jotai-immer": "^0.3.0",
@@ -57,7 +59,8 @@
     "postcss-px-to-viewport": "^1.1.1",
     "terser": "^5.31.0",
     "typescript": "^5.2.2",
-    "unocss": "^0.58.2",
+    "unocss": "^0.58.9",
+    "unocss-preset-scrollbar": "^0.3.1",
     "vconsole": "^3.15.1",
     "vite": "^5.2.0",
     "vite-plugin-vconsole": "^2.1.1"

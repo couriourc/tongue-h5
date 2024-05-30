@@ -2,16 +2,22 @@ import {createLazyFileRoute} from '@tanstack/react-router';
 import {CameraPro, CameraProExposed} from "@/components/CameraPro";
 import {cx} from "@emotion/css";
 import {useRef} from "react";
-import {useNavigateTo} from "@/hooks/to";
+import {useTo} from "@/hooks/to";
 import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
 import {GrPowerCycle} from "react-icons/gr";
+import {useFileDialog} from "@reactuses/core";
 
 export const Route = createLazyFileRoute('/capture')({
     component: () => {
         const camera = useRef<CameraProExposed>(null);
-        const to = useNavigateTo();
-
+        const to = useTo();
+        const [file, open] = useFileDialog(
+            {
+                multiple: false,
+                accept: ".png,.svg,.jpeg,.tif,.bmp"
+            }
+        );
         return <section text-white h-screen w-screen>
             <div flex justify-between w-full z-1000 text-28px fixed top-64px px-24px>
                 <div className={cx("size-64px")} onClick={() => to("/")}><ArrowLeft/></div>
@@ -33,7 +39,7 @@ export const Route = createLazyFileRoute('/capture')({
                  flex
                  className={cx('bg-#030202')}
             >
-                <div className={cx("absolute top-60% left-132px -translate-y-50%")}>
+                <div className={cx("absolute top-60% left-132px -translate-y-50%")} onClick={() => open()}>
                     <Image className={cx("w-58px")} src={"gallary_add"}></Image>
                     <span>相册上传</span>
                 </div>

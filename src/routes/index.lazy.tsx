@@ -5,7 +5,7 @@ import Diagnosis from "@/assets/diagnosis.png";
 import {cx} from "@emotion/css";
 import CameraPng from "@/assets/camera.png";
 import {Image} from "@/components/Image";
-import {useNavigateTo} from "@/hooks/to";
+import {useTo} from "@/hooks/to";
 
 const stepper = [
     {label: '上传舌象', icon: Face},
@@ -15,7 +15,7 @@ const stepper = [
 
 export const Route = createLazyFileRoute('/')({
     component: () => {
-        const to = useNavigateTo();
+        const to = useTo();
         return <section className={cx('flex flex-col items-center gap-12px relative w-full ')}>
             <div className={cx("bg-primary h-714px w-full flex flex-col flex-center text-white px-96px")}>
                 <div className={cx('h-218px pt-108px w-full')}>
