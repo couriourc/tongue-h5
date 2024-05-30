@@ -9,9 +9,9 @@ import {GrPowerCycle} from "react-icons/gr";
 import {useFileDialog} from "@reactuses/core";
 import {postTongueDetection} from "@/api/tongue.api";
 import {base64ToFile} from "@/utils";
-import useSwr from "swr";
 import {Loader} from "@/components/Loading";
 import {useAtomParserResult} from "@/store";
+import {Overlay} from "react-vant";
 
 export const Route = createLazyFileRoute('/capture')({
     component: () => {
@@ -26,43 +26,56 @@ export const Route = createLazyFileRoute('/capture')({
             }
         );
         const [_, setResult] = useAtomParserResult();
+        const [isLoading, setLoading] = useState<boolean>();
 
-        const {data, isLoading, isValidating,} = useSwr(() => toBeAnalyse, (file) => {
+        async function handlePostTongueDetection(file: File) {
             if (!file) return;
+            if (isLoading) return;
+            setLoading(true);
             return postTongueDetection({
                 file: file
             }).then((result) => {
+                console.log(result);
                 setResult(result);
                 return to("/result");
+            }).finally(() => {
+                setLoading(false);
             });
-        });
+        }
 
         function handleCapture() {
             const img = camera.current!.capture();
             const file = base64ToFile(img)!;
             setToBeAnalyse(file);
+            handlePostTongueDetection(file);
         }
 
         async function handleOpen() {
             const files = await open();
             if (!(files && !!files.length)) return;
             setToBeAnalyse(files[0]);
+            handlePostTongueDetection(files[0]);
         }
 
+        const [visible, setVisible] = useState<boolean>();
         if (isLoading) return <Loader></Loader>;
 
         return <section text-white h-screen w-screen>
             <div flex justify-between w-full z-1000 text-28px fixed top-64px px-24px>
                 <div className={cx("size-64px")} onClick={() => to("/")}><ArrowLeft/></div>
-                <span>使用教程</span>
+                <span onClick={() => setVisible((visible) => !visible)}>使用教程</span>
             </div>
-            <div w-full fixed z-200 className={"top-40% left-50% -translate-50% flex flex-center flex-col gap-48px"}>
-                <div flex-col flex gap-24px flex-center text-36px>
-                    <span>请拍摄舌面</span>
-                    <span text={"20px #828384"}>舌体放松，舌面平展，舌尖略向下，口张大不要太用力</span>
+            <Overlay visible={visible} onClick={() => setVisible((visible) => !visible)}>
+
+                <div w-full fixed z-200
+                     className={"top-40% left-50% -translate-50% flex flex-center flex-col gap-48px"}>
+                    <div flex-col flex gap-24px flex-center text-36px>
+                        <span>请拍摄舌面</span>
+                        <span text={"20px #828384"}>舌体放松，舌面平展，舌尖略向下，口张大不要太用力</span>
+                    </div>
+                    <Image src={"face"} className={cx("w-310px")}></Image>
                 </div>
-                <Image src={"face"} className={cx("w-310px")}></Image>
-            </div>
+            </Overlay>
             <div className={"px-32px flex gap-12px flex-col pt-242px gap-78px z-0"}>
                 <div card-shadow w-screen h-screen fixed top-0 left-0 bg={"#1e2022"} m-auto>
                     <CameraPro ref={camera}/>
@@ -93,7 +106,6 @@ export const Route = createLazyFileRoute('/capture')({
                                 className={"border-solid border-2px  rounded-full"}
                                 onClick={() => {
                                     handleCapture();
-                                    return to("/result");
                                 }}
                         />
                     </div>

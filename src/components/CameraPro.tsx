@@ -1,19 +1,21 @@
-import { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from "react";
-import { useSupported } from "@reactuses/core";
+import {forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef} from "react";
+import {useSupported} from "@reactuses/core";
 
 const getListOfVideoInputs = async () => {
     // Get the details of audio and video output of the device
     const enumerateDevices = await navigator.mediaDevices.enumerateDevices();
-
     //Filter video outputs (for devices with multiple cameras)
     return enumerateDevices.filter((device) => device.kind === "videoinput");
 };
 
 export interface CameraProExposed {
     capture(): string;
+
     switch(): void;
+
     resume(): void;
 }
+
 export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
     const video = useRef<HTMLVideoElement>();
     let cameraNumber = 1;
@@ -32,7 +34,7 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
             || navigator.mozGetUserMedia
             /* @ts-ignore */
             || navigator.msGetUserMedia;
-        return !!navigator.mediaDevices.getUserMedia
+        return !!navigator.mediaDevices.getUserMedia;
     });
 
     const initializeMedia = async () => {
@@ -43,7 +45,7 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
                 getUserMedia(): Promise<any>
             };
         }
-    }
+    };
 
 
     useCallback(initializeMedia, [])();
@@ -54,19 +56,21 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
         const videoInputs = await getListOfVideoInputs();
         //The device has a camera
         if (videoInputs.length) {
+            console.log(cameraNumber);
             navigator.mediaDevices
                 ?.getUserMedia({
                     video: {
                         deviceId: {
-                            exact: videoInputs[cameraNumber].deviceId,
+                            exact: videoInputs[cameraNumber % videoInputs.length].deviceId,
                         },
                         height: $video.clientHeight,
                         width: $video.clientWidth,
                     },
                 })
                 .then((stream) => {
+
                     $video.srcObject = stream;
-                    $video.play()
+                    $video.play();
                 })
                 .catch((error) => {
                     console.error(error);
@@ -74,25 +78,25 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
         } else {
             alert("The device does not have a camera");
         }
-    }
+    };
 
     const stop = async () => {
         let $video = video.current;
-        $video?.pause()
-    }
-    const canvas = useMemo(() => document.createElement("canvas"), [])
+        $video?.pause();
+    };
+    const canvas = useMemo(() => document.createElement("canvas"), []);
 
     const resumeCamera = () => {
         let $video = video.current;
         $video?.play();
-    }
+    };
 
     useImperativeHandle(ref, () => {
         return {
             capture() {
                 draw();
                 stop();
-                return canvas.toDataURL("image/png");
+                return canvas.toDataURL("image/jpeg");
             },
             switch() {
                 return switchCamera();
@@ -100,7 +104,7 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
             resume() {
                 return resumeCamera();
             }
-        }
+        };
     });
 
 
@@ -130,7 +134,8 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
 
         context.fillStyle = "#AAA";
         context.fillRect(0, 0, canvas.width, canvas.height);
-    }
+    };
+
     function draw() {
         let $video = video.current!;
         if (!$video) return;
@@ -145,15 +150,15 @@ export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
         let $video = video.current!;
         if (!$video) return;
         tryCapture();
-    }, [isSupported])
+    }, [isSupported]);
 
     return <>
         {
             isSupported ?
                 <video className="w-full h-full"
-                    ref={r => video.current = r!}
+                       ref={r => video.current = r!}
                 /> :
                 <div size-full flex flex-center text-32px text-danger>没有相机权限</div>
         }
-    </>
-})
+    </>;
+});
