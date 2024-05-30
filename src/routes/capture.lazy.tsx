@@ -1,12 +1,13 @@
 import {createLazyFileRoute} from '@tanstack/react-router';
 import {CameraPro, CameraProExposed} from "@/components/CameraPro";
 import {cx} from "@emotion/css";
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useTo} from "@/hooks/to";
 import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
 import {GrPowerCycle} from "react-icons/gr";
 import {useFileDialog} from "@reactuses/core";
+import {postTongueDetection} from "@/api/tongue.api";
 
 export const Route = createLazyFileRoute('/capture')({
     component: () => {
@@ -15,9 +16,26 @@ export const Route = createLazyFileRoute('/capture')({
         const [file, open] = useFileDialog(
             {
                 multiple: false,
-                accept: ".png,.svg,.jpeg,.tif,.bmp"
+                accept: ".png,.svg,.jpeg,.tif,.bmp,.jpg"
             }
         );
+
+
+        function handlePostTongueDetection(file: File) {
+            return postTongueDetection({
+                file: file
+            }).then((result) => {
+                console.log(result);
+            });
+        }
+
+        useEffect(() => {
+            console.log(file)
+            if (!(file && file.length)) return;
+            handlePostTongueDetection(file[0])
+                .then(() => {
+                });
+        }, [file]);
         return <section text-white h-screen w-screen>
             <div flex justify-between w-full z-1000 text-28px fixed top-64px px-24px>
                 <div className={cx("size-64px")} onClick={() => to("/")}><ArrowLeft/></div>

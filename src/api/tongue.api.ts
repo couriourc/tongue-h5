@@ -1,4 +1,4 @@
-import {requester} from "@/api/requester";
+import requester from "@/api/requester";
 import * as v from "valibot";
 
 
@@ -18,7 +18,7 @@ function obj2form(target: object) {
     return formData;
 }
 
-export const postTongueDetection = (data: v.InferInput<typeof IPostTongueDetection>) => requester.post("/tongue_detection",
+export const postTongueDetection = (data: v.InferInput<typeof IPostTongueDetection>) => requester.post<any>("/tongue_success",
     obj2form(v.parse(IPostTongueDetection, data)),
     {
         headers: {
