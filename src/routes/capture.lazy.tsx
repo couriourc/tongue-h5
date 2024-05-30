@@ -15,17 +15,15 @@ import {Overlay} from "react-vant";
 
 export const Route = createLazyFileRoute('/capture')({
     component: () => {
-        const [toBeAnalyse, setToBeAnalyse] = useState<File>();
+        const [_toBeAnalyse, setToBeAnalyse] = useState<File>();
+        const [_result, setResult] = useAtomParserResult();
         const camera = useRef<CameraProExposed>(null);
         const to = useTo();
-        const [files, open] = useFileDialog(
+        const [_files, open] = useFileDialog(
             {
-                multiple: false,
-                accept: ".png,.svg,.jpeg,.tif,.bmp,.jpg",
-
+                accept: ".jpeg,.jpg",
             }
         );
-        const [_, setResult] = useAtomParserResult();
         const [isLoading, setLoading] = useState<boolean>();
 
         async function handlePostTongueDetection(file: File) {
@@ -35,7 +33,6 @@ export const Route = createLazyFileRoute('/capture')({
             return postTongueDetection({
                 file: file
             }).then((result) => {
-                console.log(result);
                 setResult(result);
                 return to("/result");
             }).finally(() => {
@@ -47,14 +44,16 @@ export const Route = createLazyFileRoute('/capture')({
             const img = camera.current!.capture();
             const file = base64ToFile(img)!;
             setToBeAnalyse(file);
-            handlePostTongueDetection(file);
+            handlePostTongueDetection(file).then(r => {
+            });
         }
 
         async function handleOpen() {
             const files = await open();
             if (!(files && !!files.length)) return;
             setToBeAnalyse(files[0]);
-            handlePostTongueDetection(files[0]);
+            handlePostTongueDetection(files[0]).then(r => {
+            });
         }
 
         const [visible, setVisible] = useState<boolean>();
@@ -78,7 +77,7 @@ export const Route = createLazyFileRoute('/capture')({
             </Overlay>
             <div className={"px-32px flex gap-12px flex-col pt-242px gap-78px z-0"}>
                 <div card-shadow w-screen h-screen fixed top-0 left-0 bg={"#1e2022"} m-auto>
-                    <CameraPro ref={camera}/>
+                    <CameraPro cameraNumber={1} ref={camera}/>
                 </div>
             </div>
             <div fixed bottom-0 h-328px w-full

@@ -16,9 +16,13 @@ export interface CameraProExposed {
     resume(): void;
 }
 
-export const CameraPro = forwardRef((props, ref: Ref<CameraProExposed>) => {
+export interface ICameraProDefault {
+    cameraNumber: number;
+}
+
+export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
     const video = useRef<HTMLVideoElement>();
-    let cameraNumber = 1;
+    let cameraNumber = props.cameraNumber || 0;
     const isSupported = useSupported(() => {
         /* @ts-ignore */
         navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia
