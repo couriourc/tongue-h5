@@ -48,7 +48,7 @@ export const Route = createLazyFileRoute('/capture')({
                 <Image src={"face"} className={cx("w-310px")}></Image>
             </div>
             <div className={"px-32px flex gap-12px flex-col pt-242px gap-78px z-0"}>
-                <div card-shadow w-screen h-screen fixed top-0 left-0 bg={"#1e2022"} m-auto rounded={'36px'}>
+                <div card-shadow w-screen h-screen fixed top-0 left-0 bg={"#1e2022"} m-auto >
                     <CameraPro ref={camera}/>
                 </div>
             </div>
@@ -62,10 +62,11 @@ export const Route = createLazyFileRoute('/capture')({
                 </div>
                 <div flex flex-col flex-shrink-zero flex-center gap-24px
                      className={cx("absolute top-50% left-50% -translate-50%")}>
-                    <button m-auto bg-transparent border-solid border-1px border-white py-12px rounded-2em
+                    <button m-auto bg-transparent border-solid border-1px border-white py-12px
+                            rounded-2em
                             text-white flex-center gap-12px>
                         <GrPowerCycle className={"text-24px"}></GrPowerCycle>
-                        <span>翻转相机</span>
+                        <span text-24px>翻转相机</span>
                     </button>
                     <div border-solid border-1px border-white rounded-full flex-center p-10px>
                         <button size-128px bg-primary
