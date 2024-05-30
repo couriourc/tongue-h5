@@ -21,16 +21,15 @@ export const Route = createLazyFileRoute('/capture')({
         );
 
 
-        function handlePostTongueDetection(file: File) {
-            return postTongueDetection({
+        async function handlePostTongueDetection(file: File) {
+            const result = await postTongueDetection({
                 file: file
-            }).then((result) => {
-                console.log(result);
             });
+            await to("/result");
         }
 
         useEffect(() => {
-            console.log(file)
+            console.log(file);
             if (!(file && file.length)) return;
             handlePostTongueDetection(file[0])
                 .then(() => {

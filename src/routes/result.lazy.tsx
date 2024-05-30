@@ -6,7 +6,6 @@ import {css, cx} from "@emotion/css";
 import {map} from "underscore";
 import {Grid} from 'react-vant';
 import {Flex} from 'react-vant';
-import {iif} from "@couriourc/utils";
 
 export const Route = createLazyFileRoute('/result')({
     component: () => <section size-screen bg-white>
