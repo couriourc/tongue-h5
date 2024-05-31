@@ -42,7 +42,7 @@ export const NewsList = () => {
                                                                          }}
         onClick={()=>window.open(item.url,"__blank")}
         >
-            <div className={cx(' w-14em text-28px')}>
+            <div className={cx(' w-14em text-28px flex-col flex justify-between')}>
                 <div className={cx('w-inherit break-after-all font-bold mb-12px')}>
                     {placeholder(item.title, "无题")}
                 </div>
