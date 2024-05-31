@@ -1,5 +1,4 @@
 import {forwardRef, ReactNode, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef} from "react";
-import {useSupported} from "@reactuses/core";
 import {cx} from "@emotion/css";
 import {BiError} from "react-icons/bi";
 import {iif} from "@/utils";
@@ -74,14 +73,16 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                             exact: videoInputs[cameraNumber % videoInputs.length].deviceId,
                         },
                         height: $video.clientHeight,
-                        width: $video.clientWidth
-
+                        width: $video.clientWidth,
+                        aspectRatio: $video.clientWidth / $video.clientWidth,
                     },
                 })
                 .then((stream) => {
-
+                    const tracks = stream.getTracks();
                     $video.srcObject = stream;
-                    $video.play();
+                    $video.onloadedmetadata = () => {
+                        $video.play();
+                    };
                 })
                 .catch((error) => {
                     console.error(error);
@@ -162,6 +163,11 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         let $video = video.current!;
         if (!$video) return;
         tryCapture();
+        const listen = () => {
+            tryCapture();
+        };
+        window.addEventListener("resize", listen);
+        return () => window.removeEventListener("resize", listen);
     }, []);
 
     return <>
