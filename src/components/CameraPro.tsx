@@ -159,11 +159,10 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     }
 
     useEffect(() => {
-        if (!isSupported) return;
         let $video = video.current!;
         if (!$video) return;
         tryCapture();
-    }, [isSupported]);
+    }, []);
 
     return <>
         <video className={cx(props.className)}

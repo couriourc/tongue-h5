@@ -30,7 +30,7 @@ export const NewsList = () => {
     useEffect(() => {
         parent.current && autoAnimate(parent.current);
     }, [parent]);
-    if (!isLoading) return <SkeletonList></SkeletonList>;
+    if (isLoading) return <SkeletonList></SkeletonList>;
     //@ts-ignore
     return <ul ref={parent} flex gap-36px flex-col>
 
@@ -39,13 +39,15 @@ export const NewsList = () => {
                                                                          style={{
                                                                              /*@ts-ignore*/
                                                                              "--i-delay": `${~~key * 50}ms`,
-                                                                         }}>
+                                                                         }}
+        onClick={()=>window.open(item.url,"__blank")}
+        >
             <div className={cx(' w-14em text-28px')}>
                 <div className={cx('w-inherit break-after-all font-bold mb-12px')}>
                     {placeholder(item.title, "无题")}
                 </div>
                 <div>
-                    {dayjs().format("YYYY-MM-DD hh:mm:ss")}
+                    {item.time}
                 </div>
             </div>
             <div className={'w-full bg-#333333 flex flex-center w-5em'}>

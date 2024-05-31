@@ -30,6 +30,7 @@ export interface IGetTongueDetectionItem {
     title: string;
     jpg: string;
     url: string;
+    time: string;
 }
 
 export const getTongueDetection = () => requester.get<IGetTongueDetectionItem[]>("/tongue_detection");
