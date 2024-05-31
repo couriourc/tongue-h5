@@ -83,11 +83,9 @@ export const Route = createLazyFileRoute('/capture')({
                     <Image src={"face"} className={cx("w-310px")}></Image>
                 </div>
             </Overlay>
-            <div className={"px-32px flex gap-12px flex-col pt-242px gap-78px z-0"}>
-                <div card-shadow w-screen h-screen fixed top-0 left-0 bg={"#1e2022"} m-auto>
-                    <CameraPro ref={camera}/>
-                </div>
-            </div>
+            {/*<div className={"fixed px-32px gap-12px flex-col pt-242px gap-78px z-0"}>*/}
+            <CameraPro className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>
+            {/*</div>*/}
             <div fixed bottom-0 h-328px w-full
                  flex
                  className={cx('bg-#030202')}

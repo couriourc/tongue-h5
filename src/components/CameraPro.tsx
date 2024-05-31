@@ -1,5 +1,6 @@
 import {forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef} from "react";
 import {useSupported} from "@reactuses/core";
+import {cx} from "@emotion/css";
 
 const getListOfVideoInputs = async () => {
     // Get the details of audio and video output of the device
@@ -18,6 +19,7 @@ export interface CameraProExposed {
 
 export interface ICameraProDefault {
     cameraNumber: number;
+    className?: string;
 }
 
 export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
@@ -67,12 +69,14 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         if (videoInputs.length) {
             navigator.mediaDevices
                 ?.getUserMedia({
+                    audio: false,
                     video: {
                         deviceId: {
                             exact: videoInputs[cameraNumber % videoInputs.length].deviceId,
                         },
                         height: $video.clientHeight,
-                        width: $video.clientWidth,
+                        width: $video.clientWidth
+
                     },
                 })
                 .then((stream) => {
@@ -163,7 +167,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     return <>
         {
             isSupported ?
-                <video className="size-screen"
+                <video className={cx(props.className)}
                        ref={r => video.current = r!}
                 /> :
                 <div size-full flex flex-center text-32px text-danger>没有相机权限</div>

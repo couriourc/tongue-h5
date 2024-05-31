@@ -61,7 +61,7 @@ request.interceptors.response.use(
     (error: any) => {
         const config = error.response?.config ?? {};
         if (config.error_message) {
-            extraFunction(config.error_message)(error.response);
+            return Promise.reject(extraFunction(config.error_message)(error.response));
         }
 
         return Promise.reject(error.response);
