@@ -1,4 +1,14 @@
-import {forwardRef, ReactNode, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef} from "react";
+import {
+    forwardRef,
+    ReactNode,
+    Ref,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import {cx} from "@emotion/css";
 import {BiError} from "react-icons/bi";
 import {iif} from "@/utils";
@@ -39,7 +49,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         </div>);
 
     const video = useRef<HTMLVideoElement>();
-    let cameraNumber = props.cameraNumber || 1;
+    const [cameraNumber, setCameraNumber] = useState<number>(1);
 
     const initializeMedia = async () => {
         if (!isSupported) return;
@@ -59,7 +69,10 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         //Get the details of video inputs of the device
         const videoInputs = await getListOfVideoInputs();
         //The device has a camera
-        console.log(cameraNumber, videoInputs[cameraNumber % videoInputs.length].deviceId, videoInputs);
+        videoInputs.forEach((videoInput) => {
+            console.log(videoInput.toJSON());
+        });
+        console.log(videoInputs[cameraNumber % videoInputs.length].deviceId, videoInputs);
         console.log(
             $video.clientHeight,
             $video.clientWidth
@@ -72,13 +85,13 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                         deviceId: {
                             exact: videoInputs[cameraNumber % videoInputs.length].deviceId,
                         },
+                        groupId: videoInputs[cameraNumber % videoInputs.length].groupId,
                         height: $video.clientHeight,
                         width: $video.clientWidth,
                         aspectRatio: $video.clientWidth / $video.clientWidth,
                     },
                 })
                 .then((stream) => {
-                    const tracks = stream.getTracks();
                     $video.srcObject = stream;
                     $video.onloadedmetadata = () => {
                         $video.play();
@@ -100,7 +113,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
 
     const resumeCamera = () => {
         let $video = video.current;
-        $video?.play();
+        return $video?.play();
     };
 
     useImperativeHandle(ref, () => {
@@ -123,7 +136,10 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     const switchCamera = async () => {
         const listOfVideoInputs = await getListOfVideoInputs();
         let $video = video.current!;
+        let _cameraNumber = (cameraNumber + 1) % listOfVideoInputs.length;
 
+        setCameraNumber(_cameraNumber);
+        console.log(_cameraNumber);
         // The device has more than one camera
         if (listOfVideoInputs.length > 1) {
             if ($video.srcObject) {
@@ -131,13 +147,13 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                 clean();
             }
             // switch to first camera
-            cameraNumber = (cameraNumber + 1) % listOfVideoInputs.length;
+//            cameraNumber = (cameraNumber + 1) % listOfVideoInputs.length;
             // Restart based on camera input
             tryCapture();
         } else if (listOfVideoInputs.length === 1) {
-            alert("The device has only one camera");
+//            alert("The device has only one camera");
         } else {
-            alert("The device does not have a camera");
+//            alert("The device does not have a camera");
         }
     };
 
