@@ -1,0 +1,16 @@
+@font-face {
+    font-family: SourceHanSansCN;
+    src: url('./SourceHanSansCN-Regular.otf') format("otf"),
+    url('./SourceHanSansCN-Regular.eot?') format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+* {
+    font-family: "Microsoft Yahei", SourceHanSansCN, serif,
+    -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', Helvetica,
+    Segoe UI, Arial, Roboto,
+    'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',
+    sans-serif;
+}

@@ -5,6 +5,7 @@ import 'uno.css';
 import "@/styles/variables.less";
 import '@/styles/index.less';
 import '@/styles/reset.less';
+import "@/assets/font/index.less";
 import {App} from "@/App";
 
 
