@@ -18,10 +18,18 @@ function obj2form(target: object) {
     return formData;
 }
 
-export const postTongueDetection = (data: v.InferInput<typeof IPostTongueDetection>) => requester.post<any>("/tongue_success",
+export const postTongueSuccess = (data: v.InferInput<typeof IPostTongueDetection>) => requester.post<any>("/tongue_success",
     obj2form(v.parse(IPostTongueDetection, data)),
     {
         headers: {
             "Content-Type": "multipart/form-data"
         }
     });
+
+export interface IGetTongueDetectionItem {
+    title: string;
+    jpg: string;
+    url: string;
+}
+
+export const getTongueDetection = () => requester.get<IGetTongueDetectionItem[]>("/tongue_detection");

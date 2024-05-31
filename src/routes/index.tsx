@@ -1,22 +1,66 @@
-import {createLazyFileRoute} from '@tanstack/react-router';
+import {createFileRoute, createLazyFileRoute} from '@tanstack/react-router';
 import {css, cx} from "@emotion/css";
 import CameraPng from "@/assets/camera.png";
 import {Image} from "@/components/Image";
 import {useTo} from "@/hooks/to";
 import dayjs from "dayjs";
-import {Tabbar as VantTabbar} from "react-vant";
+import {Empty, Tabbar as VantTabbar} from "react-vant";
+import {getTongueDetection} from "@/api/tongue.api";
+import useSWR from "swr";
+
+import {Skeleton} from 'react-vant';
+import {memo, useEffect, useRef} from "react";
+import {iif, placeholder} from "@/utils";
 
 const stepper = [
     {label: '上传舌象', icon: "tongue"},
     {label: '免费检测', icon: "scan"},
     {label: '专业分析', icon: "hos"},
 ] as const;
+import autoAnimate from '@formkit/auto-animate';
+import {map} from "underscore";
 
-export const Route = createLazyFileRoute('/')({
+export const SkeletonList = () => <Skeleton></Skeleton>;
+export const NewsList = () => {
+    const parent = useRef<HTMLUListElement>(null);
+    const {isLoading, isValidating, data} = useSWR('/getTongueDetection', function handleGetTongueDetection() {
+        return getTongueDetection();
+    });
+
+    useEffect(() => {
+        parent.current && autoAnimate(parent.current);
+    }, [parent]);
+    if (!isLoading) return <SkeletonList></SkeletonList>;
+    //@ts-ignore
+    return <ul ref={parent} flex gap-36px flex-col>
+
+        {iif(!!data && !!data.length, map(data ?? [], (item, key) => <li key={key}
+                                                                         className={"animate-slide-in-right animate-duration-100ms flex gap-36px animate-delay-[var(--i-delay)]"}
+                                                                         style={{
+                                                                             /*@ts-ignore*/
+                                                                             "--i-delay": `${~~key * 50}ms`,
+                                                                         }}>
+            <div className={cx(' w-14em text-28px')}>
+                <div className={cx('w-inherit break-after-all font-bold mb-12px')}>
+                    {placeholder(item.title, "无题")}
+                </div>
+                <div>
+                    {dayjs().format("YYYY-MM-DD hh:mm:ss")}
+                </div>
+            </div>
+            <div className={'w-full bg-#333333 flex flex-center w-5em'}>
+                <Image src={item.jpg} className={cx("w-full h-7em")} fit={"scale-down"}></Image>
+            </div>
+        </li>), <Empty description={"暂无新闻"}></Empty>)}
+
+
+    </ul>;
+};
+export const Route = createFileRoute('/')({
     component: () => {
         const to = useTo();
         return <section className={cx('flex flex-col items-center gap-12px relative w-full ')}>
-            <div className={cx("bg-primary h-714px w-full flex flex-col flex-center text-white px-96px")}>
+            <div className={cx("bg-primary h-700px w-full flex flex-col flex-center text-white px-68px")}>
                 <div className={cx('h-218px pt-108px w-full')}>
                     <span className={cx(" text-35px text-white")}>Welcome to 汉方</span>
                 </div>
@@ -70,19 +114,7 @@ export const Route = createLazyFileRoute('/')({
             </div>
             <div className={cx("bg-white w-full py-24px box-border px-38px")}>
                 <div className={cx('font-bold text-29px mb-36px')}>每日更新</div>
-
-                <div flex gap-36px>
-                    <div className={cx(' w-14em text-28px')}>
-                        <div className={cx('w-inherit break-after-all font-bold mb-12px')}>
-                            预防新冠病毒感染的症状预防新
-                            冠病毒感染的症状
-                        </div>
-                        <div>
-                            {dayjs().format("YYYY-MM-DD  hh:mm:ss")}
-                        </div>
-                    </div>
-                    <div className={'w-full bg-black'}></div>
-                </div>
+                <NewsList/>
             </div>
             <Tabbar></Tabbar>
         </section>;

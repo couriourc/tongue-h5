@@ -1,6 +1,9 @@
-import {forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef} from "react";
+import {forwardRef, ReactNode, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef} from "react";
 import {useSupported} from "@reactuses/core";
 import {cx} from "@emotion/css";
+import {BiError} from "react-icons/bi";
+import {iif} from "@/utils";
+
 
 const getListOfVideoInputs = async () => {
     // Get the details of audio and video output of the device
@@ -20,28 +23,24 @@ export interface CameraProExposed {
 export interface ICameraProDefault {
     cameraNumber: number;
     className?: string;
+    Error?: ReactNode;
+}
+
+function hasGetUserMedia() {
+    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 }
 
 export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
+    const isSupported = hasGetUserMedia();
+    if (!isSupported) return iif(!!props.Error, <>{Error}</>,
+        <div size-full flex flex-center text-32px
+             text-danger bg-black font-fold>
+            <BiError/>
+            没有相机权限
+        </div>);
+
     const video = useRef<HTMLVideoElement>();
     let cameraNumber = props.cameraNumber || 1;
-    const isSupported = useSupported(() => {
-        /* @ts-ignore */
-        navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia
-            /* @ts-ignore */
-            || navigator.mediaDevices.webkitGetUserMedia
-            /* @ts-ignore */
-            || navigator.mediaDevices.mozGetUserMedia
-            /* @ts-ignore */
-            || navigator.mediaDevices.msGetUserMedia
-            /* @ts-ignore */
-            || navigator.webkitGetUserMedia
-            /* @ts-ignore */
-            || navigator.mozGetUserMedia
-            /* @ts-ignore */
-            || navigator.msGetUserMedia;
-        return !!navigator.mediaDevices.getUserMedia;
-    });
 
     const initializeMedia = async () => {
         if (!isSupported) return;
@@ -153,6 +152,8 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         if (!$video) return;
         const context = canvas.getContext("2d")!;
         clean();
+
+
         context.drawImage($video, 0, 0, canvas.width, canvas.height);
 
     }
@@ -165,12 +166,12 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     }, [isSupported]);
 
     return <>
-        {
-            isSupported ?
-                <video className={cx(props.className)}
-                       ref={r => video.current = r!}
-                /> :
-                <div size-full flex flex-center text-32px text-danger>没有相机权限</div>
-        }
+        <video className={cx(props.className)}
+               autoPlay
+               disablePictureInPicture={true}
+               muted={true}
+               playsInline
+               ref={r => video.current = r!}
+        />
     </>;
 });

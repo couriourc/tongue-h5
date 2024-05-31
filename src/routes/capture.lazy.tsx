@@ -7,7 +7,7 @@ import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
 import {GrPowerCycle} from "react-icons/gr";
 import {useFileDialog} from "@reactuses/core";
-import {postTongueDetection} from "@/api/tongue.api";
+import {postTongueSuccess} from "@/api/tongue.api";
 import {base64ToFile} from "@/utils";
 import {Loader} from "@/components/Loading";
 import {useAtomParserResult} from "@/store";
@@ -31,7 +31,7 @@ export const Route = createLazyFileRoute('/capture')({
             if (!file) return;
             if (isLoading) return;
             setLoading(true);
-            return postTongueDetection({
+            return postTongueSuccess({
                 file: file
             }).then((result) => {
                 setResult(result);
