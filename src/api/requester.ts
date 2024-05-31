@@ -64,14 +64,11 @@ request.interceptors.response.use(
             extraFunction(config.error_message)(error.response);
         }
 
-        if (error.response && error.response.status) {
-            return Promise.reject(error.response);
-        }
+        return Promise.reject(error.response);
     }
 );
 
 export default function requester<T>(method: string, url: string, data: any = null, config: DynamicProps<Partial<AxiosRequestConfig>> = {}): Promise<T> {
-    console.log(method, url, data);
     method = method.toLowerCase();
     let methodFilter = ['post', 'get', 'delete', 'put', 'patch'];
     let paramsFilter = ['get', 'delete'];

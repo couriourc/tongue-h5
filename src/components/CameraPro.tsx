@@ -22,7 +22,7 @@ export interface ICameraProDefault {
 
 export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
     const video = useRef<HTMLVideoElement>();
-    let cameraNumber = props.cameraNumber || 0;
+    let cameraNumber = props.cameraNumber || 1;
     const isSupported = useSupported(() => {
         /* @ts-ignore */
         navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia
@@ -60,9 +60,11 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         const videoInputs = await getListOfVideoInputs();
         //The device has a camera
         console.log(cameraNumber, videoInputs[cameraNumber % videoInputs.length].deviceId, videoInputs);
-
+        console.log(
+            $video.clientHeight,
+            $video.clientWidth
+        );
         if (videoInputs.length) {
-            console.log(cameraNumber, videoInputs[cameraNumber % videoInputs.length].deviceId);
             navigator.mediaDevices
                 ?.getUserMedia({
                     video: {
@@ -161,7 +163,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     return <>
         {
             isSupported ?
-                <video className="w-full h-full"
+                <video className="size-screen"
                        ref={r => video.current = r!}
                 /> :
                 <div size-full flex flex-center text-32px text-danger>没有相机权限</div>

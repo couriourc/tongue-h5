@@ -41,7 +41,7 @@ export function Loader() {
 }
 
 const LoadingComp = () => <Overlay visible={true}>
-    <div flex justify-center items-center fixed w-full h-full bg="#0f1c21" z-999>
+    <div flex justify-center items-center fixed w-full h-full bg="#0F1C2191" z-999>
         <LoadingStyled>
             <div
                 className="flex justify-center items-center min-h-screen  c-white font-size-2em minimalism-load"
@@ -50,7 +50,7 @@ const LoadingComp = () => <Overlay visible={true}>
                     {new Array(3).fill(1).map((_, index) => <span key={index}
                                                                   className="absolute top-0 left-0 w-full h-full minimalism-load-line  border-primary!"></span>)}
 
-                    <span className="text-28px font-bold text-#333333">Loading...</span>
+                    <span className="text-28px font-bold text-white">Loading...</span>
                 </div>
             </div>
         </LoadingStyled>

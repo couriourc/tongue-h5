@@ -1,7 +1,7 @@
 import {createLazyFileRoute} from '@tanstack/react-router';
 import {CameraPro, CameraProExposed} from "@/components/CameraPro";
 import {cx} from "@emotion/css";
-import {useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import {useTo} from "@/hooks/to";
 import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
@@ -12,6 +12,7 @@ import {base64ToFile} from "@/utils";
 import {Loader} from "@/components/Loading";
 import {useAtomParserResult} from "@/store";
 import {Overlay} from "react-vant";
+import {Toast} from "@/components/Toast";
 
 export const Route = createLazyFileRoute('/capture')({
     component: () => {
@@ -35,6 +36,8 @@ export const Route = createLazyFileRoute('/capture')({
             }).then((result) => {
                 setResult(result);
                 return to("/result");
+            }).catch((err) => {
+                Toast.fail("解析出错！");
             }).finally(() => {
                 setLoading(false);
             });
@@ -57,10 +60,15 @@ export const Route = createLazyFileRoute('/capture')({
         }
 
         const [visible, setVisible] = useState<boolean>();
-        if (isLoading) return <Loader></Loader>;
+
+        function handleSwitchFace() {
+            const $camera = camera.current!;
+            return $camera.switch();
+        }
 
         return <section text-white h-screen w-screen>
-            <div flex justify-between w-full z-1000 text-28px fixed top-64px px-24px>
+            {isLoading ? <Loader></Loader> : null}
+            <div flex justify-between w-full z-200 text-28px fixed top-64px px-24px>
                 <div className={cx("size-64px")} onClick={() => to("/")}><ArrowLeft/></div>
                 <span onClick={() => setVisible((visible) => !visible)}>使用教程</span>
             </div>
@@ -77,7 +85,7 @@ export const Route = createLazyFileRoute('/capture')({
             </Overlay>
             <div className={"px-32px flex gap-12px flex-col pt-242px gap-78px z-0"}>
                 <div card-shadow w-screen h-screen fixed top-0 left-0 bg={"#1e2022"} m-auto>
-                    <CameraPro cameraNumber={1} ref={camera}/>
+                    <CameraPro ref={camera}/>
                 </div>
             </div>
             <div fixed bottom-0 h-328px w-full
@@ -96,6 +104,7 @@ export const Route = createLazyFileRoute('/capture')({
                             border-solid border-1px border-white
                             py-12px rounded-2em
                             flex-center gap-12px
+                            onClick={() => handleSwitchFace()}
                     >
                         <GrPowerCycle className={"text-24px"}></GrPowerCycle>
                         <span>翻转相机</span>
