@@ -1,7 +1,7 @@
 import {createLazyFileRoute} from '@tanstack/react-router';
 import {CameraPro, CameraProExposed} from "@/components/CameraPro";
 import {cx} from "@emotion/css";
-import {useMemo, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {useTo} from "@/hooks/to";
 import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
@@ -10,7 +10,7 @@ import {useFileDialog} from "@reactuses/core";
 import {postTongueSuccess} from "@/api/tongue.api";
 import {base64ToFile} from "@/utils";
 import {Loader} from "@/components/Loading";
-import {useAtomParserResult} from "@/store";
+import {IParserResult, useAtomParserResult} from "@/store";
 import {Overlay} from "react-vant";
 import {Toast} from "@/components/Toast";
 
@@ -33,7 +33,11 @@ export const Route = createLazyFileRoute('/capture')({
             setLoading(true);
             return postTongueSuccess({
                 file: file
-            }).then((result) => {
+            }).then((result: IParserResult) => {
+                if (result.state !== "yes") {
+                    Toast.fail("解析出错！");
+                    return Promise.reject();
+                }
                 setResult(result);
                 return to("/result");
             }).catch((err) => {
@@ -66,7 +70,7 @@ export const Route = createLazyFileRoute('/capture')({
             return $camera.switch();
         }
 
-        return <section text-white h-screen w-screen>
+        return <section text-white h-screen w-screen touch-none>
             {isLoading ? <Loader></Loader> : null}
             <div flex justify-between w-full z-200 text-28px fixed top-64px px-24px>
                 <div className={cx("size-64px")} onClick={() => to("/")}><ArrowLeft/></div>
@@ -83,9 +87,9 @@ export const Route = createLazyFileRoute('/capture')({
                     <Image src={"face"} className={cx("w-310px")}></Image>
                 </div>
             </Overlay>
-            {/*<div className={"fixed px-32px gap-12px flex-col pt-242px gap-78px z-0"}>*/}
+
             <CameraPro className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>
-            {/*</div>*/}
+
             <div fixed bottom-0 h-328px w-full
                  flex
                  className={cx('bg-#030202')}

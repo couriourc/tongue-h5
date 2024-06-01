@@ -14,3 +14,7 @@ export type WithMessageProps<T> = T & Partial<{
     success_message: FunctionOrValue<string>;
     error_message: FunctionOrValue<string>;
 }>
+
+export type WithClassName<T> = T & {
+    className?: string;
+};

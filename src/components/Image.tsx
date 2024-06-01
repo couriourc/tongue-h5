@@ -9,8 +9,11 @@ import scanUrl from "@/assets/scan.png?url";
 import hosUrl from "@/assets/hos.png?url";
 import tongueUrl from "@/assets/tongue.png?url";
 import homeUrl from "@/assets/home.png?url";
+import homeActiveUrl from "@/assets/home-active.png?url";
 import maintainUrl from "@/assets/mantine.png?url";
+import maintainActiveUrl from "@/assets/mantine-active.png?url";
 import detailUrl from "@/assets/detail.png?url";
+import detailActiveUrl from "@/assets/detail-active.png?url";
 
 export declare type ImageFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 
@@ -23,8 +26,11 @@ const Images = {
     "hos": hosUrl,
     "tongue": tongueUrl,
     "home": homeUrl,
+    "home-active": homeActiveUrl,
     "maintain": maintainUrl,
+    "maintain-active": maintainActiveUrl,
     "detail": detailUrl,
+    "detail-active": detailActiveUrl,
 } as const;
 type PresetImageName = keyof typeof Images;
 

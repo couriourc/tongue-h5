@@ -2,12 +2,77 @@ import {createLazyFileRoute} from '@tanstack/react-router';
 import {NavBar} from "@/components/Navbar";
 import {cx} from "@emotion/css";
 import {map} from "underscore";
-import {useAtomParserResult} from "@/store";
+import {IGoodsItem, useAtomParserResult} from "@/store";
 import {Image} from "@/components/Image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {iif, placeholder} from "@/utils";
-import {Flex} from "react-vant";
+import {Flex, } from "react-vant";
 import 'swiper/css';
+import {GrAddCircle} from "react-icons/gr";
+import React, {PropsWithChildren, useState} from "react";
+import {WithClassName} from "@/types";
+import {postMakePdf} from "@/api/tongue.api";
+/*@ts-ignore*/
+import Downloader from "downloadjs";
+import {Tabbar} from "@/components/Tabbar";
+
+function DrinkGoodsItem({item, itemKey, active, activeKey}: WithClassName<PropsWithChildren<{
+    item: IGoodsItem,
+    active: (key: number) => any;
+    itemKey: any;
+    activeKey: any;
+}>>) {
+    return <div className={cx('inline-block flex relative z-0')}>
+        <div
+            className={cx(
+                ` rounded-20px relative mr-36px text-26px font-bold overflow-visible 
+                                            text-white 
+                                            bg-#9087E4 
+                                            h-216px
+                                            w-full
+                                            py-24px  px-12px 
+                                            w-12em 
+                                            truncate`
+            )}
+        >
+            <span className={cx('z-10')}>{item.name}</span>
+            <div className={cx(`absolute w-full h-full z-0`)}>
+                <Image src={item.pic}></Image>
+            </div>
+            <span className={cx("absolute right-12px top-50% -translate-y-50%")}
+                  onClick={() => {
+                      active(itemKey);
+                  }}><GrAddCircle></GrAddCircle></span>
+        </div>
+    </div>;
+
+}
+
+function DrinkGoodsList(props: WithClassName<PropsWithChildren>) {
+    const [result] = useAtomParserResult();
+    const [active, setActive] = useState<number>();
+
+    return <Swiper className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}
+                   slidesPerView={'auto'}
+    >
+        {
+            map(result.result.sups.concat(result.result.sups),
+                (item, key) => <SwiperSlide
+                    className={cx("w-300px! py-24px  px-12px  ")}
+                    key={key}>
+                    <DrinkGoodsItem item={item}
+                                    key={key}
+                                    itemKey={key}
+                                    active={(num) => setActive(num)}
+                                    activeKey={active}
+                    ></DrinkGoodsItem>
+                </SwiperSlide>
+            )
+        }
+
+    </Swiper>;
+
+}
 
 export const Route = createLazyFileRoute('/result')({
     component: () => {
@@ -34,6 +99,14 @@ export const Route = createLazyFileRoute('/result')({
                 label: '齿痕',
             },
         ] as const;
+
+        async function handlePostMakePdf() {
+            return postMakePdf(result).then((res) => {
+                let url = URL.createObjectURL(res);
+                Downloader(url);
+            });
+        }
+
         return <section size-screen bg-white>
             <NavBar title={"舌像综合分析"} back={"/capture"}></NavBar>
 
@@ -117,39 +190,16 @@ export const Route = createLazyFileRoute('/result')({
                             <span></span>
                         </div>
                     </div>
-                    <ul className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}>
-                        {
-                            map(result.result.sups,
-                                (item, key) =>
-                                    <li
-                                        className={cx(
-                                            `inline-block rounded-20px relative mr-36px text-26px font-bold overflow-visible 
-                                            text-white 
-                                            bg-#9087E4 
-                                            w-277px 
-                                            h-216px 
-                                            py-24px 
-                                            px-12px 
-                                            w-12em 
-                                            truncate`
-                                        )}
-                                        key={key}
-                                    >
-                                        <span className={cx('z-10')}>{item.name}</span>
-                                        <div className={cx(`absolute w-full h-full z-0`)}>
-                                            <Image src={item.pic}></Image>
-                                        </div>
-                                    </li>
-                            )
-                        }
-
-                    </ul>
+                    <DrinkGoodsList
+                        className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}></DrinkGoodsList>
                 </div>
 
                 <button
+                    onClick={() => handlePostMakePdf()}
                     className={cx(" fixed bottom-157px bg-primary text-white text-32px px-20px py-15px outline-none border-none rounded-24px")}>点击生成完整报告
                 </button>
             </div>
+            <Tabbar/>
         </section>;
     }
 });

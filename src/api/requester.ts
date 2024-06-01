@@ -29,7 +29,7 @@ request.interceptors.request.use(
     (config: AxiosRequestType) => {
         // 配置token
         if (config.params instanceof FormData || config.data instanceof FormData) {
-            config.headers['Content-Type'] = "application/x-www-urlencoded";
+            config.headers['Content-Type'] = "multipart/form-data";
         }
         // 添加loading
         // 看是否有loadMsg配置，如果存在则进行融合
@@ -95,9 +95,9 @@ export default function requester<T>(method: string, url: string, data: any = nu
 }
 
 type ExtendedAxiosRequestConfig = WithMessageProps<DynamicProps<Partial<AxiosRequestConfig>>>;
-requester.get = <T>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("get", url, params, config);
-requester.post = <T>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("post", url, params, config);
-requester.delete = <T>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("delete", url, params, config);
-requester.put = <T>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("put", url, params, config);
-requester.patch = <T>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("patch", url, params, config);
+requester.get = <T = any>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("get", url, params, config);
+requester.post = <T = any>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("post", url, params, config);
+requester.delete = <T = any>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("delete", url, params, config);
+requester.put = <T = any>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("put", url, params, config);
+requester.patch = <T = any>(url: string, params: any = {}, config: ExtendedAxiosRequestConfig = {}) => requester<T>("patch", url, params, config);
 

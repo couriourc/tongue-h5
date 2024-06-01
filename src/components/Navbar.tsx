@@ -23,7 +23,7 @@ export const NavBar = (
             title={<div className={cx(`w-100vw px-24px flex`)}>
                 <div
                     className={cx("size-62px rounded-16px  flex-center bg-#F9F9FB absolute left-24px  top-50%  -translate-y-50%")}
-                    onClick={() => iif(!!back, to, noop)(back as keyof FileRoutesByPath)}
+                    onClick={() => iif(!!back, to, noop)!(back as keyof FileRoutesByPath)}
                 >
                     <ArrowLeft/>
                 </div>

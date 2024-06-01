@@ -1,7 +1,7 @@
 import {FunctionOrValue} from "@/types";
 import _ from "underscore";
 
-export function iif<T, U>(condition: boolean, whenTrue: T, whenFalse: U) {
+export function iif<T, U>(condition: boolean, whenTrue: T, whenFalse?: U) {
     return condition ? whenTrue : whenFalse;
 }
 

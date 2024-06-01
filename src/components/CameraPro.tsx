@@ -9,16 +9,13 @@ import {
     useRef,
     useState
 } from "react";
-import {cx} from "@emotion/css";
 import {BiError} from "react-icons/bi";
 import {iif} from "@/utils";
-
+import {cx} from "@emotion/css";
+import {getAvailableDevices} from "@/utils/camera";
 
 const getListOfVideoInputs = async () => {
-    // Get the details of audio and video output of the device
-    const enumerateDevices = await navigator.mediaDevices.enumerateDevices();
-    //Filter video outputs (for devices with multiple cameras)
-    return enumerateDevices.filter((device) => device.kind === "videoinput");
+    return getAvailableDevices("video");
 };
 
 export interface CameraProExposed {
@@ -37,6 +34,14 @@ export interface ICameraProDefault {
 
 function hasGetUserMedia() {
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+}
+
+function useWindowResize(fn: Function) {
+    useEffect(() => {
+        const listen = (ev: UIEvent) => fn(ev);
+        window.addEventListener("resize", listen);
+        return () => window.removeEventListener("resize", listen);
+    }, []);
 }
 
 export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
@@ -78,6 +83,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
             $video.clientWidth
         );
         if (videoInputs.length) {
+            console.log(navigator.mediaDevices.getSupportedConstraints());
             navigator.mediaDevices
                 ?.getUserMedia({
                     audio: false,
@@ -116,6 +122,11 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         return $video?.play();
     };
 
+
+    useWindowResize(() => {
+        return tryCapture();
+    });
+//
     useImperativeHandle(ref, () => {
         return {
             capture() {
@@ -170,7 +181,6 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         const context = canvas.getContext("2d")!;
         clean();
 
-
         context.drawImage($video, 0, 0, canvas.width, canvas.height);
 
     }
@@ -178,21 +188,20 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     useEffect(() => {
         let $video = video.current!;
         if (!$video) return;
-        tryCapture();
-        const listen = () => {
-            tryCapture();
-        };
-        window.addEventListener("resize", listen);
-        return () => window.removeEventListener("resize", listen);
+        tryCapture().then(() => {
+        });
     }, []);
 
     return <>
-        <video className={cx(props.className)}
-               autoPlay
-               disablePictureInPicture={true}
-               muted={true}
-               playsInline
-               ref={r => video.current = r!}
-        />
+        <div className={cx('relative')}>
+            <video className={cx(props.className)}
+                   autoPlay
+                   disablePictureInPicture={true}
+                   muted={true}
+                   playsInline
+                   ref={r => video.current = r!}
+            />
+        </div>
+        {/*<Camera className={cx("w-full")} w-full h-full responsive={true}></Camera>*/}
     </>;
 });

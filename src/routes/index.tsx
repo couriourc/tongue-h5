@@ -1,24 +1,22 @@
-import {createFileRoute, createLazyFileRoute} from '@tanstack/react-router';
+import {createFileRoute} from '@tanstack/react-router';
 import {css, cx} from "@emotion/css";
 import CameraPng from "@/assets/camera.png";
 import {Image} from "@/components/Image";
 import {useTo} from "@/hooks/to";
-import dayjs from "dayjs";
-import {Empty, Tabbar as VantTabbar} from "react-vant";
+import {Empty, Skeleton,} from "react-vant";
 import {getTongueDetection} from "@/api/tongue.api";
 import useSWR from "swr";
-
-import {Skeleton} from 'react-vant';
-import {memo, useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import {iif, placeholder} from "@/utils";
+import autoAnimate from '@formkit/auto-animate';
+import {map} from "underscore";
+import {Tabbar} from "@/components/Tabbar";
 
 const stepper = [
     {label: '上传舌象', icon: "tongue"},
     {label: '免费检测', icon: "scan"},
     {label: '专业分析', icon: "hos"},
 ] as const;
-import autoAnimate from '@formkit/auto-animate';
-import {map} from "underscore";
 
 export const SkeletonList = () => <Skeleton></Skeleton>;
 export const NewsList = () => {
@@ -40,7 +38,7 @@ export const NewsList = () => {
                                                                              /*@ts-ignore*/
                                                                              "--i-delay": `${~~key * 50}ms`,
                                                                          }}
-        onClick={()=>window.open(item.url,"__blank")}
+                                                                         onClick={() => window.open(item.url, "__blank")}
         >
             <div className={cx(' w-14em text-28px flex-col flex justify-between')}>
                 <div className={cx('w-inherit break-after-all font-bold mb-12px')}>
@@ -118,20 +116,7 @@ export const Route = createFileRoute('/')({
                 <div className={cx('font-bold text-29px mb-36px')}>每日更新</div>
                 <NewsList/>
             </div>
-            <Tabbar></Tabbar>
+            <Tabbar/>
         </section>;
     }
 });
-const Tabbar = () => {
-    return <VantTabbar border={true} fixed={true}>
-        <VantTabbar.Item>
-            <Image className={cx('w-48px')} src={"home"}></Image>
-        </VantTabbar.Item>
-        <VantTabbar.Item>
-            <Image className={cx('h-48px')} src={"maintain"}></Image>
-        </VantTabbar.Item>
-        <VantTabbar.Item>
-            <Image className={cx('h-48px')} src={"detail"}></Image>
-        </VantTabbar.Item>
-    </VantTabbar>;
-};
