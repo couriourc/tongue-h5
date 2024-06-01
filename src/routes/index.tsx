@@ -10,13 +10,8 @@ import React, {useEffect, useRef} from "react";
 import {iif, placeholder} from "@/utils";
 import autoAnimate from '@formkit/auto-animate';
 import {map} from "underscore";
-import {Tabbar} from "@/components/Tabbar";
+import {useTranslation} from "react-i18next";
 
-const stepper = [
-    {label: '上传舌象', icon: "tongue"},
-    {label: '免费检测', icon: "scan"},
-    {label: '专业分析', icon: "hos"},
-] as const;
 
 export const SkeletonList = () => <Skeleton></Skeleton>;
 export const NewsList = () => {
@@ -29,6 +24,8 @@ export const NewsList = () => {
         parent.current && autoAnimate(parent.current);
     }, [parent]);
     if (isLoading) return <SkeletonList></SkeletonList>;
+
+
     //@ts-ignore
     return <ul ref={parent} flex gap-36px flex-col>
 
@@ -59,20 +56,36 @@ export const NewsList = () => {
 export const Route = createFileRoute('/')({
     component: () => {
         const to = useTo();
+        const {t: $t} = useTranslation(undefined, {
+            keyPrefix: 'home'
+        });
+        const stepper = [
+            {label: $t('上传舌象'), icon: "tongue"},
+            {label: $t('免费检测'), icon: "scan"},
+            {label: $t('专业分析'), icon: "hos"},
+        ] as const;
+
         return <section className={cx('flex flex-col items-center gap-12px relative w-full ')}>
             <div className={cx("bg-primary h-700px w-full flex flex-col flex-center text-white px-68px")}>
-                <div className={cx('h-218px pt-108px w-full')}>
-                    <span className={cx(" text-35px text-white")}>Welcome to 汉方</span>
+                <div className={cx('h-218px relative top-108px w-full')}>
+                    <div className={'flex flex-col'}>
+                        <div className={cx(" text-35px text-white flex items-center gap-12px")}>
+                            <Image className={cx("w-35px")} src={"/logo.png"}></Image>
+                            <span className={cx("font-300")}>{$t("Hello")}</span>
+                        </div>
+                        <span
+                            className={cx(" text-35px text-white text-18px font-bold")}>{$t("欢迎来到汉方舌诊")}</span>
+                    </div>
                 </div>
                 <div className={cx('h-full flex flex-center flex-col gap-28px text-36px')}
                      onClick={() => to("/capture")}>
                     <img src={CameraPng} alt={'camera'}/>
-                    <span>点击上传舌象</span>
+                    <span>{$t("点击上传舌象")}</span>
                 </div>
 
             </div>
             <div className={cx("bg-white w-full py-24px box-border")}>
-                <div className={cx('font-bold text-29px px-38px')}>汉方舌诊</div>
+                <div className={cx('font-bold text-29px px-38px')}>{$t("汉方舌诊")}</div>
                 <div>
                     <div
                         className={cx('w-full m-auto bg-#FFF  rounded-6px h-254px px-36px box-border flex-center ')}>
@@ -113,10 +126,10 @@ export const Route = createFileRoute('/')({
                 </div>
             </div>
             <div className={cx("bg-white w-full py-24px box-border px-38px")}>
-                <div className={cx('font-bold text-29px mb-36px')}>每日更新</div>
+                <div className={cx('font-bold text-29px mb-36px')}>{$t("每日更新")}</div>
                 <NewsList/>
             </div>
-            <Tabbar/>
+            {/*<Tabbar/>*/}
         </section>;
     }
 });

@@ -203,7 +203,7 @@ export const Route = createLazyFileRoute('/result')({
             }
 
 
-            <Tabbar/>
+            {/*<Tabbar/>*/}
         </section>;
     }
 });

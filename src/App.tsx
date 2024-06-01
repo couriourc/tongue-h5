@@ -3,6 +3,7 @@ import {routeTree} from './routeTree.gen';
 import {createRouter, RouterProvider} from "@tanstack/react-router";
 import React from "react";
 import {ConfigProvider} from "react-vant";
+import './i18n';
 // Create a new router instance
 const router = createRouter({
     routeTree,
