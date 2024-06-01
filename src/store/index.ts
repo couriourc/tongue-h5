@@ -25,7 +25,7 @@ export interface IParserResult {
 
 export const atomParserResult = atomWithStorage("parser-result",
     {
-        state: "yes",
+        state: null,
         she: {
             chihen: "",
             dianci: "",

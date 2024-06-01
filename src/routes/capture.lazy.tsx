@@ -39,7 +39,11 @@ export const Route = createLazyFileRoute('/capture')({
                     return Promise.reject();
                 }
                 setResult(result);
-                return to("/result");
+                return to("/result", {
+                    search: {
+                        back: '/capture'
+                    }
+                });
             }).catch((err) => {
                 Toast.fail("解析出错！");
             }).finally(() => {
