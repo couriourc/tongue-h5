@@ -117,73 +117,95 @@ export const Route = createLazyFileRoute('/result')({
                             slidesPerView={'auto'}
                             centeredSlides={true}
                             spaceBetween={30}
+                            onNavigationNext={(event) => {
+                                console.log(event);
+                            }}
                         >
-                            <SwiperSlide className={cx('w-80%! h-400px')}>
-                                <div className={"inline-block relative right-2em whitespace-nowrap box-border"}>
-                                    <Flex wrap="wrap"
-                                          className={cx("bg-primary  rounded-18px m-auto h-400px box-border px-48px text-36px")}>
-                                        {
-                                            map(labels, ({label, key}, order) => <Flex.Item
-                                                span={8}
-                                                key={label}
-                                            >
-                                                <div
-                                                    className={cx('flex-center text-white border-1px h-full pt-12px',
-                                                        iif(order < 3, 'border-b-solid', '')
-                                                    )}>
-                                                    <div className={cx("flex flex-col flex-center gap-12px")}>
-                                                        <span className={cx("text-28px ")}>{label}</span>
-                                                        <span
-                                                            className={cx("text-18px truncate ")}>
+                            <SwiperSlide className={cx('w-80%! relative right-2em')}>
+                                <div className={cx("flex flex-col gap-24px")}>
+                                    <div className={"inline-block  whitespace-nowrap box-border"}>
+                                        <Flex wrap="wrap"
+                                              className={cx("bg-primary  rounded-18px m-auto h-400px box-border px-48px text-36px")}>
+                                            {
+                                                map(labels, ({label, key}, order) => <Flex.Item
+                                                    span={8}
+                                                    key={label}
+                                                >
+                                                    <div
+                                                        className={cx('flex-center text-white border-1px h-full pt-12px',
+                                                            iif(order < 3, 'border-b-solid', '')
+                                                        )}>
+                                                        <div className={cx("flex flex-col flex-center gap-12px")}>
+                                                            <span className={cx("text-28px ")}>{label}</span>
+                                                            <span
+                                                                className={cx("text-18px truncate ")}>
                                                 {placeholder(result.she[key as keyof typeof result.she], t('无信息'))}
                                             </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </Flex.Item>)
-                                        }
-                                    </Flex>
+                                                </Flex.Item>)
+                                            }
+                                        </Flex>
+                                    </div>
+
+                                    <div flex flex-col w-full gap-20px overflow-hidden>
+                                        <div flex w-full justify-between items-center>
+                                            <span font-bold text-28px>{t('舌象释义与通常伴随的症状')}</span>
+                                        </div>
+                                        <div text-24px text-justify>
+                                            {result.result.translate}
+                                        </div>
+                                    </div>
                                 </div>
                             </SwiperSlide>
 
                             {
                                 map(result.result.sups, (drink, index) => <SwiperSlide
-                                    className={cx("box-border w-80%! relative")}
+                                    className={cx("box-border w-80%! relative right-2em h-full!")}
                                     key={index}
                                 >
-                                    <div
-                                        className={"inline-block  p-46px relative right-2em  bg-#FFCEEC w-full h-400px rounded-18px flex flex-col gap-20px"}>
+                                    <div className={cx("flex flex-col gap-24px")}>
+                                        <div>
+                                            <div
+                                                className={`inline-block  p-46px   
+                                                bg-#FFCEEC w-full 
+                                                h-400px 
+                                                rounded-18px flex flex-col
+                                                gap-20px`
+                                                }>
                                 <span className={cx('w-12em truncate text-36px ')}>
                                     {drink.name}
                                 </span>
-                                        <span className={cx('text-28px')}>
+                                                <span className={cx('text-28px')}>
                                     {drink.data}
                                 </span>
-                                    </div>
+                                            </div>
 
-                                    {iif(index === result.result.drinks.length - 1,
-                                        <div
-                                            className={cx("absolute w-10% h-full bg-primary top-0 -right-10% " +
-                                                "rounded-18px write-vertical-left text-white font-bold " +
-                                                "flex justify-center items-center")}>
-                            <span className={'text-28px'}>
-                                {t('期待更多')}
-                            </span>
-                                        </div>, null
-                                    )}
+                                            {iif(index === result.result.drinks.length - 1,
+                                                <div
+                                                    className={cx(`
+                                                    absolute w-10% h-full bg-primary top-0 -right-15%
+                                                    rounded-18px write-vertical-left
+                                                     text-white font-bold 
+                                                     flex-center h-400px!
+                                                    `)}><span className={'text-28px'}>{t('期待更多')}</span>
+                                                </div>, null
+                                            )}
+
+                                        </div>
+                                        <div flex flex-col w-full gap-20px overflow-hidden h-full>
+                                            <div flex w-full justify-between items-center>
+                                                <span font-bold text-28px>{drink.name}</span>
+                                            </div>
+                                            <div text-24px text-justify>
+                                                {drink.data}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </SwiperSlide>)
                             }
                         </Swiper>
 
-                        <div flex flex-col w-full px-48px gap-20px w-690px overflow-hidden>
-                            <div flex w-full justify-between items-center>
-                                <span font-bold text-28px>{t('舌象释义与通常伴随的症状')}</span>
-                            </div>
-                            <div>
-                                <div text-24px>
-                                    {result.result.translate}
-                                </div>
-                            </div>
-                        </div>
                         <div flex flex-col w-full px-48px gap-20px>
                             <div flex w-full justify-between items-center>
                                 <span font-bold text-28px>{t('诊断推荐药膳')}</span>
@@ -197,14 +219,13 @@ export const Route = createLazyFileRoute('/result')({
 
                         <button
                             onClick={() => handlePostMakePdf()}
-                            className={cx(" fixed bottom-157px bg-primary text-white text-32px px-20px py-15px outline-none border-none rounded-24px")}>点击生成完整报告
+                            className={cx(" fixed bottom-157px bg-primary text-white text-32px px-20px py-15px outline-none border-none rounded-24px")}>
+                            {t("点击生成完整报告")}
                         </button>
                     </div>
                 )
             }
 
-
-            {/*<Tabbar/>*/}
         </section>;
     }
 });
