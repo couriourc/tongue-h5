@@ -14,7 +14,7 @@ import {WithClassName} from "@/types";
 import {postMakePdf} from "@/api/tongue.api";
 /*@ts-ignore*/
 import Downloader from "downloadjs";
-import {Tabbar} from "@/components/Tabbar";
+import {useTranslation} from "react-i18next";
 
 function DrinkGoodsItem({item, itemKey, active, activeKey}: WithClassName<PropsWithChildren<{
     item: IGoodsItem,
@@ -76,26 +76,27 @@ function DrinkGoodsList(props: WithClassName<PropsWithChildren>) {
 export const Route = createLazyFileRoute('/result')({
     component: () => {
         const [result] = useAtomParserResult();
+        const {t} = useTranslation(undefined, {keyPrefix: "result"});
 
         const labels = [
             {
                 key: 'shese',
-                label: '舌色',
+                label: t('舌色'),
             }, {
                 key: 'dianci',
-                label: '点刺',
+                label: t('点刺'),
             }, {
                 key: 'liewen',
-                label: '裂纹',
+                label: t('裂纹'),
             }, {
                 key: 'taise',
-                label: '苔色',
+                label: t('苔色'),
             }, {
                 key: 'houbotai',
-                label: '苔质',
+                label: t('苔质'),
             }, {
                 key: 'chihen',
-                label: '齿痕',
+                label: t('齿痕'),
             },
         ] as const;
 
@@ -107,9 +108,9 @@ export const Route = createLazyFileRoute('/result')({
         }
 
         return <section size-screen bg-white>
-            <NavBar title={"舌像综合分析"} back={"/capture"}></NavBar>
+            <NavBar title={t("舌像综合分析")} back={"/capture"}></NavBar>
             {
-                iif(result.state !== "yes", <Empty description={"暂无数据"}></Empty>,
+                iif(result.state !== "yes", <Empty description={t("暂无数据")}></Empty>,
                     <div flex items-center flex-col gap-48px mt-12px flex-shrink-zero>
                         <Swiper
                             className={cx('w-full')}
@@ -134,7 +135,7 @@ export const Route = createLazyFileRoute('/result')({
                                                         <span className={cx("text-28px ")}>{label}</span>
                                                         <span
                                                             className={cx("text-18px truncate ")}>
-                                                {placeholder(result.she[key as keyof typeof result.she], '无信息')}
+                                                {placeholder(result.she[key as keyof typeof result.she], t('无信息'))}
                                             </span>
                                                     </div>
                                                 </div>
@@ -165,7 +166,7 @@ export const Route = createLazyFileRoute('/result')({
                                                 "rounded-18px write-vertical-left text-white font-bold " +
                                                 "flex justify-center items-center")}>
                             <span className={'text-28px'}>
-                                到底了
+                                {t('期待更多')}
                             </span>
                                         </div>, null
                                     )}
@@ -175,7 +176,7 @@ export const Route = createLazyFileRoute('/result')({
 
                         <div flex flex-col w-full px-48px gap-20px w-690px overflow-hidden>
                             <div flex w-full justify-between items-center>
-                                <span font-bold text-28px>舌象释义与通常伴随的症状</span>
+                                <span font-bold text-28px>{t('舌象释义与通常伴随的症状')}</span>
                             </div>
                             <div>
                                 <div text-24px>
@@ -185,7 +186,7 @@ export const Route = createLazyFileRoute('/result')({
                         </div>
                         <div flex flex-col w-full px-48px gap-20px>
                             <div flex w-full justify-between items-center>
-                                <span font-bold text-28px>诊断推荐药膳</span>
+                                <span font-bold text-28px>{t('诊断推荐药膳')}</span>
                                 <div className={cx("text-#A2A2C8 text-26px flex-center")}>
                                     <span></span>
                                 </div>
