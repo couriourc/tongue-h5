@@ -6,44 +6,77 @@ import {IGoodsItem, useAtomParserResult} from "@/store";
 import {Image} from "@/components/Image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {iif, placeholder} from "@/utils";
-import {Empty, Flex,} from "react-vant";
+import {Empty, Flex, Popover, PopoverInstance,} from "react-vant";
 import 'swiper/css';
 import {GrAddCircle} from "react-icons/gr";
-import React, {PropsWithChildren, useState} from "react";
+import React, {PropsWithChildren, useRef, useState} from "react";
 import {WithClassName} from "@/types";
 import {postMakePdf} from "@/api/tongue.api";
 /*@ts-ignore*/
 import Downloader from "downloadjs";
 import {useTranslation} from "react-i18next";
 
-function DrinkGoodsItem({item, itemKey, active, activeKey}: WithClassName<PropsWithChildren<{
+function DrinkGoodsItem({item,}: WithClassName<PropsWithChildren<{
     item: IGoodsItem,
-    active: (key: number) => any;
-    itemKey: any;
-    activeKey: any;
 }>>) {
-    return <div className={cx('inline-block flex relative z-0')}>
+    const popover = useRef<PopoverInstance>();
+    const opened = useRef<boolean>(false);
+    return <div className={cx('inline-block flex relative z-0 flex-shrink-zero')}
+    >
         <div
+            onClick={() => {
+                if (opened.current)
+                    popover.current?.show();
+                else popover.current?.hide();
+                opened.current = !opened.current;
+            }}
             className={cx(
                 ` rounded-20px relative mr-36px text-26px font-bold overflow-visible 
                                             text-white 
                                             bg-#9087E4 
                                             h-216px
-                                            w-full
+                                            w-full w-205px
                                             py-24px  px-12px 
                                             w-12em 
                                             truncate`
             )}
         >
             <span className={cx('z-10')}>{item.name}</span>
-            <div className={cx(`absolute w-full h-full z-0`)}>
-                <Image src={item.pic}></Image>
+
+            <div className={cx(`absolute w-full h-full z-0 left-0`)}>
+                <Image src={item.pic} fit={"fill"}/>
             </div>
-            <span className={cx("absolute right-12px top-50% -translate-y-50%")}
-                  onClick={() => {
-                      active(itemKey);
-                  }}><GrAddCircle></GrAddCircle></span>
+
+            <div className={cx("absolute right-12px top-50% -translate-y-50% flex-center")}
+            >
+                <Popover
+                    ref={(ref) => popover.current = ref!}
+                    reference={
+                        <GrAddCircle/>
+                    }
+                    placement={"right"}
+                    teleport={document.body}
+                    offset={[0, 12]}
+                    trigger={"manual"}
+                >
+                    <div className={cx("w-368px flex relative flex-col gap-20px  bg-amber box-border p-12px")}>
+                        <div text-28px font-bold className={cx('break-all z-10')}>{item.name}</div>
+                        <div
+                            className={cx("min-h-200px text-18px overflow-y-auto max-h-250px z-10")}>
+                            {item.data}
+                        </div>
+
+                        <div className={cx(`absolute w-full h-full z-0 top-0 left-0`)}>
+                            <Image src={item.pic}
+                                   fit={"fill"}/>
+                        </div>
+
+                    </div>
+                </Popover>
+            </div>
+
         </div>
+
     </div>;
 
 }
@@ -61,10 +94,7 @@ function DrinkGoodsList(props: WithClassName<PropsWithChildren>) {
                     key={key}>
                     <DrinkGoodsItem item={item}
                                     key={key}
-                                    itemKey={key}
-                                    active={(num) => setActive(num)}
-                                    activeKey={active}
-                    ></DrinkGoodsItem>
+                    />
                 </SwiperSlide>
             )
         }
