@@ -117,6 +117,7 @@ export const Route = createLazyFileRoute('/result')({
                             slidesPerView={'auto'}
                             centeredSlides={true}
                             spaceBetween={30}
+                            autoHeight={true}
                             onNavigationNext={(event) => {
                                 console.log(event);
                             }}
@@ -161,7 +162,7 @@ export const Route = createLazyFileRoute('/result')({
 
                             {
                                 map(result.result.sups, (drink, index) => <SwiperSlide
-                                    className={cx("box-border w-80%! relative right-2em h-full!")}
+                                    className={cx("box-border w-80%! relative right-2em")}
                                     key={index}
                                 >
                                     <div className={cx("flex flex-col gap-24px")}>

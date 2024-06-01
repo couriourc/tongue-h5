@@ -11,8 +11,8 @@ i18n
     .use(LanguageDetector)
     .init({
         backend: {
-            loadPath: '/locales/{{lng}}.json',
-            allowMultiLoading: false,
+            loadPath: '/locales/zh.json',
+            allowMultiLoading: true,
             requestOptions: { // used for fetch, can also be a function (payload) => ({ method: 'GET' })
                 cache: 'default'
             }
