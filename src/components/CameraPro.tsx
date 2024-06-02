@@ -1,10 +1,11 @@
-import {forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
+import {forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo, useRef} from "react";
 import {BiError} from "react-icons/bi";
 import {iif} from "@/utils";
 import {cx} from "@emotion/css";
 import {FacingModes, getAvailableDevices} from "@/utils/camera";
 import {useTriggerArray} from "@/hooks/trigger";
 import {useWindowResize} from "@/hooks/useWindowResize";
+import {noop} from "underscore";
 
 
 const getListOfVideoInputs = async () => {
@@ -51,8 +52,8 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         </div>);
 
     const video = useRef<HTMLVideoElement>();
-    const [cameraNumber, setCameraNumber] = useState<number>(1);
 
+    let streamStop = noop;
 
     const {cur, next} = useTriggerArray([
         FacingModes.USER,
@@ -70,7 +71,6 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                     audio: false,
                     video: {
                         facingMode: cur.toLowerCase(),
-//                        height:
                         width: {
                             min: window.innerWidth,
                             ideal: 1920,
@@ -88,11 +88,14 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                     $video.onloadedmetadata = () => {
                         $video.play();
                     };
-                    $video.onpause = () => {
+
+                    streamStop = () => {
                         stream.getTracks().forEach((track) => {
                             track.stop();
                         });
                     };
+
+                    $video.onpause = streamStop;
                 })
                 .catch((error) => {
                     console.error(error);
@@ -109,8 +112,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     const canvas = useMemo(() => document.createElement("canvas"), []);
 
     const resumeCamera = () => {
-        let $video = video.current;
-        return $video?.play();
+        return tryCapture();
     };
 
 
@@ -141,7 +143,6 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         // The device has more than one camera
         if (listOfVideoInputs.length > 1) {
             next();
-            console.log(cur);
             /*toNext*/
             if ($video.srcObject) {
                 stop();
@@ -166,7 +167,6 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         if (!$video) return;
         const context = canvas.getContext("2d")!;
         clean();
-
         context.drawImage($video, 0, 0, canvas.width, canvas.height);
 
     }
@@ -176,6 +176,9 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         if (!$video) return;
         tryCapture().then(() => {
         });
+        return () => {
+            streamStop();
+        };
     }, []);
 
     return <>

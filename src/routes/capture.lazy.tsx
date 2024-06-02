@@ -36,6 +36,7 @@ export const Route = createLazyFileRoute('/capture')({
                 file: file
             }).then((result: IParserResult) => {
                 if (result.state !== "yes") {
+                    camera.current!.resume();
                     Toast.fail(t("解析出错！"));
                     return Promise.reject();
                 }
@@ -46,6 +47,7 @@ export const Route = createLazyFileRoute('/capture')({
                     }
                 });
             }).catch((err) => {
+                camera.current!.resume();
                 Toast.fail(t("解析出错！"));
             }).finally(() => {
                 setLoading(false);
