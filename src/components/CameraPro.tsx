@@ -1,11 +1,11 @@
-import {forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo, useRef} from "react";
+import {forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
 import {BiError} from "react-icons/bi";
 import {iif} from "@/utils";
 import {cx} from "@emotion/css";
 import {FacingModes, getAvailableDevices} from "@/utils/camera";
-import {useTriggerArray} from "@/hooks/trigger";
 import {useWindowResize} from "@/hooks/useWindowResize";
 import {noop} from "underscore";
+import {t} from "i18next";
 
 
 const getListOfVideoInputs = async () => {
@@ -48,20 +48,15 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         <div size-full flex flex-center text-32px
              text-danger bg-black font-fold>
             <BiError/>
-            没有相机权限
+            {t('没有相机权限')}
         </div>);
 
     const video = useRef<HTMLVideoElement>();
-
     let streamStop = noop;
-
-    const {cur, next} = useTriggerArray([
-        FacingModes.USER,
-        FacingModes.ENVIRONMENT,
-    ]);
-
+    const [cur, setCur] = useState<(typeof FacingModes)[keyof (typeof FacingModes)]>(FacingModes.USER);
     const tryCapture = async () => {
         let $video = video.current!;
+        if (!$video) return;
         //Get the details of video inputs of the device
         const videoInputs = await getListOfVideoInputs();
         //The device has a camera
@@ -88,13 +83,11 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                     $video.onloadedmetadata = () => {
                         $video.play();
                     };
-
                     streamStop = () => {
                         stream.getTracks().forEach((track) => {
                             track.stop();
                         });
                     };
-
                     $video.onpause = streamStop;
                 })
                 .catch((error) => {
@@ -142,7 +135,8 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         let $video = video.current!;
         // The device has more than one camera
         if (listOfVideoInputs.length > 1) {
-            next();
+            if (cur === FacingModes.USER) setCur(FacingModes.ENVIRONMENT);
+            else setCur(FacingModes.USER);
             /*toNext*/
             if ($video.srcObject) {
                 stop();
@@ -150,9 +144,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
             }
             await tryCapture();
         } else if (listOfVideoInputs.length === 1) {
-//            alert("The device has only one camera");
         } else {
-//            alert("The device does not have a camera");
         }
     };
 
@@ -174,8 +166,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     useEffect(() => {
         let $video = video.current!;
         if (!$video) return;
-        tryCapture().then(() => {
-        });
+        switchCamera();
         return () => {
             streamStop();
         };
