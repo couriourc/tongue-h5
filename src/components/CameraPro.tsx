@@ -127,8 +127,9 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         let $video = video.current!;
         // The device has more than one camera
         if (listOfVideoInputs.length > 1) {
-            /*toNext*/
             next();
+            console.log(cur);
+            /*toNext*/
             if ($video.srcObject) {
                 stop();
                 clean();
@@ -166,7 +167,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
 
     return <>
         <div className={cx('relative')}>
-            <video className={cx(props.className, 'w-screen! h-screen!')}
+            <video className={cx(props.className, 'w-screen! h-screen! object-fill')}
                    autoPlay
                    disablePictureInPicture={true}
                    muted={true}
@@ -174,6 +175,5 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                    ref={r => video.current = r!}
             />
         </div>
-        {/*<Camera className={cx("w-full")} w-full h-full responsive={true}></Camera>*/}
     </>;
 });
