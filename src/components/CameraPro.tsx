@@ -1,4 +1,4 @@
-import {forwardRef, ReactNode, Ref, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
+import {forwardRef, memo, ReactNode, Ref, useEffect, useImperativeHandle, useMemo, useRef} from "react";
 import {BiError} from "react-icons/bi";
 import {iif} from "@/utils";
 import {cx} from "@emotion/css";
@@ -28,7 +28,7 @@ export interface ICameraProDefault {
 }
 
 
-export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
+export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
     if (!isSupported) return iif(!!props.Error, <>{Error}</>,
         <div size-full flex flex-center text-32px
              text-danger bg-black font-fold>
@@ -36,14 +36,16 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
             {t('没有相机权限')}
         </div>);
 
+    let cur: (typeof FacingModes)[keyof (typeof FacingModes)] = FacingModes.USER;
     const video = useRef<HTMLVideoElement>();
     let streamStop = noop;
-    const [cur, setCur] = useState<(typeof FacingModes)[keyof (typeof FacingModes)]>(FacingModes.USER);
+//    const [cur, setCur] = useState<(typeof FacingModes)[keyof (typeof FacingModes)]>(FacingModes.USER);
     const tryCapture = async () => {
         let $video = video.current!;
         if (!$video) return;
         //Get the details of video inputs of the device
         const videoInputs = await getListOfVideoInputs();
+
         //The device has a camera
         if (videoInputs.length) {
             navigator.mediaDevices
@@ -120,8 +122,8 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         let $video = video.current!;
         // The device has more than one camera
         if (listOfVideoInputs.length > 1) {
-            if (cur === FacingModes.USER) setCur(FacingModes.ENVIRONMENT);
-            else setCur(FacingModes.USER);
+            if (cur === FacingModes.USER) cur = FacingModes.ENVIRONMENT;
+            else cur = FacingModes.USER;
             /*toNext*/
             if ($video.srcObject) {
                 stop();
@@ -168,4 +170,4 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
             />
         </div>
     </>;
-});
+}));
