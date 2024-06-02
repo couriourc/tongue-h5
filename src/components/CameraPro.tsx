@@ -194,7 +194,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
 
     return <>
         <div className={cx('relative')}>
-            <video className={cx(props.className)}
+            <video className={cx(props.className, 'w-screen! h-screen!')}
                    autoPlay
                    disablePictureInPicture={true}
                    muted={true}
