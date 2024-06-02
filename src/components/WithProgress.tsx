@@ -8,7 +8,6 @@ export const WithNprogress = ({children}: PropsWithChildren) => {
         NProgress.done();
         return () => {
             NProgress.start();
-            console.log('this');
         };
     });
     return children;

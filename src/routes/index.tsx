@@ -6,9 +6,8 @@ import {useTo} from "@/hooks/to";
 import {Empty, Skeleton,} from "react-vant";
 import {getTongueDetection} from "@/api/tongue.api";
 import useSWR from "swr";
-import React, {useEffect, useRef} from "react";
+import React, {useRef} from "react";
 import {iif, placeholder} from "@/utils";
-import autoAnimate from '@formkit/auto-animate';
 import {map} from "underscore";
 import {useTranslation} from "react-i18next";
 
@@ -20,9 +19,6 @@ export const NewsList = () => {
         return getTongueDetection();
     });
 
-    useEffect(() => {
-        parent.current && autoAnimate(parent.current);
-    }, [parent]);
     if (isLoading) return <SkeletonList></SkeletonList>;
 
 
