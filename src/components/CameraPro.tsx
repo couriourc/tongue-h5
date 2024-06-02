@@ -6,6 +6,7 @@ import {FacingModes, getAvailableDevices} from "@/utils/camera";
 import {useWindowResize} from "@/hooks/useWindowResize";
 import {noop} from "underscore";
 import {t} from "i18next";
+import {isSupported} from "@/ployfill";
 
 
 const getListOfVideoInputs = async () => {
@@ -26,22 +27,6 @@ export interface ICameraProDefault {
     Error?: ReactNode;
 }
 
-function hasGetUserMedia() {
-    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-}
-
-
-const isSupported = hasGetUserMedia();
-const initializeMedia = () => {
-    if (!isSupported) return;
-    if (!("mediaDevices" in navigator)) {
-        /* @ts-ignore */
-        navigator.mediaDevices! = {} as {
-            getUserMedia(): Promise<any>
-        };
-    }
-};
-initializeMedia();
 
 export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
     if (!isSupported) return iif(!!props.Error, <>{Error}</>,
@@ -60,7 +45,6 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         //Get the details of video inputs of the device
         const videoInputs = await getListOfVideoInputs();
         //The device has a camera
-        console.log(cur);
         if (videoInputs.length) {
             navigator.mediaDevices
                 ?.getUserMedia({

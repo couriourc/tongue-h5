@@ -57,9 +57,12 @@ export const Route = createLazyFileRoute('/capture')({
         function handleCapture() {
             const img = camera.current!.capture();
             const file = base64ToFile(img)!;
+
             setToBeAnalyse(file);
-            handlePostTongueDetection(file).then(r => {
-            });
+
+            handlePostTongueDetection(file)
+                .then(r => {
+                });
         }
 
         async function handleOpen() {
@@ -77,13 +80,13 @@ export const Route = createLazyFileRoute('/capture')({
         }
 
         return <section text-white h-screen w-screen touch-none>
-            {isLoading ? <Loader></Loader> : null}
+
             <div flex justify-between w-full z-200 text-28px fixed top-64px px-24px>
                 <div className={cx("size-64px")} onClick={() => to("/")}><ArrowLeft/></div>
                 <span>{t('使用教程')}</span>
             </div>
 
-            <div w-full fixed z-200
+            <div w-full fixed z-1 bg={"#0302029A"} h-full
                  className={"top-40% left-50% -translate-50% flex flex-center flex-col gap-48px"}>
                 <div flex-col flex gap-24px flex-center text-36px>
                     <span>{t('请拍摄舌面')}</span>
@@ -95,7 +98,7 @@ export const Route = createLazyFileRoute('/capture')({
             <CameraPro className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>
 
             <div fixed bottom-0 h-328px w-full
-                 flex
+                 flex z-3
                  className={cx('bg-#030202')}
             >
                 <div className={cx("absolute top-60% left-132px -translate-y-50% flex flex-col flex-center")}
@@ -125,6 +128,7 @@ export const Route = createLazyFileRoute('/capture')({
                     </div>
                 </div>
             </div>
+            {isLoading ? <Loader></Loader> : null}
         </section>;
     }
 });

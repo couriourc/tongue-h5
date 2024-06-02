@@ -41,7 +41,7 @@ export function Loader() {
 }
 
 const LoadingComp = () => <Overlay visible={true}>
-    <div flex justify-center items-center fixed w-full h-full bg="#0F1C2191" z-999>
+    <div flex justify-center items-center fixed w-full h-full bg="#0F1C2191" z-999999>
         <LoadingStyled>
             <div
                 className="flex justify-center items-center min-h-screen  c-white font-size-2em minimalism-load"

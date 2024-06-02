@@ -6,7 +6,7 @@ export function iif<T, U>(condition: boolean, whenTrue: T, whenFalse?: U) {
 }
 
 // 将 base64 转换为 Blob
-function base64ToBlob(base64: string) {
+function base64ToBlob(base64: string): [Blob, string] {
     var arr = base64.split(","),
         mime = arr[0].match(/:(.*?);/)![1],
         bstr = atob(arr[1]),
@@ -22,7 +22,8 @@ function base64ToBlob(base64: string) {
 
 export function base64ToFile(base64: string, fileName = '' + Date.now()) {
     const [blob, mime] = base64ToBlob(base64);
-    return new File([blob], fileName + '.jpeg',);
+    console.log();
+    return new File([blob], `${fileName}.${mime.split("/").pop()}`, {type: mime as string});
 }
 
 export function placeholder<T>(text: T, defaultText: T) {

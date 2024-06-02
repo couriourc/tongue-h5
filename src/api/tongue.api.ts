@@ -18,7 +18,11 @@ function obj2form(target: object) {
     return formData;
 }
 
-export const postTongueSuccess = (data: v.InferInput<typeof IPostTongueDetection>) => requester.post<any>("/tongue_success", obj2form(v.parse(IPostTongueDetection, data)));
+export const postTongueSuccess = (data: v.InferInput<typeof IPostTongueDetection>) => requester.post<any>("/tongue_success", obj2form(v.parse(IPostTongueDetection, data)), {
+    headers: {
+        "Content-Type": "image/jpeg"
+    }
+});
 
 export interface IGetTongueDetectionItem {
     title: string;
