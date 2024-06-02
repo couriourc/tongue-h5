@@ -1,4 +1,4 @@
-import {forwardRef, memo, ReactNode, Ref, useEffect, useImperativeHandle, useMemo, useRef} from "react";
+import {forwardRef, memo, ReactNode, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef} from "react";
 import {BiError} from "react-icons/bi";
 import {iif} from "@/utils";
 import {cx} from "@emotion/css";
@@ -45,7 +45,7 @@ export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref
         if (!$video) return;
         //Get the details of video inputs of the device
         const videoInputs = await getListOfVideoInputs();
-
+        console.log(cur);
         //The device has a camera
         if (videoInputs.length) {
             navigator.mediaDevices
@@ -150,10 +150,14 @@ export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref
 
     }
 
+    const init = useCallback(() => {
+        tryCapture();
+        console.log("exec");
+    }, []);
     useEffect(() => {
         let $video = video.current!;
         if (!$video) return;
-        tryCapture();
+        init();
         return () => {
             streamStop();
         };

@@ -17,15 +17,10 @@ import {useTranslation} from "react-i18next";
 export const Route = createLazyFileRoute('/capture')({
     component: () => {
         const {t} = useTranslation(undefined, {keyPrefix: "capture"});
-        const [_toBeAnalyse, setToBeAnalyse] = useState<File>();
         const [_result, setResult] = useAtomParserResult();
         const camera = useRef<CameraProExposed>(null);
         const to = useTo();
-        const [_files, open] = useFileDialog(
-            {
-                accept: ".jpeg,.jpg,.png",
-            }
-        );
+        const [_files, open] = useFileDialog({accept: ".jpeg,.jpg,.png"});
         const [isLoading, setLoading] = useState<boolean>();
 
         async function handlePostTongueDetection(file: File) {
@@ -58,8 +53,6 @@ export const Route = createLazyFileRoute('/capture')({
             const img = camera.current!.capture();
             const file = base64ToFile(img)!;
 
-            setToBeAnalyse(file);
-
             handlePostTongueDetection(file)
                 .then(r => {
                 });
@@ -68,7 +61,6 @@ export const Route = createLazyFileRoute('/capture')({
         async function handleOpen() {
             const files = await open();
             if (!(files && !!files.length)) return;
-            setToBeAnalyse(files[0]);
             handlePostTongueDetection(files[0]).then(r => {
             });
         }
