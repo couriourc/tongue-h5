@@ -70,15 +70,28 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                     audio: false,
                     video: {
                         facingMode: cur.toLowerCase(),
-                        height: $video.clientHeight,
-                        width: $video.clientWidth,
-                        aspectRatio: $video.clientWidth / $video.clientWidth,
+//                        height:
+                        width: {
+                            min: window.innerWidth,
+                            ideal: 1920,
+                            max: 2080,
+                        },
+                        height: {
+                            min: window.innerHeight,
+                            ideal: 1080,
+                            max: 1440,
+                        },
                     },
                 })
                 .then((stream) => {
                     $video.srcObject = stream;
                     $video.onloadedmetadata = () => {
                         $video.play();
+                    };
+                    $video.onpause = () => {
+                        stream.getTracks().forEach((track) => {
+                            track.stop();
+                        });
                     };
                 })
                 .catch((error) => {
