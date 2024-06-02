@@ -11,7 +11,7 @@ import {TanStackRouterVite} from '@tanstack/router-vite-plugin';
 
 // https://vitejs.dev/config/
 export default defineConfig(({command, mode}: ConfigEnv) => {
-    const need_debug = true || command !== 'serve' || mode === 'test';
+    const need_debug = false;
     return ({
         resolve: {
             alias: {
