@@ -41,28 +41,24 @@ export const Route = createLazyFileRoute('/capture')({
                         back: '/capture'
                     }
                 });
-            }).catch((err) => {
+            }).catch(() => {
                 camera.current!.resume();
                 Toast.fail(t("解析出错！"));
             }).finally(() => {
-                setLoading(false);
+                return setLoading(false);
             });
         }
 
         function handleCapture() {
             const img = camera.current!.capture();
             const file = base64ToFile(img)!;
-
-            handlePostTongueDetection(file)
-                .then(r => {
-                });
+            return handlePostTongueDetection(file);
         }
 
         async function handleOpen() {
             const files = await open();
             if (!(files && !!files.length)) return;
-            handlePostTongueDetection(files[0]).then(r => {
-            });
+            return handlePostTongueDetection(files[0]);
         }
 
 
