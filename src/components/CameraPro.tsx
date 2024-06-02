@@ -69,7 +69,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                 ?.getUserMedia({
                     audio: false,
                     video: {
-                        facingMode: cur,
+                        facingMode: cur.toLowerCase(),
                         height: $video.clientHeight,
                         width: $video.clientWidth,
                         aspectRatio: $video.clientWidth / $video.clientWidth,
@@ -167,7 +167,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
 
     return <>
         <div className={cx('relative')}>
-            <video className={cx(props.className, 'w-screen! h-screen! object-fill')}
+            <video className={cx(props.className, 'w-screen! h-screen! object-cover')}
                    autoPlay
                    disablePictureInPicture={true}
                    muted={true}
