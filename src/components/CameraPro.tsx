@@ -167,7 +167,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     useEffect(() => {
         let $video = video.current!;
         if (!$video) return;
-        switchCamera();
+        tryCapture();
         return () => {
             streamStop();
         };
