@@ -1,7 +1,7 @@
 import {createLazyFileRoute} from '@tanstack/react-router';
 import {CameraPro, CameraProExposed} from "@/components/CameraPro";
 import {cx} from "@emotion/css";
-import {useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import {useTo} from "@/hooks/to";
 import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
@@ -22,6 +22,8 @@ export const Route = createLazyFileRoute('/capture')({
         const to = useTo();
         const [_files, open] = useFileDialog({accept: ".jpeg,.jpg,.png"});
         const [isLoading, setLoading] = useState<boolean>();
+
+        const MemoCamera = useMemo(() => CameraPro, []);
 
         async function handlePostTongueDetection(file: File) {
             if (!file) return;
@@ -83,7 +85,7 @@ export const Route = createLazyFileRoute('/capture')({
                 <Image src={"face"} className={cx("w-310px")}></Image>
             </div>
 
-            <CameraPro className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>
+            <MemoCamera className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>
 
             <div fixed bottom-0 h-328px w-full
                  flex z-3

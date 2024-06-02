@@ -40,8 +40,9 @@ export function Loader() {
     return createPortal(<LoadingComp/>, document.body);
 }
 
-const LoadingComp = () => <Overlay visible={true}>
-    <div flex justify-center items-center fixed w-full h-full bg="#0F1C2191" z-999999>
+const LoadingComp = () => <Overlay zIndex={9999} lockScroll={true} visible={true}>
+    <div flex justify-center items-center fixed size-screen bg="#0F1C2191" z-999999
+         onClick={(e) => e.stopPropagation()}>
         <LoadingStyled>
             <div
                 className="flex justify-center items-center min-h-screen  c-white font-size-2em minimalism-load"

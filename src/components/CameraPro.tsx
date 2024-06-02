@@ -150,18 +150,15 @@ export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref
 
     }
 
-    const init = useCallback(() => {
-        tryCapture();
-        console.log("exec");
-    }, []);
+
     useEffect(() => {
         let $video = video.current!;
         if (!$video) return;
-        init();
+        tryCapture();
         return () => {
             streamStop();
         };
-    }, []);
+    }, [video.current]);
 
     return <>
         <div className={cx('relative')}>
