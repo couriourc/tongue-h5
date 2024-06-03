@@ -26,6 +26,21 @@ export function base64ToFile(base64: string, fileName = '' + Date.now()) {
     return new File([blob], `${fileName}.${mime.split("/").pop()}`, {type: mime as string});
 }
 
+export function fileToBase64(file: File) {
+
+    let reader = new FileReader();
+    return new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+            if (!reader.result) {
+                reject("parser error");
+            }
+            resolve(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+    });
+
+}
+
 export function placeholder<T>(text: T, defaultText: T) {
     return iif(!!text, text, defaultText);
 }

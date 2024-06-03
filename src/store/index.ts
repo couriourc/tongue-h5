@@ -7,8 +7,21 @@ export interface IGoodsItem {
     pic: string;
 }
 
+export interface INeedParserFileInfo {
+    base64: string;
+}
+
+export const atomNeedParserFileInfo = atomWithStorage("parser-result",
+    {
+        base64: ''
+    }
+);
+
+/*@ts-ignore*/
+export const useAtomNeedToParser = () => useAtom<INeedParserFileInfo>(atomNeedParserFileInfo);
+
 export interface IParserResult {
-    state: "yes" | "no";
+    state: "yes" | "null";
     she: {
         chihen: string;
         dianci: string;
@@ -23,23 +36,19 @@ export interface IParserResult {
     };
 }
 
-export const atomParserResult = atomWithStorage("parser-result",
-    {
-        state: null,
-        she: {
-            chihen: "",
-            dianci: "",
-            houbotai: "",
-            shese: "",
-            taise: "",
-        },
-        result: {
-            drinks: [] as string[],
-            sups: [] as string[],
-            translate: ''
-        }
+export const atomParserResult = atomWithStorage<IParserResult>("parser-result", {
+    state: "null",
+    she: {
+        chihen: "",
+        dianci: "",
+        houbotai: "",
+        shese: "",
+        taise: "",
+    },
+    result: {
+        drinks: [] as IGoodsItem[],
+        sups: [] as IGoodsItem[],
+        translate: ''
     }
-);
-
-/*@ts-ignore*/
+});
 export const useAtomParserResult = () => useAtom<IParserResult>(atomParserResult);

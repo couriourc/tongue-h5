@@ -8,59 +8,42 @@ import {ArrowLeft} from "@react-vant/icons";
 import {GrPowerCycle} from "react-icons/gr";
 import {useFileDialog} from "@reactuses/core";
 import {postTongueSuccess} from "@/api/tongue.api";
-import {base64ToFile} from "@/utils";
+import {base64ToFile, fileToBase64} from "@/utils";
 import {Loader} from "@/components/Loading";
-import {IParserResult, useAtomParserResult} from "@/store";
+import {INeedParserFileInfo, useAtomNeedToParser} from "@/store";
 import {Toast} from "@/components/Toast";
 import {useTranslation} from "react-i18next";
 
 export const Route = createLazyFileRoute('/capture')({
     component: () => {
         const {t} = useTranslation(undefined, {keyPrefix: "capture"});
-        const [_result, setResult] = useAtomParserResult();
+        const [_target, setTarget] = useAtomNeedToParser();
         const camera = useRef<CameraProExposed>(null);
         const to = useTo();
         const [_files, open] = useFileDialog({accept: ".jpeg,.jpg,.png"});
         const [isLoading, setLoading] = useState<boolean>();
-
         const MemoCamera = useMemo(() => CameraPro, []);
 
-        async function handlePostTongueDetection(file: File) {
-            if (!file) return;
-            if (isLoading) return;
-            setLoading(true);
-            return postTongueSuccess({
-                file: file
-            }).then((result: IParserResult) => {
-                if (result.state !== "yes") {
-                    camera.current!.resume();
-                    Toast.fail(t("解析出错！"));
-                    return Promise.reject();
+        async function handlePostTongueDetection(img: string) {
+            setTarget({base64: img});
+            return to("/result", {
+                search: {
+                    back: '/capture'
                 }
-                setResult(result);
-                return to("/result", {
-                    search: {
-                        back: '/capture'
-                    }
-                });
-            }).catch(() => {
-                camera.current!.resume();
-                Toast.fail(t("解析出错！"));
-            }).finally(() => {
-                return setLoading(false);
             });
         }
 
         function handleCapture() {
             const img = camera.current!.capture();
-            const file = base64ToFile(img)!;
-            return handlePostTongueDetection(file);
+//            const file = base64ToFile(img)!;
+            return handlePostTongueDetection(img);
         }
 
         async function handleOpen() {
             const files = await open();
             if (!(files && !!files.length)) return;
-            return handlePostTongueDetection(files[0]);
+            const base64 = await fileToBase64(files[0]);
+            return handlePostTongueDetection(base64);
         }
 
 
