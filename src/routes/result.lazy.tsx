@@ -79,8 +79,14 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
                     trigger={"manual"}
                 >
                     <div
-                        className={cx("w-368px flex relative flex-col gap-20px text-white  bg-amber box-border p-12px")}>
-                        <div className={cx('w-full h-full ')}>
+                        className={cx("relative w-368px flex  p-12px relative flex-col gap-20px text-white  bg-amber box-border ", maskCss)}>
+
+                        <div className={cx(`absolute w-full h-full z-0 top-0 left-0`)}>
+                            <Image src={item.pic}
+                                   className={cx("size-full ")}
+                                   fit={"fill"}/>
+                        </div>
+                        <div className={cx('w-95% box-border h-full  z-10')}>
                             <div text-28px font-bold className={cx('break-all z-10')}>{item.name}</div>
                             <div
                                 className={cx("min-h-200px text-18px overflow-y-auto max-h-250px z-10")}>
@@ -88,11 +94,6 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
                             </div>
                         </div>
 
-                        <div className={cx(`absolute w-full h-full z-0 top-0 left-0 border-solid`)}>
-                            <Image src={item.pic}
-                                   className={cx("size-full ")}
-                                   fit={"fill"}/>
-                        </div>
 
                     </div>
                 </Popover>
