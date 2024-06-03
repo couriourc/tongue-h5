@@ -6,7 +6,7 @@ import {IGoodsItem, IParserResult, useAtomNeedToParser} from "@/store";
 import {Image} from "@/components/Image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {base64ToFile, iif, placeholder} from "@/utils";
-import {Flex, Popover, PopoverInstance, Skeleton, Toast,} from "react-vant";
+import {Flex, Popover, PopoverInstance, Toast,} from "react-vant";
 import 'swiper/css';
 import {GrAddCircle} from "react-icons/gr";
 import React, {createContext, PropsWithChildren, ReactNode, useContext, useRef} from "react";
@@ -19,6 +19,7 @@ import {PopoverPlacement} from "react-vant/es/popover/PropsType";
 import {useTo} from "@/hooks/to";
 import {BsThreeDots} from "react-icons/bs";
 import useSWR from "swr";
+import {LoadingAnimation} from "@/components/LottieLoading";
 
 const maskCss = css`
     &::after {
@@ -271,7 +272,7 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                         <div className={cx("w-full min-h-200px")}>
                             {
                                 isLoading ?
-                                    <Skeleton className={cx("w-full h-full")}></Skeleton> :
+                                    <LoadingAnimation/> :
                                     <div text-24px text-justify>
                                         {placeholder(result?.result?.translate, t("暂无内容"))}
                                     </div>
@@ -343,7 +344,7 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
             </div>
             {
                 isLoading ?
-                    <Skeleton className={cx("w-full h-3em")}></Skeleton> :
+                    <LoadingAnimation/> :
                     <DrinkGoodsList
                         className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}></DrinkGoodsList>
             }
