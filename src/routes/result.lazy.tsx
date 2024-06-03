@@ -15,9 +15,11 @@ import {postMakePdf} from "@/api/tongue.api";
 /*@ts-ignore*/
 import Downloader from "downloadjs";
 import {useTranslation} from "react-i18next";
+import {PopoverPlacement} from "react-vant/es/popover/PropsType";
 
-function DrinkGoodsItem({item,}: WithClassName<PropsWithChildren<{
+function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren<{
     item: IGoodsItem,
+    popoverPosition: PopoverPlacement,
 }>>) {
     const popover = useRef<PopoverInstance>();
     const opened = useRef<boolean>(false);
@@ -54,7 +56,7 @@ function DrinkGoodsItem({item,}: WithClassName<PropsWithChildren<{
                     reference={
                         <GrAddCircle/>
                     }
-                    placement={"right"}
+                    placement={popoverPosition}
                     teleport={document.body}
                     offset={[0, 12]}
                     trigger={"manual"}
@@ -88,12 +90,13 @@ function DrinkGoodsList(props: WithClassName<PropsWithChildren>) {
                    slidesPerView={'auto'}
     >
         {
-            map(result.result.sups.concat(result.result.sups),
+            map(result.result.sups,
                 (item, key) => <SwiperSlide
                     className={cx("w-300px! py-24px  px-12px  ")}
                     key={key}>
                     <DrinkGoodsItem item={item}
                                     key={key}
+                                    popoverPosition={iif(key !== (result.result.sups.length - 1), "right", "left")!}
                     />
                 </SwiperSlide>
             )
