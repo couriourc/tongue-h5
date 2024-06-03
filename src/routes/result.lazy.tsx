@@ -254,7 +254,7 @@ export const Route = createLazyFileRoute('/result')({
 
                         <button
                             onClick={() => handlePostMakePdf()}
-                            className={cx(" fixed bottom-157px bg-primary text-white text-32px px-20px z-999999 py-15px outline-none border-none rounded-24px")}>
+                            className={cx("  bottom-157px bg-primary text-white text-32px px-20px mt-12px py-15px outline-none border-none rounded-24px")}>
                             {t("点击生成完整报告")}
                         </button>
                     </div>
