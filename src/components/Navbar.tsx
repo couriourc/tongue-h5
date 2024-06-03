@@ -19,7 +19,6 @@ export const NavBar = (
 ) => {
     const to = useTo();
     const location = useLocation();
-    console.log(location);
 
     return (
         <VantNavBar

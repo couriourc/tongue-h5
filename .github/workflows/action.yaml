@@ -1,0 +1,29 @@
+name: "Build and Release"
+
+on:
+  push: {
+    branches:
+      - "master"
+  }
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        command: [ 'pnpm i', 'pnpm build' ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.10
+      - uses: actions/setup-node@v3
+        with:
+          cache: "pnpm"
+          cache-dependency-path: "pnpm-lock.yaml"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm prerelease
+      - name: Run cis
+        run: ${{ matrix.command }}
