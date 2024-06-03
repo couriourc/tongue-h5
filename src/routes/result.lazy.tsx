@@ -233,7 +233,10 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
             spaceBetween={30}
             autoHeight={true}
         >
-            <SwiperSlide className={cx('w-80%! relative right-2em')}>
+            <SwiperSlide className={cx({
+                'w-80%! relative right-2em': !!result?.result?.sups.length,
+                ' px-48px': !result?.result?.sups.length,
+            })}>
                 <div className={cx("flex flex-col gap-24px")}>
                     <div className={"inline-block  whitespace-nowrap box-border"}>
                         <Flex wrap="wrap"
