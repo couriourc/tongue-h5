@@ -13,7 +13,7 @@ export const LoadingAnimation =
                 preserveAspectRatio: 'xMidYMid slice',
                 className: cx(`color-[var(--theme-primary)]`)
             }
-        }} height={68} width={68}
+        }} height={128} width={128}
         />;
 
     });
