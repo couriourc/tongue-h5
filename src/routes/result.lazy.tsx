@@ -61,7 +61,8 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
                     offset={[0, 12]}
                     trigger={"manual"}
                 >
-                    <div className={cx("w-368px flex relative flex-col gap-20px  bg-amber box-border p-12px")}>
+                    <div
+                        className={cx("w-368px flex relative flex-col gap-20px text-white  bg-amber box-border p-12px")}>
                         <div text-28px font-bold className={cx('break-all z-10')}>{item.name}</div>
                         <div
                             className={cx("min-h-200px text-18px overflow-y-auto max-h-250px z-10")}>
@@ -204,7 +205,7 @@ export const Route = createLazyFileRoute('/result')({
                                                 className={`inline-block  p-46px   
                                                 bg-#FFCEEC w-full 
                                                 h-400px 
-                                                rounded-18px flex flex-col
+                                                rounded-18px flex flex-col text-white
                                                 gap-20px`
                                                 }>
                                 <span className={cx('w-12em truncate text-36px ')}>
