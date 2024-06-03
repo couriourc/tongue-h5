@@ -341,8 +341,12 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                     <span></span>
                 </div>
             </div>
-            <DrinkGoodsList
-                className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}></DrinkGoodsList>
+            {
+                isLoading ?
+                    <Skeleton className={cx("w-full h-3em")}></Skeleton> :
+                    <DrinkGoodsList
+                        className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}></DrinkGoodsList>
+            }
         </div>
 
         {
