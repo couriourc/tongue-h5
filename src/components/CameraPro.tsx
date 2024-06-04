@@ -228,7 +228,6 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
 //                draw();
 //                stop();
 //                return canvas.toDataURL("image/jpeg");
-                cam.stop();
                 return cam.snap("'image/jpeg'");
             },
             switch() {
