@@ -243,7 +243,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
         };
     });
 
-    return <video className={cx(props.className)}
+    return <video className={cx(props.className, 'object-cover transform-gpu')}
                   ref={r => webcam.current = r!}
                   autoPlay={true}
                   playsInline={true}
