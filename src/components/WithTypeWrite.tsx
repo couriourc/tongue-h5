@@ -12,7 +12,7 @@ export function WithTypeWrite({children}: PropsWithChildren) {
     useEffect(() => {
         if (!_.isString(children)) return;
         if (hasd.current >= children.length) return;
-        const timeout = setInterval(() => {
+        const timeout: NodeJS.Timeout = setInterval(() => {
             if (hasd.current >= children.length) {
                 setCurLast(() => "");
                 setCur(() => children);

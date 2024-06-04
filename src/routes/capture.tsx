@@ -11,7 +11,6 @@ import {base64ToFile, fileToBase64} from "@/utils";
 import {Loader} from "@/components/Loading";
 import {useAtomNeedToParser} from "@/store";
 import {useTranslation} from "react-i18next";
-import download from "downloadjs"
 export const Route = createFileRoute('/capture')({
     component: () => {
         const {t} = useTranslation(undefined, {keyPrefix: "capture"});
@@ -33,7 +32,6 @@ export const Route = createFileRoute('/capture')({
 
         function handleCapture() {
             const img = camera.current!.capture();
-            download(base64ToFile(img));
             return handlePostTongueDetection(img);
         }
 

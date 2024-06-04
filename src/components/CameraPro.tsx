@@ -14,14 +14,14 @@
 //    return getAvailableDevices("video");
 //};
 //
-//export interface CameraProExposed {
-//    capture(): string;
-//
-//    switch(): void;
-//
-//    resume(): void;
-//}
-//
+export interface CameraProExposed {
+    capture(): string;
+
+    switch(): void;
+
+    resume(): void;
+}
+
 import {FacingModes} from "@/utils/camera";
 //
 ////export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref: Ref<CameraProExposed>) => {
