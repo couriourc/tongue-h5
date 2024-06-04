@@ -172,10 +172,10 @@ export default class Webcam {
                 this._snapSoundElement.play();
             }
             this._canvasElement.width = window.innerWidth;
-            this._canvasElement.height =  this._canvasElement.width * (16 / 9);
+            this._canvasElement.height = this._canvasElement.width * (4 / 3);
             let context = this._canvasElement.getContext('2d');
             if (this._facingMode == 'user') {
-                context.translate(window.innerWidth, 0);
+                context.translate(this._canvasElement.width, 0);
                 context.scale(-1, 1);
             }
             context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
