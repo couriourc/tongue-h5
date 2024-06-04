@@ -58,7 +58,7 @@ export const Route = createFileRoute('/capture')({
             <div w-full fixed z-1 h-full
                  className={cx("top-40% left-50% -translate-50% flex flex-center flex-col gap-48px",
                      css`
-                         background: rgba(5, 5, 5, 0.6);
+                         background: rgba(0, 0, 0, 0.2);
                      `)}>
                 <div flex-col flex gap-24px flex-center text-36px>
                     <span>{t('请拍摄舌面')}</span>
