@@ -1,5 +1,5 @@
 import {cx} from "@emotion/css";
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, useEffect, useRef} from "react";
 import {Image as VantImage, type ImageProps} from "react-vant";
 import arrowUrl from "@/assets/arrow.png?url";
 import gallaryAddUrl from "@/assets/gallary_add.png?url";
@@ -39,8 +39,33 @@ export interface WithPresetImageProps {
 }
 
 export const Image = (props: PropsWithChildren<ImageProps & WithPresetImageProps>) => {
+    const img = useRef<HTMLDivElement>();
     let src = Images[props.src as PresetImageName] || props.src;
-    return <div className={cx(props.className)}>
-        <VantImage {...{...props, src}} alt={props.alt ?? "alt"}></VantImage>
+
+    useEffect(() => {
+        let src = props.src;
+        /*@ts-ignore*/
+        if (src instanceof window.Image) {
+            /*@ts-ignore*/
+            src = src.cloneNode();
+            /*@ts-ignore*/
+            src.className = cx(props.className,'transform-gpu');
+            /*@ts-ignore*/
+            src.setAttribute('fit', props.fit);
+            /*@ts-ignore*/
+            img.current?.append(src.cloneNode());
+            /*@ts-ignore*/
+        }
+        return () => {
+            /*@ts-ignore*/
+            if (src instanceof window.Image) {
+                (src as HTMLImageElement).remove();
+            }
+        };
+    }, []);
+
+
+    return <div className={cx(props.className)} ref={(r) => img.current = r!}>
+        {!(props.src instanceof window.Image) && <VantImage {...{...props, src}} alt={props.alt ?? "alt"}></VantImage>}
     </div>;
 };

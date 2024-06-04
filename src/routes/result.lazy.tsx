@@ -160,7 +160,7 @@ export const Route = createFileRoute('/result')({
         const to = useTo();
         let _destoryed = false;
         const {isLoading, data: result, error} = useSWR(() => base64, async (base64: string) => {
-            let file: File;
+            const file = base64ToFile(base64);
             const error = () => {
                 Toast.fail(t("解析出错！"));
 
@@ -169,13 +169,6 @@ export const Route = createFileRoute('/result')({
                     });
                 });
             };
-            try {
-
-                file = base64ToFile(base64);
-            } catch {
-                error();
-            }
-
             return new Promise((resolve, reject) => {
                 return postTongueSuccess({
                     file: file
@@ -303,7 +296,7 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                         <div flex w-full justify-between items-center>
                             <span font-bold text-28px>{t('舌象释义与通常伴随的症状')}</span>
                         </div>
-                        <div className={cx("w-full h-fit")}>
+                        <div className={cx("w-full min-h-200px")}>
                             {
                                 isLoading ?
                                     null :
