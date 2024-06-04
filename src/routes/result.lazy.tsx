@@ -20,6 +20,9 @@ import {useTo} from "@/hooks/to";
 import {BsThreeDots} from "react-icons/bs";
 import useSWR from "swr";
 import {LoadingAnimation} from "@/components/LottieLoading";
+import {ThreeDots} from "@/components/ThreeDots";
+import {ChargeLoading} from "@/components/ChargeLoading";
+import {WithTypeWrite} from "@/components/WithTypeWrite";
 
 const maskCss = css`
     &::after {
@@ -52,8 +55,9 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
             className={cx(
                 ` rounded-20px  mr-36px text-26px font-bold 
                                             text-white 
-                                            bg-#9087E4 
+                                            bg-#FFF 
                                             h-216px
+                                            animate-fade-in
                                             w-full w-205px
                                             py-24px  px-12px 
                                             w-12em overflow-hidden relative
@@ -79,7 +83,7 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
                     trigger={"manual"}
                 >
                     <div
-                        className={cx("relative w-368px flex  p-12px relative flex-col gap-20px text-white  bg-amber box-border ", maskCss)}>
+                        className={cx("relative w-368px flex  p-12px relative flex-col gap-20px text-white  bg-white box-border ", maskCss)}>
 
                         <div className={cx(`absolute w-full h-full z-0 top-0 left-0`)}>
                             <Image src={item.pic}
@@ -156,24 +160,49 @@ export const Route = createFileRoute('/result')({
         const to = useTo();
         let _destoryed = false;
         const {isLoading, data: result, error} = useSWR(() => base64, async (base64: string) => {
-            const file = base64ToFile(base64);
-            return postTongueSuccess({
-                file: file
-            }).then((result: IParserResult) => {
-                if (_destoryed) return;
-                if (result.state !== "yes") {
-                    Toast.fail(t("解析出错！"));
-                    setTimeout(() => {
-                        to("/").then(r => {
-                        });
-                    });
-                    return Promise.reject(t("解析出错！"));
-                }
-                return Promise.resolve(result);
-            }).catch(() => {
+            let file: File;
+            const error = () => {
                 Toast.fail(t("解析出错！"));
-            }).finally(() => {
-                _loading = false;
+
+                setTimeout(() => {
+                    to("/").then(r => {
+                    });
+                });
+            };
+            try {
+
+                file = base64ToFile(base64);
+            } catch {
+                error();
+            }
+
+            return new Promise((resolve, reject) => {
+                return postTongueSuccess({
+                    file: file
+                }).then((result: IParserResult) => {
+                    if (_destoryed) return;
+                    if (result.state !== "yes") {
+                        error();
+                        return Promise.reject(t("解析出错！"));
+                    }
+                    return Promise.all(result.result.sups.concat(result.result.drinks).map((item) => {
+                        return new Promise((resolve, reject) => {
+                            const img = new window.Image();
+                            img.src = item.pic;
+                            img.onload = () => {
+                                resolve(null);
+                            };
+                            /*@ts-ignore*/
+                            item.pic = img;
+                        }).then(() => {
+                            resolve(result);
+                        });
+                    }));
+                }).catch(() => {
+                    error();
+                }).finally(() => {
+                    _loading = false;
+                });
             });
         }, {
             shouldRetryOnError: false,
@@ -254,14 +283,15 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                                         <div className={cx("gap-12px text-center")}>
                                             <span className={cx("text-28px block w-full")}>{label}</span>
                                             <div
-                                                className={cx("text-18px truncate min-h-3em")}>
+                                                className={cx("text-18px truncate min-h-3em relative")}>
                                                 {
                                                     isLoading ?
-                                                        <BsThreeDots className={cx("text-36px")}/> :
-                                                        placeholder(result?.she?.[key as keyof typeof result.she] as ReactNode,
-                                                            <BsThreeDots
-                                                                className={cx("text-36px")}/>)!
-                                                }                                            </div>
+                                                        <ThreeDots/> :
+                                                        placeholder(
+                                                            <WithTypeWrite>{result?.she?.[key as keyof typeof result.she]}</WithTypeWrite> as ReactNode,
+                                                            <ThreeDots/>)!
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </Flex.Item>)
@@ -273,11 +303,11 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                         <div flex w-full justify-between items-center>
                             <span font-bold text-28px>{t('舌象释义与通常伴随的症状')}</span>
                         </div>
-                        <div className={cx("w-full min-h-200px")}>
+                        <div className={cx("w-full h-fit")}>
                             {
                                 isLoading ?
-                                    <LoadingAnimation/> :
-                                    <div text-24px text-justify>
+                                    null :
+                                    <div text-24px text-justify className={cx("animate-fade-in")}>
                                         {placeholder(result?.result?.translate, t("暂无内容"))}
                                     </div>
                             }
@@ -287,10 +317,10 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
             </SwiperSlide>
             {
                 map(result?.result?.sups ?? [], (drink, index) => <SwiperSlide
-                    className={cx("box-border w-80%! relative right-2em")}
+                    className={cx("box-border w-80%! relative right-2em ")}
                     key={index}
                 >
-                    <div className={cx("flex flex-col gap-24px")}>
+                    <div className={cx("flex flex-col gap-24px animate-fade-in")}>
                         <div
                             className={cx(" bg-#FFCEEC overflow-hidden  h-400px rounded-18px box-border")}>
 
@@ -339,29 +369,28 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
             }
         </Swiper>
 
-        <div flex flex-col w-full px-48px gap-20px>
-            <div flex w-full justify-between items-center>
-                <span font-bold text-28px>{t('诊断推荐药膳')}</span>
-                <div className={cx("text-#A2A2C8 text-26px flex-center")}>
-                    <span></span>
-                </div>
-            </div>
-            {
-                isLoading ?
-                    <LoadingAnimation/> :
-                    <DrinkGoodsList
-                        className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}></DrinkGoodsList>
-            }
-        </div>
 
         {
             !isLoading ?
-                <button
-                    onClick={() => handlePostMakePdf()}
-                    className={cx("  bottom-157px bg-primary text-white text-32px px-20px mt-12px py-15px outline-none border-none rounded-24px")}>
-                    {t("点击生成完整报告")}
-                </button>
-                : null
+                <>
+                    <div flex flex-col w-full px-48px gap-20px>
+                        <div flex w-full justify-between items-center>
+                            <span font-bold text-28px>{t('诊断推荐药膳')}</span>
+                            <div className={cx("text-#A2A2C8 text-26px flex-center")}>
+                                <span></span>
+                            </div>
+                        </div>
+                        <DrinkGoodsList
+                            className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}></DrinkGoodsList>
+                    </div>
+                    <button
+                        onClick={() => handlePostMakePdf()}
+                        className={cx("  bottom-157px bg-primary text-white text-32px px-20px mt-12px py-15px outline-none border-none rounded-24px")}>
+                        {t("点击生成完整报告")}
+                    </button>
+                </>
+                : <ChargeLoading></ChargeLoading>
         }
+
     </div>;
 }

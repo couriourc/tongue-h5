@@ -146,6 +146,7 @@ export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref
         if (!$video) return;
         const context = canvas.getContext("2d")!;
         clean();
+        console.log(canvas.width, canvas.height);
         context.drawImage($video, 0, 0, canvas.width, canvas.height);
 
     }

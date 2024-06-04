@@ -1,4 +1,4 @@
-import {createLazyFileRoute} from '@tanstack/react-router';
+import {createFileRoute, createLazyFileRoute} from '@tanstack/react-router';
 import {CameraPro, CameraProExposed} from "@/components/CameraPro";
 import {cx} from "@emotion/css";
 import {useMemo, useRef, useState} from "react";
@@ -14,7 +14,8 @@ import {INeedParserFileInfo, useAtomNeedToParser} from "@/store";
 import {Toast} from "@/components/Toast";
 import {useTranslation} from "react-i18next";
 
-export const Route = createLazyFileRoute('/capture')({
+export const Route = createFileRoute('/capture')({
+
     component: () => {
         const {t} = useTranslation(undefined, {keyPrefix: "capture"});
         const [_target, setTarget] = useAtomNeedToParser();
