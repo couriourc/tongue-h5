@@ -56,12 +56,12 @@ export default class Webcam {
         }
         videoConstraints.width = {
             min: window.innerWidth,
-            max: 2080,
+            max: 2 * 2080,
 
         };
         videoConstraints.height = {
             min: window.innerHeight,
-            max: 1440,
+            max: 2 * 1440,
         };
         var constraints = {
             video: videoConstraints,
