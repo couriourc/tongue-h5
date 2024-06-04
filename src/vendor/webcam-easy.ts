@@ -55,16 +55,12 @@ export default class Webcam {
             videoConstraints.deviceId = {exact: this._selectedDeviceId};
         }
         videoConstraints.width = {
-            exact: window.innerWidth,
-            ideal: window.innerWidth,
             min: window.innerWidth,
-            max: 2 * window.innerWidth,
+            max: window.innerWidth,
         };
         videoConstraints.height = {
-            exact: window.innerHeight,
-            ideal: window.innerHeight,
             min: window.innerHeight,
-            max: 2 * window.innerHeight,
+            max: window.innerHeight,
         };
         var constraints = {
             video: videoConstraints,
