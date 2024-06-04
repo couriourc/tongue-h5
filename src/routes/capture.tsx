@@ -7,7 +7,7 @@ import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
 import {GrPowerCycle} from "react-icons/gr";
 import {useFileDialog} from "@reactuses/core";
-import {base64ToFile, fileToBase64} from "@/utils";
+import {fileToBase64} from "@/utils";
 import {Loader} from "@/components/Loading";
 import {useAtomNeedToParser} from "@/store";
 import {useTranslation} from "react-i18next";
@@ -38,7 +38,7 @@ export const Route = createFileRoute('/capture')({
 
         function handleCapture() {
             const img = camera.current!.capture();
-
+            Download(img);
             return handlePostTongueDetection(img);
         }
 
