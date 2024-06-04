@@ -1,13 +1,22 @@
 [build.environment]
-  NPM_FLAGS = "--version"
-  NODE_VERSION = "20"
+NPM_FLAGS = "--version"
+NODE_VERSION = "20"
 
 [build]
-  publish = "dist"
-  command = "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build"
+publish = "dist"
+command = "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+from = "/*"
+to = "/index.html"
+status = 200
 
+[[headers]]
+for = "/*"
+[headers.values]
+#  Multi-value headers are expressed with multi-line strings
+cache-control = '''
+	max-age=0,
+	no-cache,
+	no-store,
+	must-revalidate'''

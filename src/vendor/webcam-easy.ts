@@ -174,16 +174,16 @@ export default class Webcam {
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
             }
-            this._canvasElement.height = this._webcamElement.scrollHeight;
-            this._canvasElement.width = this._webcamElement.scrollWidth;
+            this._canvasElement.height = window.innerHeight;
+            this._canvasElement.width = window.innerWidth;
             let context = this._canvasElement.getContext('2d');
             if (this._facingMode == 'user') {
                 context.translate(this._canvasElement.width, 0);
                 context.scale(-1, 1);
             }
-            context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
-            context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
-            let data = this._canvasElement.toDataURL('image/png');
+            context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            context.drawImage(this._webcamElement, 0, 0, window.innerWidth, window.innerHeight);
+            let data = this._canvasElement.toDataURL(type);
             return data;
         } else {
             throw "canvas element is missing";
