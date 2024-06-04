@@ -15,7 +15,10 @@ import {Toast} from "@/components/Toast";
 import {useTranslation} from "react-i18next";
 
 export const Route = createFileRoute('/capture')({
+    loader() {
 
+        return Promise.resolve();
+    },
     component: () => {
         const {t} = useTranslation(undefined, {keyPrefix: "capture"});
         const [_target, setTarget] = useAtomNeedToParser();
@@ -60,13 +63,13 @@ export const Route = createFileRoute('/capture')({
                 <span>{t('使用教程')}</span>
             </div>
 
-            <div w-full fixed z-1 bg={"#0302029A"} h-full
+            <div w-full fixed z-1 bg={"rgba(3,2,2,0.6)"} h-full
                  className={"top-40% left-50% -translate-50% flex flex-center flex-col gap-48px"}>
                 <div flex-col flex gap-24px flex-center text-36px>
                     <span>{t('请拍摄舌面')}</span>
                     <span text={"20px #828384"}>{t("舌体放松，舌面平展，舌尖略向下，口张大不要太用力")}</span>
                 </div>
-                <Image src={"face"} className={cx("w-310px")}></Image>
+                <Image src={"face"} showLoading={false} className={cx("w-320px bg-transparent")}></Image>
             </div>
 
             <MemoCamera className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>

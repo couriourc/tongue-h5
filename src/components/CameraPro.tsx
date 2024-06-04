@@ -53,6 +53,7 @@ export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref
                     audio: false,
                     video: {
                         facingMode: cur.toLowerCase(),
+                        sampleSize: window.innerWidth * window.innerHeight,
                         width: {
                             min: window.innerWidth,
                             ideal: 1920,
@@ -146,7 +147,6 @@ export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref
         if (!$video) return;
         const context = canvas.getContext("2d")!;
         clean();
-        console.log(canvas.width, canvas.height);
         context.drawImage($video, 0, 0, canvas.width, canvas.height);
 
     }
@@ -163,12 +163,15 @@ export const CameraPro = memo(forwardRef((props: Partial<ICameraProDefault>, ref
 
     return <>
         <div className={cx('relative')}>
-            <video className={cx(props.className, 'w-screen! h-screen! object-cover')}
+            <video className={cx(props.className, 'w-screen! h-screen! object-cover transform-gpu')}
                    autoPlay
                    disablePictureInPicture={true}
                    muted={true}
                    playsInline
                    ref={r => video.current = r!}
+                   style={{
+                       transform: cur === FacingModes.USER ? `rotateY(180deg)` : ''
+                   }}
             />
         </div>
     </>;

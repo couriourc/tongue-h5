@@ -4,7 +4,7 @@ import {Image as VantImage, type ImageProps} from "react-vant";
 import arrowUrl from "@/assets/arrow.png?url";
 import gallaryAddUrl from "@/assets/gallary_add.png?url";
 import switchCameraUrl from "@/assets/switch-camera.png?url";
-import faceUrl from "@/assets/face.png?url";
+import faceUrl from "@/assets/face.svg?url";
 import scanUrl from "@/assets/scan.png?url";
 import hosUrl from "@/assets/hos.png?url";
 import tongueUrl from "@/assets/tongue.png?url";

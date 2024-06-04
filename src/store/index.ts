@@ -34,6 +34,7 @@ export interface IParserResult {
         sups: IGoodsItem[];
         translate: string;
     };
+    ti_zhi: string;
 }
 
 export const atomParserResult = atomWithStorage<IParserResult>("parser-result", {
@@ -49,6 +50,7 @@ export const atomParserResult = atomWithStorage<IParserResult>("parser-result", 
         drinks: [] as IGoodsItem[],
         sups: [] as IGoodsItem[],
         translate: ''
-    }
+    },
+    ti_zhi: ""
 });
 export const useAtomParserResult = () => useAtom<IParserResult>(atomParserResult);

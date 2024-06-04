@@ -296,12 +296,21 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                         <div flex w-full justify-between items-center>
                             <span font-bold text-28px>{t('舌象释义与通常伴随的症状')}</span>
                         </div>
-                        <div className={cx("w-full min-h-200px")}>
+                        <div className={cx("w-full min-h-200px",)}>
                             {
                                 isLoading ?
                                     null :
-                                    <div text-24px text-justify className={cx("animate-fade-in")}>
-                                        {placeholder(result?.result?.translate, t("暂无内容"))}
+                                    <div text-24px text-justify className={cx("animate-fade-in ",)}>
+                                        您的体质是：{placeholder(result?.ti_zhi, "")}
+                                    </div>
+                            }
+                            {
+                                isLoading ?
+                                    null :
+                                    <div text-24px text-justify className={cx("animate-fade-in", css`
+                                        text-indent: 1em;
+                                    `)}>
+                                        {placeholder(result?.result?.translate, "")}
                                     </div>
                             }
                         </div>
