@@ -13,6 +13,7 @@
     "@emotion/css": "^11.11.2",
     "@react-vant/icons": "^0.0.6",
     "@reactuses/core": "^5.0.13",
+    "@tweenjs/tween.js": "^23.1.2",
     "@types/node": "^20.12.10",
     "@unocss/transformer-attributify-jsx": "^0.60.0",
     "axios": "^1.7.2",

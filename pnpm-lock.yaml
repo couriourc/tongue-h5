@@ -14,6 +14,9 @@ dependencies:
   '@reactuses/core':
     specifier: ^5.0.13
     version: 5.0.13(react@18.3.1)
+  '@tweenjs/tween.js':
+    specifier: ^23.1.2
+    version: 23.1.2
   '@types/node':
     specifier: ^20.12.10
     version: 20.12.11
@@ -2496,6 +2499,10 @@ packages:
   /@tanstack/store@0.1.3:
     resolution: {integrity: sha512-GnolmC8Fr4mvsHE1fGQmR3Nm0eBO3KnZjDU0a+P3TeQNM/dDscFGxtA7p31NplQNW3KwBw4t1RVFmz0VeKLxcw==}
     dev: true
+
+  /@tweenjs/tween.js@23.1.2:
+    resolution: {integrity: sha512-kMCNaZCJugWI86xiEHaY338CU5JpD0B97p1j1IKNn/Zto8PgACjQx0UxbHjmOcLl/dDOBnItwD07KmCs75pxtQ==}
+    dev: false
 
   /@types/babel__core@7.20.5:
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
