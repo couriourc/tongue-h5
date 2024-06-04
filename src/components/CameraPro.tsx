@@ -250,6 +250,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
                   playsInline={true}
                   disablePictureInPicture={true}
                   muted={true}
-
+                  width={"100vw"}
+                  height={"100vh"}
     />;
 });
