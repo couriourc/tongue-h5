@@ -56,12 +56,9 @@ export default class Webcam {
         }
         videoConstraints.width = {
             min: window.innerWidth,
-            max: 2 * 2080,
-
         };
         videoConstraints.height = {
             min: window.innerHeight,
-            max: 2 * 1440,
         };
         var constraints = {
             video: videoConstraints,
@@ -182,7 +179,7 @@ export default class Webcam {
                 context.scale(-1, 1);
             }
             context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            context.drawImage(this._webcamElement, 0, 0, window.innerWidth, window.innerHeight * devicePixelRatio);
+            context.drawImage(this._webcamElement, 0, 0, window.innerWidth, window.innerHeight );
             let data = this._canvasElement.toDataURL(type);
             return data;
         } else {
