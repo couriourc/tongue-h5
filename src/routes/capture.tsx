@@ -1,18 +1,17 @@
-import {createFileRoute, createLazyFileRoute} from '@tanstack/react-router';
+import {createFileRoute} from '@tanstack/react-router';
 import {CameraPro, CameraProExposed} from "@/components/CameraPro";
-import {cx} from "@emotion/css";
+import {css, cx} from "@emotion/css";
 import {useMemo, useRef, useState} from "react";
 import {useTo} from "@/hooks/to";
 import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
 import {GrPowerCycle} from "react-icons/gr";
 import {useFileDialog} from "@reactuses/core";
-import {postTongueSuccess} from "@/api/tongue.api";
 import {base64ToFile, fileToBase64} from "@/utils";
 import {Loader} from "@/components/Loading";
-import {INeedParserFileInfo, useAtomNeedToParser} from "@/store";
-import {Toast} from "@/components/Toast";
+import {useAtomNeedToParser} from "@/store";
 import {useTranslation} from "react-i18next";
+import Download from "downloadjs";
 
 export const Route = createFileRoute('/capture')({
     loader() {
@@ -24,7 +23,7 @@ export const Route = createFileRoute('/capture')({
         const [_target, setTarget] = useAtomNeedToParser();
         const camera = useRef<CameraProExposed>(null);
         const to = useTo();
-        const [_files, open] = useFileDialog({accept: ".jpeg,.jpg,.png"});
+        const [_files, open] = useFileDialog({accept: "image/*"});
         const [isLoading, setLoading] = useState<boolean>();
         const MemoCamera = useMemo(() => CameraPro, []);
 
@@ -40,6 +39,9 @@ export const Route = createFileRoute('/capture')({
         function handleCapture() {
             const img = camera.current!.capture();
 //            const file = base64ToFile(img)!;
+            console.log(img)
+            Download(base64ToFile(img));
+
             return handlePostTongueDetection(img);
         }
 
@@ -63,8 +65,11 @@ export const Route = createFileRoute('/capture')({
                 <span>{t('使用教程')}</span>
             </div>
 
-            <div w-full fixed z-1 bg={"rgba(3,2,2,0.6)"} h-full
-                 className={"top-40% left-50% -translate-50% flex flex-center flex-col gap-48px"}>
+            <div w-full fixed z-1 h-full
+                 className={cx("top-40% left-50% -translate-50% flex flex-center flex-col gap-48px",
+                     css`
+                         background: rgba(5, 5, 5, 0.6);
+                     `)}>
                 <div flex-col flex gap-24px flex-center text-36px>
                     <span>{t('请拍摄舌面')}</span>
                     <span text={"20px #828384"}>{t("舌体放松，舌面平展，舌尖略向下，口张大不要太用力")}</span>

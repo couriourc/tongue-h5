@@ -17,6 +17,7 @@
     "@types/node": "^20.12.10",
     "@unocss/transformer-attributify-jsx": "^0.60.0",
     "axios": "^1.7.2",
+    "camerakit": "^0.4.1",
     "dayjs": "^1.11.11",
     "downloadjs": "^1.4.7",
     "i18next": "^23.11.5",
