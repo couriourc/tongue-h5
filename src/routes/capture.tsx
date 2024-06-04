@@ -7,23 +7,18 @@ import {Image} from "@/components/Image";
 import {ArrowLeft} from "@react-vant/icons";
 import {GrPowerCycle} from "react-icons/gr";
 import {useFileDialog} from "@reactuses/core";
-import {base64ToFile, fileToBase64} from "@/utils";
+import {fileToBase64} from "@/utils";
 import {Loader} from "@/components/Loading";
 import {useAtomNeedToParser} from "@/store";
 import {useTranslation} from "react-i18next";
-import Download from "downloadjs";
 
 export const Route = createFileRoute('/capture')({
-    loader() {
-
-        return Promise.resolve();
-    },
     component: () => {
         const {t} = useTranslation(undefined, {keyPrefix: "capture"});
         const [_target, setTarget] = useAtomNeedToParser();
         const camera = useRef<CameraProExposed>(null);
         const to = useTo();
-        const [_files, open] = useFileDialog({accept: "image/*"});
+        const [_files, open] = useFileDialog({accept: "*"});
         const [isLoading, setLoading] = useState<boolean>();
         const MemoCamera = useMemo(() => CameraPro, []);
 
@@ -38,7 +33,7 @@ export const Route = createFileRoute('/capture')({
 
         function handleCapture() {
             const img = camera.current!.capture();
-            Download(base64ToFile(img));
+//            Download(base64ToFile(img));
             return handlePostTongueDetection(img);
         }
 
