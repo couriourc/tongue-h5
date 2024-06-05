@@ -13,6 +13,7 @@ import {TanStackRouterVite} from '@tanstack/router-vite-plugin';
 export default defineConfig(({command, mode}: ConfigEnv) => {
     const need_debug = false;
     return ({
+        base: "/tongue-h5",
         resolve: {
             alias: {
                 "@": path.resolve(__dirname, "src"),
