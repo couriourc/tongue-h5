@@ -40,14 +40,14 @@ export default defineConfig(({command, mode}: ConfigEnv) => {
                     // 为了方便，使用svg图标
                     icons: [
                         {
-                            "src": "/vite.svg",
+                            "src": "/logo.png",
                             "sizes": "192x192",
-                            "type": "image/svg+xml"
+                            "type": "image/png"
                         },
                         {
-                            "src": "/vite.svg",
+                            "src": "/logo.png",
                             "sizes": "512x512",
-                            "type": "image/svg+xml"
+                            "type": "image/png"
                         }
                     ]
                 },
