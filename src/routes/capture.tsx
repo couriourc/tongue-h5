@@ -58,13 +58,13 @@ export const Route = createFileRoute('/capture')({
             <div w-full fixed z-1 h-full
                  className={cx("top-40% left-50% -translate-50% flex flex-center flex-col gap-48px",
                      css`
-                         background: rgba(0, 0, 0, 0.2);
+                         background: rgba(0, 0, 0, 0.3);
                      `)}>
                 <div flex-col flex gap-24px flex-center text-36px>
                     <span>{t('请拍摄舌面')}</span>
                     <span text={"20px #828384"}>{t("舌体放松，舌面平展，舌尖略向下，口张大不要太用力")}</span>
                 </div>
-                <Image src={"face"} showLoading={false} className={cx("w-320px bg-transparent")}></Image>
+                <Image src={"face"} showLoading={false} className={cx("w-350px bg-transparent")}></Image>
             </div>
 
             <MemoCamera className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>
