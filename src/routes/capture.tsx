@@ -64,7 +64,7 @@ export const Route = createFileRoute('/capture')({
                     <span>{t('请拍摄舌面')}</span>
                     <span text={"20px #828384"}>{t("舌体放松，舌面平展，舌尖略向下，口张大不要太用力")}</span>
                 </div>
-                <Image src={"face"} showLoading={false} className={cx("w-350px bg-transparent")}></Image>
+                <Image src={"face"} showLoading={false} className={cx("w-400px bg-transparent")}></Image>
             </div>
 
             <MemoCamera className={cx(`size-screen fixed top-0 left-0 bg-#1e2022`)} ref={camera}/>
