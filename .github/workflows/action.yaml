@@ -21,8 +21,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "pnpm"
-      - run: pnpm install
-      - run: pnpm prerelease
       - name: Run cis
         run: ${{ matrix.command }}
       - name: Deploy to GitHub Pages
