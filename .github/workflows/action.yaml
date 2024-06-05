@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - "master"
-
+permissions:
+  contents: write
 jobs:
   frontend:
     runs-on: ubuntu-latest
@@ -28,3 +29,5 @@ jobs:
         with:
           folder: dist # The folder the action should deploy.
           branch: release
+
+
