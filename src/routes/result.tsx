@@ -307,7 +307,7 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                             {
                                 isLoading ?
                                     null :
-                                    <div text-24px text-justify className={cx("animate-fade-in", css`
+                                    <div font-500 text-24px text-justify className={cx("animate-fade-in", css`
                                         text-indent: 1em;
                                     `)}>
                                         {placeholder(result?.result?.translate, "")}
