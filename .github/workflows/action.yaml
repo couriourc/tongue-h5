@@ -22,8 +22,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "pnpm"
-          cache-dependency-path: "pnpm-lock.yaml"
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm prerelease
       - name: Run cis
         run: ${{ matrix.command }}
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        with:
+          folder: dist # The folder the action should deploy.
