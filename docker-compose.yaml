@@ -1,7 +1,0 @@
-services:
-  frontend:
-    build:
-      context: "."
-
-    volumes:
-      - /config:/conf

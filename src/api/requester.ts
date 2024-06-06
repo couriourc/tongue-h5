@@ -1,7 +1,8 @@
-import type {AxiosInstance, AxiosResponse} from 'axios';
-import axios, {AxiosRequestConfig} from 'axios';
-import type {DynamicProps, FunctionOrValue, WithMessageProps} from "@/types";
-import {extraFunction} from "@/utils";
+import type { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import type { DynamicProps, FunctionOrValue, WithMessageProps } from "@/types";
+import { extraFunction } from "@/utils";
+import { getConfigFromGlobal } from '@/config';
 
 
 interface AxiosRequestType {
@@ -21,7 +22,7 @@ interface AxiosRequestType {
 // axios 配置
 const request: AxiosInstance = axios.create({
     get baseURL() {
-        return "http://43.136.174.122:4399/";
+        return getConfigFromGlobal("baseURL", "http://43.136.174.122:4399/");
     },
 });
 
@@ -79,7 +80,7 @@ export default function requester<T>(method: string, url: string, data: any = nu
             ? {
                 params: data
             }
-            : {data};
+            : { data };
 
         return request({
             method,

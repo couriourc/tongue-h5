@@ -1,28 +1,28 @@
-import {createFileRoute} from '@tanstack/react-router';
-import {NavBar} from "@/components/Navbar";
-import {css, cx} from "@emotion/css";
-import {map} from "underscore";
-import {IGoodsItem, IParserResult, useAtomNeedToParser} from "@/store";
-import {Image} from "@/components/Image";
-import {Swiper, SwiperSlide} from "swiper/react";
-import {base64ToFile, iif, placeholder} from "@/utils";
-import {Flex, Popover, PopoverInstance, Toast,} from "react-vant";
+import { createFileRoute } from '@tanstack/react-router';
+import { NavBar } from "@/components/Navbar";
+import { css, cx } from "@emotion/css";
+import { map } from "underscore";
+import { IGoodsItem, IParserResult, useAtomNeedToParser } from "@/store";
+import { Image } from "@/components/Image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { base64ToFile, iif, placeholder } from "@/utils";
+import { Flex, Popover, PopoverInstance, Toast, } from "react-vant";
 import 'swiper/css';
-import {GrAddCircle} from "react-icons/gr";
-import React, {createContext, PropsWithChildren, ReactNode, useContext, useRef} from "react";
-import {WithClassName} from "@/types";
-import {postMakePdf, postTongueSuccess} from "@/api/tongue.api";
+import { GrAddCircle } from "react-icons/gr";
+import React, { createContext, PropsWithChildren, ReactNode, useContext, useRef } from "react";
+import { WithClassName } from "@/types";
+import { postMakePdf, postTongueSuccess } from "@/api/tongue.api";
 /*@ts-ignore*/
 import Downloader from "downloadjs";
-import {useTranslation} from "react-i18next";
-import {PopoverPlacement} from "react-vant/es/popover/PropsType";
-import {useTo} from "@/hooks/to";
-import {BsThreeDots} from "react-icons/bs";
+import { useTranslation } from "react-i18next";
+import { PopoverPlacement } from "react-vant/es/popover/PropsType";
+import { useTo } from "@/hooks/to";
+import { BsThreeDots } from "react-icons/bs";
 import useSWR from "swr";
-import {LoadingAnimation} from "@/components/LottieLoading";
-import {ThreeDots} from "@/components/ThreeDots";
-import {ChargeLoading} from "@/components/ChargeLoading";
-import {WithTypeWrite} from "@/components/WithTypeWrite";
+import { LoadingAnimation } from "@/components/LottieLoading";
+import { ThreeDots } from "@/components/ThreeDots";
+import { ChargeLoading } from "@/components/ChargeLoading";
+import { WithTypeWrite } from "@/components/WithTypeWrite";
 
 const maskCss = css`
     &::after {
@@ -37,7 +37,7 @@ const maskCss = css`
     }
 `;
 
-function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren<{
+function DrinkGoodsItem({ item, popoverPosition }: WithClassName<PropsWithChildren<{
     item: IGoodsItem,
     popoverPosition: PopoverPlacement,
 }>>) {
@@ -67,7 +67,7 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
             <span className={cx('absolute z-10')}>{item.name}</span>
 
             <div className={cx(`absolute size-full z-0 left-0 top-0 `, maskCss)}>
-                <Image src={item.pic} fit={"fill"} className={cx("size-full")}/>
+                <Image src={item.pic} fit={"fill"} className={cx("size-full")} />
             </div>
 
             <div className={cx("absolute right-12px top-50% -translate-y-50% flex-center")}
@@ -75,7 +75,7 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
                 <Popover
                     ref={(ref) => popover.current = ref!}
                     reference={
-                        <GrAddCircle/>
+                        <GrAddCircle />
                     }
                     placement={popoverPosition}
                     teleport={document.body}
@@ -87,8 +87,8 @@ function DrinkGoodsItem({item, popoverPosition}: WithClassName<PropsWithChildren
 
                         <div className={cx(`absolute w-full h-full z-0 top-0 left-0`)}>
                             <Image src={item.pic}
-                                   className={cx("size-full ")}
-                                   fit={"fill"}/>
+                                className={cx("size-full ")}
+                                fit={"fill"} />
                         </div>
                         <div className={cx('w-95% box-border h-full  z-10')}>
                             <div text-28px font-bold className={cx('break-all z-10')}>{item.name}</div>
@@ -114,7 +114,7 @@ function DrinkGoodsList(props: WithClassName<PropsWithChildren>) {
 
 
     return <Swiper className={cx("h-fit w-690px  box-border overflow-x-auto whitespace-nowrap py-12px scrollbar-none")}
-                   slidesPerView={'auto'}
+        slidesPerView={'auto'}
     >
         {
             map(result?.result?.sups ?? [],
@@ -122,8 +122,8 @@ function DrinkGoodsList(props: WithClassName<PropsWithChildren>) {
                     className={cx("w-300px! py-24px  px-12px  ")}
                     key={key}>
                     <DrinkGoodsItem item={item}
-                                    key={key}
-                                    popoverPosition={iif(key !== (result.result.sups.length - 1), "right", "left")!}
+                        key={key}
+                        popoverPosition={iif(key !== (result.result.sups.length - 1), "right", "left")!}
                     />
                 </SwiperSlide>
             )
@@ -146,8 +146,8 @@ const ResultContext = createContext<IParserResult>({
         drinks: [] as IGoodsItem[],
         sups: [] as IGoodsItem[],
         translate: ''
-    }
-
+    },
+    ti_zhi: ""
 });
 const useParserResult = () => useContext(ResultContext);
 
@@ -155,11 +155,11 @@ let _loading = false;
 export const Route = createFileRoute('/result')({
 
     component: () => {
-        const [{base64}] = useAtomNeedToParser();
-        const {t} = useTranslation(undefined, {keyPrefix: "result"});
+        const [{ base64 }] = useAtomNeedToParser();
+        const { t } = useTranslation(undefined, { keyPrefix: "result" });
         const to = useTo();
         let _destoryed = false;
-        const {isLoading, data: result, error} = useSWR(() => base64, async (base64: string) => {
+        const { isLoading, data: result, error } = useSWR(() => base64, async (base64: string) => {
             const file = base64ToFile(base64);
             const error = () => {
                 Toast.fail(t("解析出错！"));
@@ -214,10 +214,10 @@ export const Route = createFileRoute('/result')({
 });
 
 
-function ParserResult({isLoading}: { isLoading: boolean }) {
+function ParserResult({ isLoading }: { isLoading: boolean }) {
     const result = useParserResult();
 
-    const {t} = useTranslation(undefined, {keyPrefix: "result"});
+    const { t } = useTranslation(undefined, { keyPrefix: "result" });
 
     async function handlePostMakePdf() {
         return postMakePdf(result).then((res) => {
@@ -263,9 +263,9 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                 <div className={cx("flex flex-col gap-24px")}>
                     <div className={"inline-block  whitespace-nowrap box-border"}>
                         <Flex wrap="wrap"
-                              className={cx("bg-primary  rounded-18px m-auto h-400px box-border px-48px text-36px")}>
+                            className={cx("bg-primary  rounded-18px m-auto h-400px box-border px-48px text-36px")}>
                             {
-                                map(labels, ({label, key}, order) => <Flex.Item
+                                map(labels, ({ label, key }, order) => <Flex.Item
                                     span={8}
                                     key={label}
                                 >
@@ -279,10 +279,10 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                                                 className={cx("text-18px truncate min-h-3em relative")}>
                                                 {
                                                     isLoading ?
-                                                        <ThreeDots/> :
+                                                        <ThreeDots /> :
                                                         placeholder(
                                                             <WithTypeWrite>{result?.she?.[key as keyof typeof result.she]}</WithTypeWrite> as ReactNode,
-                                                            <ThreeDots/>)!
+                                                            <ThreeDots />)!
                                                 }
                                             </div>
                                         </div>
@@ -301,7 +301,7 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                                 isLoading ?
                                     null :
                                     <div font-800 text-24px text-justify className={cx("animate-fade-in ",)}>
-                                        您的体质是：{placeholder(result?.ti_zhi, "")}
+                                        {t("您的体质是：")}{placeholder(result?.ti_zhi, "")}
                                     </div>
                             }
                             {
@@ -335,15 +335,15 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                                 )
                                 }>
                                 <div className={cx(" flex flex-col z-10 absolute p-36px")}>
-                                                                   <span
-                                                                       className={cx('w-12em truncate text-36px mt-12px')}> {drink.name}  </span>
+                                    <span
+                                        className={cx('w-12em truncate text-36px mt-12px')}> {drink.name}  </span>
                                     <span
                                         className={cx('text-28px')}> {drink.data} </span>
 
                                 </div>
                                 <Image className={cx("size-full absolute top-0 left-0 z-0")}
-                                       fit={'fill'}
-                                       src={drink.pic}></Image>
+                                    fit={'fill'}
+                                    src={drink.pic}></Image>
                             </div>
 
                             {iif(index === result.result.drinks.length - 1,
