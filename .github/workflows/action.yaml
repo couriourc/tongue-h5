@@ -1,18 +1,16 @@
 name: "Build and Release"
 
 on:
-  push: {
+  push:
     branches:
       - "master"
-  }
-
+permissions:
+  contents: write
 jobs:
   frontend:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        command: [ 'pnpm i', 'pnpm build' ]
+
 
     steps:
       - uses: actions/checkout@v3
@@ -22,8 +20,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "pnpm"
-          cache-dependency-path: "pnpm-lock.yaml"
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm prerelease
-      - name: Run cis
-        run: ${{ matrix.command }}
+      - name: Install
+        run: pnpm i
+      - name: Build
+        run: pnpm build
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        with:
+          folder: dist # The folder the action should deploy.
+          branch: release
+
+
