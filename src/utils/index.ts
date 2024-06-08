@@ -49,3 +49,7 @@ export function extraFunction<T>(fnOrValue: FunctionOrValue<T>, ...args: any[]) 
     return (iif(_.isFunction(fnOrValue), fnOrValue, () => {
     }) as Function)(...args);
 }
+
+export function publicAssets(path: string) {
+    return new URL(path, import.meta.url).href;
+}

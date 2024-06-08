@@ -1,13 +1,15 @@
-import { cx } from "@emotion/css";
-import { PropsWithChildren, useEffect, useRef } from "react";
-import { Image as VantImage, type ImageProps } from "react-vant";
-const gallaryAddUrl = "/img/gallary_add.png";
-const faceUrl = "/img/face.svg";
-const scanUrl = "/img/scan.png";
-const hosUrl = "/img/hos.png";
-const tongueUrl = "/img/tongue.png";
-const CameraPng = "/img/camera.png";
-const logoUrl = "/img/logo.png";
+import {cx} from "@emotion/css";
+import {PropsWithChildren, useEffect, useRef} from "react";
+import {Image as VantImage, type ImageProps} from "react-vant";
+import {publicAssets} from "@/utils";
+
+const gallaryAddUrl = publicAssets("/img/gallary_add.png");
+const faceUrl = publicAssets("/img/face.svg");
+const scanUrl = publicAssets("/img/scan.png");
+const hosUrl = publicAssets("/img/hos.png");
+const tongueUrl = publicAssets("/img/tongue.png");
+const CameraPng = publicAssets("/img/camera.png");
+const logoUrl = publicAssets("/img/logo.png");
 
 export declare type ImageFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 
@@ -57,7 +59,7 @@ export const Image = (props: PropsWithChildren<ImageProps & WithPresetImageProps
 
         {
             // @ts-ignore
-            !(props.src instanceof window.Image) && <VantImage {...{ ...props, src }} alt={props.alt ?? "alt"} />
+            !(props.src instanceof window.Image) && <VantImage {...{...props, src}} alt={props.alt ?? "alt"}/>
         }
     </div>;
 };

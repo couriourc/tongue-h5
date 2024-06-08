@@ -1,8 +1,9 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
+import {initReactI18next} from 'react-i18next';
 
 import Backend from 'i18next-http-backend';
+import {publicAssets} from "@/utils";
 //import zh from './locales/zh.json?url';
 
 i18n
@@ -11,7 +12,7 @@ i18n
     .use(LanguageDetector)
     .init({
         backend: {
-            loadPath: '/locales/zh.json',
+            loadPath: publicAssets('/locales/zh.json'),
             allowMultiLoading: true,
             requestOptions: { // used for fetch, can also be a function (payload) => ({ method: 'GET' })
                 cache: 'default'
