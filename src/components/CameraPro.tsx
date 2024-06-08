@@ -228,6 +228,11 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
 //                draw();
 //                stop();
 //                return canvas.toDataURL("image/jpeg");
+                let old = webcam.current.style.objectFit;
+                webcam.current.style.objectFit = "unset";
+                setTimeout(() => {
+                    webcam.current.style.objectFit = old;
+                });
                 return cam.snap("'image/jpeg'");
             },
             switch() {
