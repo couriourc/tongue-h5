@@ -1,5 +1,8 @@
 //@ts-nocheck
 export default class Webcam {
+    settings: MediaTrackSettings;
+    #destroyed: boolean = false;
+
     constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
         this._webcamElement = webcamElement;
         this._webcamElement.width = this._webcamElement.width || 640;
@@ -93,10 +96,12 @@ export default class Webcam {
       4. Start stream
     */
     async start(startStream = true) {
+        this.#destroyed = false;
         return new Promise((resolve, reject) => {
             this.stop();
             navigator.mediaDevices.getUserMedia(this.getMediaConstraints()) //get permisson from user
                 .then(stream => {
+                    if (this.#destroyed) return;
                     this._streamList.push(stream);
                     this.info() //get all video input devices info
                         .then(webcams => {
@@ -142,6 +147,8 @@ export default class Webcam {
         return new Promise((resolve, reject) => {
             navigator.mediaDevices.getUserMedia(this.getMediaConstraints())
                 .then(stream => {
+                    const video = stream.getVideoTracks()[0];
+                    this.settings = video.getSettings();
                     this._streamList.push(stream);
                     this._webcamElement.srcObject = stream;
                     if (this._facingMode == 'user') {
@@ -151,7 +158,7 @@ export default class Webcam {
                     resolve(this._facingMode);
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                     reject(error);
                 });
         });
@@ -166,13 +173,18 @@ export default class Webcam {
         });
     }
 
+    destroy() {
+        this.#destroyed = true;
+        this.stop();
+    }
+
     snap(type: `'image/${'png' | 'jpeg'}'`) {
         if (this._canvasElement != null) {
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
             }
-            this._canvasElement.width = window.innerWidth;
-            this._canvasElement.height = this._canvasElement.width * (4 / 3);
+            this._canvasElement.width = this.settings.width;
+            this._canvasElement.height = this.settings.height;
             let context = this._canvasElement.getContext('2d');
             if (this._facingMode == 'user') {
                 context.translate(this._canvasElement.width, 0);
@@ -180,10 +192,10 @@ export default class Webcam {
             }
             context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
             context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
-            let data = this._canvasElement.toDataURL(type);
-            return data;
+            return this._canvasElement.toDataURL(type);
         } else {
             throw "canvas element is missing";
         }
     }
+
 }

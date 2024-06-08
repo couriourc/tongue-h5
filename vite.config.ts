@@ -24,10 +24,6 @@ export default defineConfig(({command, mode}: ConfigEnv) => {
                 "@": path.resolve(__dirname, "src"),
             }
         },
-        build: {
-            outDir: "app/frontend"
-        },
-
         plugins: [
             react(),
 

@@ -214,10 +214,11 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     const webcam = useRef<HTMLVideoElement>();
     useEffect(() => {
         cam = new Webcam(webcam.current!, FacingModes.USER.toLowerCase(), document.createElement("canvas"));
-//        cam.facingMode = FacingModes.USER.toLowerCase();
-        cam.start(true);
+        cam.start(true).then(r => {
+        });
         return () => {
             cam.stop();
+            cam.destroy();
             cam = null;
         };
     }, []);
@@ -225,9 +226,6 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     useImperativeHandle(ref, () => {
         return {
             capture() {
-//                draw();
-//                stop();
-//                return canvas.toDataURL("image/jpeg");
                 return cam.snap("'image/jpeg'");
             },
             switch() {
