@@ -1,6 +1,7 @@
 //@ts-nocheck
 export default class Webcam {
     settings: MediaTrackSettings;
+    #destroyed: boolean = false;
 
     constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
         this._webcamElement = webcamElement;
@@ -95,10 +96,12 @@ export default class Webcam {
       4. Start stream
     */
     async start(startStream = true) {
+        this.#destroyed = false;
         return new Promise((resolve, reject) => {
             this.stop();
             navigator.mediaDevices.getUserMedia(this.getMediaConstraints()) //get permisson from user
                 .then(stream => {
+                    if (this.#destroyed) return;
                     this._streamList.push(stream);
                     this.info() //get all video input devices info
                         .then(webcams => {
@@ -155,7 +158,7 @@ export default class Webcam {
                     resolve(this._facingMode);
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                     reject(error);
                 });
         });
@@ -168,6 +171,11 @@ export default class Webcam {
                 track.stop();
             });
         });
+    }
+
+    destroy() {
+        this.#destroyed = true;
+        this.stop();
     }
 
     snap(type: `'image/${'png' | 'jpeg'}'`) {
@@ -183,10 +191,11 @@ export default class Webcam {
                 context.scale(-1, 1);
             }
             context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
-            context.drawImage(this._webcamElement, 0, 0, this.settings.width, this.settings.height);
+            context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
             return this._canvasElement.toDataURL(type);
         } else {
             throw "canvas element is missing";
         }
     }
+
 }

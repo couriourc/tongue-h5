@@ -273,7 +273,11 @@ export const ChargeLoading: React.FC<any> = () => {
                     }
                     curStep.current++;
                     timeout = setTimeout(() => {
-                        t = animation(text[curStep.current][0], text[curStep.current + 1][0]).start();
+                        try {
+                            t = animation(text[curStep.current][0], text[curStep.current + 1][0]).start();
+                        } catch {
+
+                        }
                     }, 1000);
                 })
                 .start();
