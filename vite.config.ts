@@ -45,7 +45,7 @@ export default defineConfig(({command, mode}: ConfigEnv) => {
                             "type": "image/png"
                         },
                         {
-                            "src": "/img/logo.png",
+                            "src":  "/img/logo.png",
                             "sizes": "512x512",
                             "type": "image/png"
                         }
