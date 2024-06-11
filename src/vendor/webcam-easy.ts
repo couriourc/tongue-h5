@@ -178,7 +178,7 @@ export default class Webcam {
         this.stop();
     }
 
-    snap(type: `'image/${'png' | 'jpeg'}'`) {
+    snap(type: `image/${'png' | 'jpeg'}`) {
         if (this._canvasElement != null) {
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
