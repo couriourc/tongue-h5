@@ -177,7 +177,7 @@ export const Route = createFileRoute('/result')({
                     if (_destoryed) return;
                     if (result.state !== "yes") {
                         error(result.data);
-                        return Promise.reject(t("解析出错！"));
+                        return Promise.reject("解析出错！");
                     }
                     return Promise.all(result.result.sups.concat(result.result.drinks).map((item) => {
                         return new Promise((resolve, reject) => {
@@ -193,7 +193,6 @@ export const Route = createFileRoute('/result')({
                         });
                     }));
                 }).catch(() => {
-                    error("网络出错！");
                 }).finally(() => {
                     _loading = false;
                 });
