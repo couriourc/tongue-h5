@@ -25,3 +25,6 @@ dist-ssr
 
 routeTree.gen.ts
 app/frontend
+
+# Local Netlify folder
+.netlify

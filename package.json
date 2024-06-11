@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:netlify": "pnpm dev --mode netlify",
     "build": "vite build",
+    "build:netlify": "vite build --mode netlify",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "preview:server": "cd app && node app.js"

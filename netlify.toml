@@ -4,12 +4,16 @@ NODE_VERSION = "20"
 
 [build]
 publish = "dist"
-command = "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build"
+command = "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build:netlify"
 
+[dev]
+command = "pnpm dev:netlify"
 [[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
+# Deploys from main branch run this plugin in the build.
+# Plugins context requires double brackets.
 
 [[headers]]
 for = "/*"
