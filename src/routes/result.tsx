@@ -270,8 +270,8 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                                     key={label}
                                 >
                                     <div
-                                        className={cx('flex-center text-white border-1px h-full pt-12px',
-                                            iif(order < 3, 'border-b-solid', '')
+                                        className={cx('flex-center text-white h-full pt-12px',
+                                            iif(order < 3, 'border-b-solid border-1px', '')
                                         )}>
                                         <div className={cx("gap-12px text-center")}>
                                             <span className={cx("text-28px block w-full")}>{label}</span>
