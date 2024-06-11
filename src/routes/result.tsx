@@ -163,7 +163,7 @@ export const Route = createFileRoute('/result')({
         const {isLoading, data: result, error} = useSWR<IParserResult>(() => base64, async (base64: string) => {
             const file = base64ToFile(base64);
             const error = (message: string) => {
-                Toast.fail(t(message ?? "解析出错！"));
+                Toast.fail((message ?? "解析出错！"));
 
                 setTimeout(() => {
                     to("/").then(r => {
