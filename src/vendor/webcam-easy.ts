@@ -1,7 +1,27 @@
 //@ts-nocheck
+/**
+ * 获取video中对应的真实size
+ */
+function getXYRatio(video: HTMLVideoElement) {
+    // videoHeight为video 真实高度
+    // offsetHeight为video css高度
+    const {videoHeight: vh, videoWidth: vw, offsetHeight: oh, offsetWidth: ow} = video;
+
+    return {
+        yRatio: height => {
+            return (vh / oh) * height;
+        },
+        xRatio: width => {
+            return (vw / ow) * width;
+        },
+    };
+}
+
+
 export default class Webcam {
     settings: MediaTrackSettings;
     #destroyed: boolean = false;
+    _webcamElement: HTMLVideoElement = null;
 
     constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
         this._webcamElement = webcamElement;
@@ -180,6 +200,9 @@ export default class Webcam {
 
     snap(type: `image/${'png' | 'jpeg'}`) {
         if (this._canvasElement != null) {
+            const {yRatio, xRatio} = getXYRatio(this._webcamElement);
+            const {left, top, width, height} = this._webcamElement.getBoundingClientRect();
+
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
             }
@@ -191,7 +214,16 @@ export default class Webcam {
                 context.scale(-1, 1);
             }
             context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
-            context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
+            context.drawImage(this._webcamElement,
+                0,
+                0,
+                xRatio(width),
+                yRatio(height),
+                0,
+                0,
+                this._canvasElement.width,
+                this._canvasElement.height
+            );
             return this._canvasElement.toDataURL(type);
         } else {
             throw "canvas element is missing";

@@ -36,6 +36,7 @@ export const Route = createFileRoute('/capture')({
 
         async function handleCapture() {
             const img = camera.current!.capture();
+            download(base64ToFile(img));
             return handlePostTongueDetection(img);
         }
 
