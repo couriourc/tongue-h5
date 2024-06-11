@@ -21,7 +21,6 @@ export const Route = createFileRoute('/capture')({
         const camera = useRef<CameraProExposed>(null);
         const to = useTo();
         const [_files, open] = useFileDialog({accept: "*"});
-        const [_images, openCamera] = useFileDialog({accept: "image/*"});
 
         const [isLoading, setLoading] = useState<boolean>();
         const MemoCamera = useMemo(() => CameraPro, []);
