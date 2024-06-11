@@ -192,9 +192,6 @@ export const Route = createFileRoute('/result')({
                             resolve(result);
                         });
                     }));
-                }).catch(() => {
-                    error("网络不佳！");
-
                 }).finally(() => {
                     _loading = false;
                 });
@@ -340,7 +337,7 @@ function ParserResult({isLoading}: { isLoading: boolean }) {
                                     <span
                                         className={cx('w-12em truncate text-36px mt-12px')}> {drink.name}  </span>
                                     <span
-                                        className={cx('text-28px')}> {drink.data} </span>
+                                        className={cx('text-28px')}> {drink.introduce}</span>
 
                                 </div>
                                 <Image className={cx("size-full absolute top-0 left-0 z-0")}
