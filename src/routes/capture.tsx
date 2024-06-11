@@ -36,10 +36,8 @@ export const Route = createFileRoute('/capture')({
         }
 
         async function handleCapture() {
-            const images = await openCamera();
-            if (!(images && !!images.length)) return;
-            const base64 = await fileToBase64(images[0]);
-            return handlePostTongueDetection(base64);
+            const img = camera.current!.capture();
+            return handlePostTongueDetection(img);
         }
 
         async function handleOpen() {
