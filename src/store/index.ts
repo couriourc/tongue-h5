@@ -5,6 +5,7 @@ export interface IGoodsItem {
     data: string;
     name: string;
     pic: string;
+    introduce: string;
 }
 
 export interface INeedParserFileInfo {
@@ -29,6 +30,7 @@ export interface IParserResult {
         shese: string;
         taise: string;
     };
+    data: string;
     result: {
         drinks: IGoodsItem[];
         sups: IGoodsItem[];
@@ -46,6 +48,7 @@ export const atomParserResult = atomWithStorage<IParserResult>("parser-result", 
         shese: "",
         taise: "",
     },
+    data: "",
     result: {
         drinks: [] as IGoodsItem[],
         sups: [] as IGoodsItem[],

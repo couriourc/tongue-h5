@@ -21,6 +21,8 @@ export const Route = createFileRoute('/capture')({
         const camera = useRef<CameraProExposed>(null);
         const to = useTo();
         const [_files, open] = useFileDialog({accept: "*"});
+        const [_images, openCamera] = useFileDialog({accept: "image/*"});
+
         const [isLoading, setLoading] = useState<boolean>();
         const MemoCamera = useMemo(() => CameraPro, []);
 
@@ -33,10 +35,11 @@ export const Route = createFileRoute('/capture')({
             });
         }
 
-        function handleCapture() {
-            const img = camera.current!.capture();
-//            download(base64ToFile(img));
-            return handlePostTongueDetection(img);
+        async function handleCapture() {
+            const images = await openCamera();
+            if (!(images && !!images.length)) return;
+            const base64 = await fileToBase64(images[0]);
+            return handlePostTongueDetection(base64);
         }
 
         async function handleOpen() {
