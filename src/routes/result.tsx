@@ -193,6 +193,8 @@ export const Route = createFileRoute('/result')({
                         });
                     }));
                 }).catch(() => {
+                    error("网络不佳！");
+
                 }).finally(() => {
                     _loading = false;
                 });

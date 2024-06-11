@@ -226,7 +226,7 @@ export const CameraPro = forwardRef((props: Partial<ICameraProDefault>, ref: Ref
     useImperativeHandle(ref, () => {
         return {
             capture() {
-                return cam.snap("'image/jpeg'");
+                return cam.snap('image/jpeg');
             },
             switch() {
 //                return switchCamera();
