@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {css, cx} from "@emotion/css";
 import TWEEN, {Tween} from "@tweenjs/tween.js";
-import {getConfigFromGlobal} from "@/config";
 
 function animate(time: number) {
     requestAnimationFrame(animate);
@@ -41,8 +40,8 @@ const loading_css = css`
             background: #0E98A4;
             position: absolute;
             bottom: 0;
-            border-radius: 100px 100px 0 0;
-            filter: var(--bubble-blur, blur(5px));
+            border-radius: 50%;
+            //filter: blur(5px);
             animation: moveUp ease-in-out infinite;
 
             &:nth-child(1) {
@@ -175,7 +174,7 @@ const loading_css = css`
             bottom: 0;
             transform: translate(-50%, 0);
             border-radius: 100px 100px 0 0;
-            filter: var(--bubble-bottom-button-blur, blur(5px));
+            //filter: blur(5px);
         }
     }
 
@@ -187,7 +186,6 @@ const loading_css = css`
         left: 50%;
         margin-left: -150px;
         box-sizing: border-box;
-        filter: blur(8px);
         animation: circleRotate 6s linear infinite;
 
         &::before {
@@ -255,7 +253,7 @@ export const ChargeLoading: React.FC<any> = () => {
         [80, "正在处理推进你的药膳"],
     ] as const;
     const curStep = useRef<number>(0);
-    const [curPercentage, setCurPercentage] = useState<[number, string]>(text[0] as [number, string]);
+    const [curPercentage, setCurPercentage] = useState<[number, string]>(text[0]);
 
     useEffect(() => {
 
@@ -268,7 +266,6 @@ export const ChargeLoading: React.FC<any> = () => {
                 .onUpdate(({num}) => {
                     setCurPercentage(() => [num.toFixed(2) as unknown as number, text[curStep.current][1]]);
                 })
-                .duration(getConfigFromGlobal("loadingDuration",1000))
                 .onComplete(() => {
                     if (curStep.current >= text.length - 1) {
                         return;
@@ -296,7 +293,7 @@ export const ChargeLoading: React.FC<any> = () => {
 //    60% 的时候 文案中 正在推理你的舌像分析
 //    到80%的时候  文案  正在处理推进你的药膳
     return (
-        <div className={cx(loading_css)} id={"charge-loader"}>
+        <div className={cx(loading_css)}>
             <div className="text">
                 <div>{curPercentage[0]}%</div>
                 <div className={cx("text-28px")}>{curPercentage[1]}</div>
