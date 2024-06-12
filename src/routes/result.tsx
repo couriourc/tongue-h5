@@ -2,7 +2,7 @@ import {createFileRoute} from '@tanstack/react-router';
 import {NavBar} from "@/components/Navbar";
 import {css, cx} from "@emotion/css";
 import {map} from "underscore";
-import {IGoodsItem, IParserResult, useAtomNeedToParser} from "@/store";
+import {IGoodsItem, IParserResult, useAtomNeedToParser, useAtomParserResult} from "@/store";
 import {Image} from "@/components/Image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {base64ToFile, iif, placeholder} from "@/utils";
@@ -23,6 +23,7 @@ import {LoadingAnimation} from "@/components/LottieLoading";
 import {ThreeDots} from "@/components/ThreeDots";
 import {ChargeLoading} from "@/components/ChargeLoading";
 import {WithTypeWrite} from "@/components/WithTypeWrite";
+import {useSessionStorage} from "@reactuses/core";
 
 const maskCss = css`
     &::after {
@@ -153,6 +154,15 @@ const ResultContext = createContext<IParserResult>({
 const useParserResult = () => useContext(ResultContext);
 
 let _loading = false;
+const stash = (value: any) => sessionStorage.setItem("stash", JSON.stringify(value));
+const getStash = () => {
+    try {
+        return JSON.parse(sessionStorage.getItem("stash")!);
+    } catch {
+        return undefined;
+    }
+};
+const stashPop = () => sessionStorage.removeItem("stash");
 export const Route = createFileRoute('/result')({
 
     component: () => {
@@ -171,27 +181,37 @@ export const Route = createFileRoute('/result')({
                 });
             };
             return new Promise((resolve, reject) => {
-                return postTongueSuccess({
-                    file: file
-                }).then((result: IParserResult) => {
+                const stashed = getStash();
+                let resolved;
+                if (stashed) resolved = Promise.resolve(stashed);
+                else {
+                    resolved = postTongueSuccess({
+                        file: file
+                    });
+                }
+                console.log(stashed)
+
+                return resolved.then((result: IParserResult) => {
                     if (_destoryed) return;
                     if (result.state !== "yes") {
+
                         error(result.data);
                         return Promise.reject("解析出错！");
                     }
-                    return Promise.all(result.result.sups.concat(result.result.drinks).map((item) => {
-                        return new Promise((resolve, reject) => {
-                            const img = new window.Image();
-                            img.src = item.pic;
-                            img.onload = () => {
-                                resolve(null);
-                            };
-                            /*@ts-ignore*/
-                            item.pic = img;
-                        }).then(() => {
-                            resolve(result);
-                        });
-                    }));
+                    return Promise.all(result.result.sups.concat(result.result.drinks)
+                        .map((item) => {
+                            return new Promise((resolve, reject) => {
+                                const img = new window.Image();
+                                img.src = item.pic;
+                                img.onload = () => {
+                                    resolve(null);
+                                };
+                                /*@ts-ignore*/
+                                item.pic = img;
+                            }).then(() => {
+                                resolve(result);
+                            });
+                        }));
                 }).finally(() => {
                     _loading = false;
                 });
@@ -209,6 +229,9 @@ export const Route = createFileRoute('/result')({
                 <ParserResult isLoading={isLoading}></ParserResult>
             </ResultContext.Provider>
         </section>;
+    },
+    onLeave() {
+        stashPop();
     }
 });
 

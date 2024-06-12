@@ -40,8 +40,8 @@ const loading_css = css`
             background: #0E98A4;
             position: absolute;
             bottom: 0;
-            border-radius: 100px 100px 0 0;
-            filter: blur(5px);
+            border-radius: 50%;
+            //filter: blur(5px);
             animation: moveUp ease-in-out infinite;
 
             &:nth-child(1) {
@@ -174,7 +174,7 @@ const loading_css = css`
             bottom: 0;
             transform: translate(-50%, 0);
             border-radius: 100px 100px 0 0;
-            filter: blur(5px);
+            //filter: blur(5px);
         }
     }
 
@@ -186,7 +186,6 @@ const loading_css = css`
         left: 50%;
         margin-left: -150px;
         box-sizing: border-box;
-        filter: blur(8px);
         animation: circleRotate 6s linear infinite;
 
         &::before {

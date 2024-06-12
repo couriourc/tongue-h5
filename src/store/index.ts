@@ -48,12 +48,12 @@ export const atomParserResult = atomWithStorage<IParserResult>("parser-result", 
         shese: "",
         taise: "",
     },
-    data: "",
     result: {
         drinks: [] as IGoodsItem[],
         sups: [] as IGoodsItem[],
         translate: ''
     },
+    data: "",
     ti_zhi: ""
 });
 export const useAtomParserResult = () => useAtom<IParserResult>(atomParserResult);
