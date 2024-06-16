@@ -1,0 +1,7 @@
+#charge-loader {
+    --bubble-radius: 50%;
+    /*模糊度 */
+    --bubble-blur: blur(0px);
+    /*底部气泡模糊度 */
+    --bubble-bottom-button-blur: blur(0px);
+}
