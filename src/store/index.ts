@@ -14,7 +14,7 @@ export interface INeedParserFileInfo {
 
 export const atomNeedParserFileInfo = atomWithStorage("parser-result",
     {
-        base64: ''
+        base64: '',
     }
 );
 

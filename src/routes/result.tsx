@@ -2,7 +2,7 @@ import {createFileRoute} from '@tanstack/react-router';
 import {NavBar} from "@/components/Navbar";
 import {css, cx} from "@emotion/css";
 import {map} from "underscore";
-import {IGoodsItem, IParserResult, useAtomNeedToParser, useAtomParserResult} from "@/store";
+import {IGoodsItem, IParserResult, useAtomNeedToParser} from "@/store";
 import {Image} from "@/components/Image";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {base64ToFile, iif, placeholder} from "@/utils";
@@ -17,13 +17,10 @@ import Downloader from "downloadjs";
 import {useTranslation} from "react-i18next";
 import {PopoverPlacement} from "react-vant/es/popover/PropsType";
 import {useTo} from "@/hooks/to";
-import {BsThreeDots} from "react-icons/bs";
 import useSWR from "swr";
-import {LoadingAnimation} from "@/components/LottieLoading";
 import {ThreeDots} from "@/components/ThreeDots";
 import {ChargeLoading} from "@/components/ChargeLoading";
 import {WithTypeWrite} from "@/components/WithTypeWrite";
-import {useSessionStorage} from "@reactuses/core";
 
 const maskCss = css`
     &::after {
@@ -153,7 +150,6 @@ const ResultContext = createContext<IParserResult>({
 });
 const useParserResult = () => useContext(ResultContext);
 
-let _loading = false;
 const stash = (value: any) => sessionStorage.setItem("stash", JSON.stringify(value));
 const getStash = () => {
     try {
@@ -162,7 +158,7 @@ const getStash = () => {
         return undefined;
     }
 };
-const stashPop = () => sessionStorage.removeItem("stash");
+
 export const Route = createFileRoute('/result')({
 
     component: () => {
@@ -174,30 +170,28 @@ export const Route = createFileRoute('/result')({
             const file = base64ToFile(base64);
             const error = (message: string) => {
                 Toast.fail((message ?? "解析出错！"));
-
-                setTimeout(() => {
+                return setTimeout(() => {
                     to("/").then(r => {
                     });
                 });
             };
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const stashed = getStash();
-                let resolved;
-                if (stashed) resolved = Promise.resolve(stashed);
-                else {
-                    resolved = postTongueSuccess({
+                let resolver: PromiseLike<IParserResult>;
+                if (stashed && stashed.base64 === base64) {
+                    resolver = Promise.resolve(stashed.result);
+                } else {
+                    resolver = postTongueSuccess({
                         file: file
                     });
                 }
-                console.log(stashed)
-
-                return resolved.then((result: IParserResult) => {
+                resolver.then((result: IParserResult) => {
                     if (_destoryed) return;
                     if (result.state !== "yes") {
-
                         error(result.data);
                         return Promise.reject("解析出错！");
                     }
+                    stash({result: result, base64});
                     return Promise.all(result.result.sups.concat(result.result.drinks)
                         .map((item) => {
                             return new Promise((resolve, reject) => {
@@ -212,13 +206,11 @@ export const Route = createFileRoute('/result')({
                                 resolve(result);
                             });
                         }));
-                }).finally(() => {
-                    _loading = false;
                 });
             });
         }, {
             shouldRetryOnError: false,
-            keepPreviousData: false,
+            keepPreviousData: true,
         });
         if (error) {
             return;
@@ -230,9 +222,6 @@ export const Route = createFileRoute('/result')({
             </ResultContext.Provider>
         </section>;
     },
-    onLeave() {
-        stashPop();
-    }
 });
 
 

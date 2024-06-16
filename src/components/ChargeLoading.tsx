@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {css, cx} from "@emotion/css";
 import TWEEN, {Tween} from "@tweenjs/tween.js";
+import {getConfigFromGlobal} from "@/config";
 
 function animate(time: number) {
     requestAnimationFrame(animate);
@@ -15,6 +16,7 @@ const loading_css = css`
     position: fixed;
     bottom: 0;
     z-index: 999;
+    pointer-events: bounding-box;
 
     .text {
         width: 200px;
@@ -40,8 +42,8 @@ const loading_css = css`
             background: #0E98A4;
             position: absolute;
             bottom: 0;
-            border-radius: 50%;
-            //filter: blur(5px);
+            border-radius: var(--bubble-radius, 50%);
+            filter: var(--bubble-blur, blur(5px));
             animation: moveUp ease-in-out infinite;
 
             &:nth-child(1) {
@@ -168,13 +170,13 @@ const loading_css = css`
         .button {
             width: 150px;
             height: 50px;
-            background: #0E98A4;
+            background: var(--theme-primary);
             position: absolute;
             left: 50%;
             bottom: 0;
             transform: translate(-50%, 0);
             border-radius: 100px 100px 0 0;
-            //filter: blur(5px);
+            filter: var(--bubble-bottom-button-blur, blur(0px));
         }
     }
 
@@ -196,7 +198,7 @@ const loading_css = css`
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(0);
-            background: #0E98A4;
+            background: var(--theme-primary, #0E98A4);
             border-radius: 42% 38% 62% 49% / 45%;
         }
 
@@ -246,14 +248,14 @@ const loading_css = css`
 `;
 export const ChargeLoading: React.FC<any> = () => {
     const [percentage] = useState(0);
-    const text = [
+    const text = getConfigFromGlobal("loadingStepper", [
         [20, "正在检测舌质量",],
         [40, "正在检测体质",],
         [60, "正在推理你的舌像分析",],
         [80, "正在处理推进你的药膳"],
-    ] as const;
+    ]);
     const curStep = useRef<number>(0);
-    const [curPercentage, setCurPercentage] = useState<[number, string]>(text[0]);
+    const [curPercentage, setCurPercentage] = useState<[number, string]>(text[0] as [number, string]);
 
     useEffect(() => {
 
@@ -277,7 +279,7 @@ export const ChargeLoading: React.FC<any> = () => {
                         } catch {
 
                         }
-                    }, 1000);
+                    }, getConfigFromGlobal("loadingDurationToNextStep", 1000));
                 })
                 .start();
         }
@@ -293,7 +295,7 @@ export const ChargeLoading: React.FC<any> = () => {
 //    60% 的时候 文案中 正在推理你的舌像分析
 //    到80%的时候  文案  正在处理推进你的药膳
     return (
-        <div className={cx(loading_css)}>
+        <div className={cx(loading_css)} id={"charge-loader"}>
             <div className="text">
                 <div>{curPercentage[0]}%</div>
                 <div className={cx("text-28px")}>{curPercentage[1]}</div>
