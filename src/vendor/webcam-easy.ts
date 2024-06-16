@@ -71,7 +71,7 @@ export default class Webcam {
 
     /* Get media constraints */
     getMediaConstraints() {
-        var videoConstraints = {};
+        const videoConstraints: MediaTrackConstraints = {};
         if (this._selectedDeviceId == '') {
             videoConstraints.facingMode = this._facingMode;
         } else {
@@ -83,11 +83,10 @@ export default class Webcam {
         videoConstraints.height = {
             min: window.innerHeight,
         };
-        var constraints = {
+        return {
             video: videoConstraints,
             audio: false
         };
-        return constraints;
     }
 
     /* Select camera based on facingMode */
@@ -165,16 +164,20 @@ export default class Webcam {
     /* Start streaming webcam to video element */
     async stream() {
         return new Promise((resolve, reject) => {
+            this._webcamElement.onplaying = () => {
+            };
             navigator.mediaDevices.getUserMedia(this.getMediaConstraints())
                 .then(stream => {
-                    const video = stream.getVideoTracks()[0];
-                    this.settings = video.getSettings();
                     this._streamList.push(stream);
                     this._webcamElement.srcObject = stream;
                     if (this._facingMode == 'user') {
                         this._webcamElement.style.transform = "scale(-1,1)";
                     }
                     this._webcamElement.play();
+                    this._webcamElement.onplaying = () => {
+                        const video = stream.getVideoTracks()[0];
+                        this.settings = video.getSettings();
+                    };
                     resolve(this._facingMode);
                 })
                 .catch(error => {
@@ -200,14 +203,12 @@ export default class Webcam {
 
     snap(type: `image/${'png' | 'jpeg'}`) {
         if (this._canvasElement != null) {
-            const {yRatio, xRatio} = getXYRatio(this._webcamElement);
-            const {left, top, width, height} = this._webcamElement.getBoundingClientRect();
 
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
             }
-            this._canvasElement.width = this.settings?.width ?? this._webcamElement.width;
-            this._canvasElement.height = this.settings?.height ?? this._webcamElement.height;
+            this._canvasElement.width = this.settings?.width ?? this._webcamElement.videoWidth;
+            this._canvasElement.height = this.settings?.height ?? this._webcamElement.videoHeight;
             let context = this._canvasElement.getContext('2d');
             if (this._facingMode == 'user') {
                 context.translate(this._canvasElement.width, 0);
@@ -215,10 +216,6 @@ export default class Webcam {
             }
             context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
             context.drawImage(this._webcamElement,
-                0,
-                0,
-                xRatio(width),
-                yRatio(height),
                 0,
                 0,
                 this._canvasElement.width,
