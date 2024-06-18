@@ -34,10 +34,11 @@ const loading_css = css`
         width: 100%;
         height: 100%;
         overflow: hidden;
-        filter: contrast(15) hue-rotate(0);
+        filter: contrast(4) hue-rotate(0);
         position: relative;
         animation: hueRotate 6s linear infinite;
-
+        pointer-events: none;
+        user-select: none;
         span {
             background: #0E98A4;
             position: absolute;
@@ -219,11 +220,11 @@ const loading_css = css`
 
 @keyframes hueRotate {
     0% {
-        filter: contrast(15) hue-rotate(0);
+        filter: contrast(4) hue-rotate(0);
     }
 
     100% {
-        filter: contrast(15) hue-rotate(360deg);
+        filter: contrast(4) hue-rotate(360deg);
     }
 }
 
