@@ -152,10 +152,11 @@ Use Save As... to download, then click back to return to this page.`)&&(location
         width: 100%;
         height: 100%;
         overflow: hidden;
-        filter: contrast(15) hue-rotate(0);
+        filter: contrast(4) hue-rotate(0);
         position: relative;
         animation: hueRotate 6s linear infinite;
-
+        pointer-events: none;
+        user-select: none;
         span {
             background: #0E98A4;
             position: absolute;
@@ -337,11 +338,11 @@ Use Save As... to download, then click back to return to this page.`)&&(location
 
 @keyframes hueRotate {
     0% {
-        filter: contrast(15) hue-rotate(0);
+        filter: contrast(4) hue-rotate(0);
     }
 
     100% {
-        filter: contrast(15) hue-rotate(360deg);
+        filter: contrast(4) hue-rotate(360deg);
     }
 }
 
