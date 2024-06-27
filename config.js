@@ -5,7 +5,7 @@ window.config = {
 	// 每一阶段Loading加载间隔 单位毫秒
 	loadingDuration: 1000,
 	// 加载的文案阶段
-	loadingStepper : [
+	loadingStepper: [
 		[20, "正在检测舌质量"],
 		[40, "正在检测体质"],
 		[60, "正在推理你的舌像分析"],
@@ -13,4 +13,8 @@ window.config = {
 	],
 	// 某一阶段停留多久，如[20, "正在检测舌质量"]会持续多久
 	loadingDurationToNextStep: 1000,
+	// 备案信息
+	beian: "备案号：蜀ICP备2024044876号",
+	// 版权信息
+	copyright: "©版权所有：四川汉方甄选科技有限公司",
 }
