@@ -5,6 +5,8 @@ interface IGlobalConfiguration {
     loadingDuration: number;
     loadingStepper: [number, string][];
     loadingDurationToNextStep: number;
+    copyright: string;
+    beian: string;
 }
 
 declare interface Window {

@@ -9,6 +9,7 @@ import React, {useRef} from "react";
 import {iif, placeholder} from "@/utils";
 import _, {map} from "underscore";
 import {useTranslation} from "react-i18next";
+import {Copyright} from "@/components/Footer";
 
 export const SkeletonList = () => <Skeleton></Skeleton>;
 export const NewsList = () => {
@@ -125,6 +126,7 @@ export const Route = createFileRoute('/')({
                 <div className={cx('font-bold text-29px mb-36px')}>{$t("每日更新")}</div>
                 <NewsList/>
             </div>
+            <Copyright/>
             {/*<Tabbar/>*/}
         </section>;
     }
