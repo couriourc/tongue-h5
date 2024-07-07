@@ -87,5 +87,8 @@ body {
 }
 
 /* #nprogress  */
+a {
+    color: var(--theme-primary);
+}
 
 /*加载的泡泡颜色*/
