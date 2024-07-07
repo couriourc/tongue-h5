@@ -1,8 +1,8 @@
-import type { AxiosInstance, AxiosResponse } from 'axios';
-import axios, { AxiosRequestConfig } from 'axios';
-import type { DynamicProps, FunctionOrValue, WithMessageProps } from "@/types";
-import { extraFunction } from "@/utils";
-import { getConfigFromGlobal } from '@/config';
+import type {AxiosInstance, AxiosResponse} from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
+import type {DynamicProps, FunctionOrValue, WithMessageProps} from "@/types";
+import {extraFunction} from "@/utils";
+import {getConfigFromGlobal} from '@/config';
 
 
 interface AxiosRequestType {
@@ -17,8 +17,12 @@ interface AxiosRequestType {
     load?: any;
     noLoad?: boolean;
     need_loading?: boolean;
+    from_public?: boolean;
 }
+interface AxiosRequestConfig {
+    from_public?: boolean;
 
+}
 // axios 配置
 const request: AxiosInstance = axios.create({
     get baseURL() {
@@ -31,6 +35,9 @@ request.interceptors.request.use(
         // 配置token
         if (config.params instanceof FormData || config.data instanceof FormData) {
             config.headers['Content-Type'] = "multipart/form-data";
+        }
+        if (config.from_public) {
+            config.baseURL = "/";
         }
         // 添加loading
         // 看是否有loadMsg配置，如果存在则进行融合
@@ -80,7 +87,7 @@ export default function requester<T>(method: string, url: string, data: any = nu
             ? {
                 params: data
             }
-            : { data };
+            : {data};
 
         return request({
             method,

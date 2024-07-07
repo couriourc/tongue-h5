@@ -4,6 +4,7 @@ import {createRouter, RouterProvider} from "@tanstack/react-router";
 import React from "react";
 import {ConfigProvider} from "react-vant";
 import './i18n';
+import {SWRConfig} from "swr";
 // Create a new router instance
 const router = createRouter({
     routeTree,
@@ -16,8 +17,14 @@ declare module '@tanstack/react-router' {
     }
 }
 
+
 export function App() {
     return <ConfigProvider>
-        <RouterProvider router={router}/>
+        <SWRConfig value={{
+            errorRetryCount: 0,
+            shouldRetryOnError: false,
+        }}>
+            <RouterProvider router={router}/>
+        </SWRConfig>
     </ConfigProvider>;
 }
