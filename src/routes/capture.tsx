@@ -14,6 +14,7 @@ import {useTranslation} from "react-i18next";
 /*@ts-ignore*/
 import download from "downloadjs";
 import {isDev} from "@/utils/variables";
+import {Turtorial, TurtorialRef} from "@/components/Turtorial";
 
 export const Route = createFileRoute('/capture')({
     component: () => {
@@ -56,11 +57,19 @@ export const Route = createFileRoute('/capture')({
             return $camera.switch();
         }
 
+        const turtorial = useRef<TurtorialRef>(null);
+
         return <section text-white h-screen w-screen touch-none>
 
             <div flex justify-between w-full z-200 text-28px fixed top-64px px-24px>
                 <div className={cx("size-64px")} onClick={() => to("/")}><ArrowLeft/></div>
-                <span>{t('使用教程')}</span>
+                <span
+                    className={"cursor-pointer"}
+                    onClick={() => {
+                        console.log("asd");
+                        turtorial.current?.trigger();
+                    }}>{t('使用教程')}</span>
+                <Turtorial ref={turtorial}/>
             </div>
 
             <div w-full fixed z-1 h-full

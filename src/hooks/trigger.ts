@@ -10,6 +10,16 @@ export function useTrigger<T extends any>(queue?: boolean, memo?: T) {
         remember(memo: T) {
             _memo.current = memo;
         },
+        trigger() {
+            console.log("trigger")
+            if (state) {
+                this.close();
+                return;
+            } else {
+                console.log("close")
+                return this.open();
+            }
+        },
         open(memo?: T) {
             if (!_.isUndefined(memo)) {
                 _memo.current = memo;
